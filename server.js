@@ -1,17 +1,30 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const mongoose = require('mongoose');
+const routes = require('./routes/apiUser');
 
-// set the port for the express server
-const PORT = 3000;
+// set the port for the express server and mongoDB URI
+const PORT = process.env.PORT || 4000;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/gystDB";
 
-// create the app and the static file folder
+// create the app
 const app = express();
-app.use(express.static(__dirname + '/client/public'));
 
-// set the route to funnel everyone through
-// could use the wildcard here to accept any route
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/client/public/index.html');
+// middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static(path.join(__dirname, 'client/public')));
+
+// set Mongoose to use Promises
+// connect to the MongoDB
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI, {
+    useMongoClient: true
 });
+
+// bring in the API Routes
+app.use('/', routes);
 
 // start up the router on the PORT
 app.listen(PORT, () => console.log(`App is now running on Port ${PORT}`));
