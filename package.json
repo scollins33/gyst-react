@@ -1,0 +1,22 @@
+{
+  "name": "gyst-react",
+  "version": "0.1",
+  "description": "GYST Application for Getting Your Shit Together",
+  "main": "server.js",
+  "repository": "git@github.com:scollins33/gyst-react.git",
+  "author": "Mike Daye, Kim Owens, Sean Collins",
+  "license": "MIT",
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "concurrently": "^3.5.1",
+    "express": "^4.16.2",
+    "nodemon": "^1.14.11"
+  }
+}
