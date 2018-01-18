@@ -9,7 +9,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <Header mainpage={"true"} login={<LoginSpace/>}/>
+                <Header mainpage={true} login={<LoginSpace loggedin={false}/>}/>
                 <Title/>
                 <div className={"container"}>
                     <div className={"row"}>

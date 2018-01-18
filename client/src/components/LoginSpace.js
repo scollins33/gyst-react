@@ -3,7 +3,7 @@ import React from 'react';
 
 const LoginSpace = props => {
 
-    if(props.loggedin === "false"){
+    if(props.loggedin === false){
         return(
             <div>
                 <a href={"#"} className={"mx-1"}><p>sign up</p></a>
