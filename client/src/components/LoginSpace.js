@@ -5,7 +5,7 @@ const LoginSpace = props => {
 
     if(props.loggedin === false){
         return(
-            <div>
+            <div className={"d-flex flex row"}>
                 <a href={"#"} className={"mx-1"}><p>sign up</p></a>
                 <a href={"#"} className={"mx-1"}><p>login</p></a>
             </div>
