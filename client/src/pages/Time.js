@@ -1,17 +1,20 @@
 import React, { Component } from "react";
-import {Sample} from "../components/Sample";
+import DayView from "../components/time/DayView";
+import TimeSummary from "../components/time/TimeSummary";
 
 
 class Time extends Component {
 
     render() {
         return (
-        <div>
-            <h2>This is the Time page</h2>
-            <p>TimeTimeTimeTimeTimeTime TimeTimeTimeTimeTimeTime TimeTimeTimeTimeTimeTime TimeTimeTimeTimeTimeTime TimeTimeTimeTimeTimeTime </p>
-
-            <Sample/>
-        </div>
+            <div style={{height: "auto", backgroundColor: "#F0C39E"}}>
+                <div className={"container"}>
+                    <div className={"row"}>
+                        <DayView/>
+                        <TimeSummary/>
+                    </div>
+                </div>
+            </div>
         );
     }
 }
