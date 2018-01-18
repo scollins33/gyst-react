@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Time from './pages/Time';
+import Money from './pages/Money';
+import Social from './pages/Social';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
-}
+    render () {
+        return (
+            <Router>
+                <div>
+                    <header>
+                        <h1>GYST HOME PAGE</h1>
+                        <ul>
+                            <li><Link to={'/time'}>Time</Link></li>
+                            <li><Link to={'/money'}>Money</Link></li>
+                            <li><Link to={'/social'}>Social</Link></li>
+                        </ul>
+                    </header>
 
+                    <Switch>
+                        <Route exact path="/time" component={Time}/>
+                        <Route exact path="/money" component={Money}/>
+                        <Route exact path="/social" component={Social}/>
+                    </Switch>
+                </div>
+            </Router>
+        );
+    }
+}
 export default App;

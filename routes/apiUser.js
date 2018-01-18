@@ -11,7 +11,7 @@ const router = express.Router();
  */
 
 // POST a new User
-router.post('/api/addUser', (req, res) => {
+router.post('/addUser', (req, res) => {
     console.log(`Got a request to add:`);
     console.log(req.body);
 
@@ -26,7 +26,7 @@ router.post('/api/addUser', (req, res) => {
 
 // GET all users
 // used for testing
-router.get('/api/getUsers', (req, res) => {
+router.get('/getUsers', (req, res) => {
     db.User
         .find({})
         .then((data) => res.status(200).send(data))
