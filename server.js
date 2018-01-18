@@ -24,7 +24,11 @@ mongoose.connect(MONGODB_URI, {
 });
 
 // bring in the API Routes
-app.use('/', routes);
+// if no API routes are hit, send the React app
+app.use('/api', routes);
+app.use('/', (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
 // start up the router on the PORT
 app.listen(PORT, () => console.log(`App is now running on Port ${PORT}`));
