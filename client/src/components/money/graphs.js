@@ -9,13 +9,7 @@ var _this = this;
 
 
 
-const data = [
-    Bills,
-    {text: 'rent', value: 15},
-    {text: 'utilities', value: 10},
-    {text: 'gas', value: 49},
-    {text: 'goals', value: 36}
-];
+
 
 const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
@@ -29,6 +23,7 @@ const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 // higher order components
 
 class Graph extends React.Component{
+
     displayName = 'graphBills';
 
     state = {
@@ -44,6 +39,13 @@ class Graph extends React.Component{
     };
 
     render() {
+        const data = [
+
+            {text: 'rent', value: this.props.bills.rent},
+            {text: 'utilities', value: this.props.bills.utilities},
+            {text: 'gas', value: this.props.bills.gas},
+            {text: 'goals', value: this.props.bills.goals}
+        ];
 
         console.log("Bills: ", this.props.bills);
         return React.createElement(
