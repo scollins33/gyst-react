@@ -5,24 +5,24 @@ import Money from './pages/Money';
 import Social from './pages/Social';
 import Landing from "./pages/Landing";
 import Header from './components/Header.js';
-import './App.css';
 import LoginSpace from "./components/LoginSpace";
-
+import './App.css';
 class App extends Component {
     render () {
         return (
-            <Router>
-                <div>
-                    <Header mainpage={true} login={<LoginSpace loggedin={false}/>}/>
-                    <Switch>
-                        <Route exact path="/time" component={Time}/>
-                        <Route exact path="/money" component={Money}/>
-                        <Route exact path="/social" component={Social}/>
-                        <Route exact path="/" component={Landing}/>
-                    </Switch>
-                </div>
-            </Router>
+                <Router>
+                    <div>
+                        <Header mainPage={false} login={<LoginSpace loggedin={false}/>}/>
+                        <Switch>
+                            <Route exact path="/time" component={Time}/>
+                            <Route exact path="/money" component={Money}/>
+                            <Route exact path="/social" component={Social}/>
+                            <Route exact path="/" component={Landing}/>
+                        </Switch>
+                    </div>
+                </Router>
         );
     }
 }
+
 export default App;
