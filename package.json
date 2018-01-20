@@ -7,11 +7,12 @@
   "author": "Mike Daye, Kim Owens, Sean Collins",
   "license": "MIT",
   "scripts": {
-    "client-install": "cd client && npm install",
+    "client-install": "cd client && yarn install",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "cd client/ && yarn start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-run": "yarn install && cd client && yarn install && cd .. && yarn dev"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
