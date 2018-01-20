@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Calculator from '../components/money/Calculator.jsx';
 import Bills from '../components/money/Bills';
+import Graph from '../components/money/graphs';
 
 
 
@@ -10,7 +11,7 @@ import Bills from '../components/money/Bills';
         super(props)
 
         this.state = {
-            answer: 0,
+            question: 0,
             rent: 0,
             utilities: 0,
             gas: 0,
@@ -25,7 +26,6 @@ import Bills from '../components/money/Bills';
     updateCategoryAmount = (category) => {
         this.setState((state, props) => {
             state[category] = state.answer;
-
             return state
 
         })
@@ -41,9 +41,9 @@ import Bills from '../components/money/Bills';
             <Bills updateCategory={this.updateCategoryAmount}/>
 
         </div>
-        {/*<div className="graph">*/}
-        {/*<Graph bills={this.state} rent={this.state.rent}/>*/}
-        {/*</div>*/}
+        <div className="graph">
+        <Graph bills={this.state} rent={this.state.rent}/>
+        </div>
     </div>
     );
     }
