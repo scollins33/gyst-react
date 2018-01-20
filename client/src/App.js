@@ -1,5 +1,9 @@
+// import React, Router, and MUI
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+// import pages
 import Time from './pages/Time';
 import Money from './pages/Money';
 import Social from './pages/Social';
@@ -12,7 +16,7 @@ class App extends Component {
     render () {
         return (
             <Router>
-                <div>
+                <MuiThemeProvider>
                     <Header mainpage={true} login={<LoginSpace loggedin={false}/>}/>
                     <Switch>
                         <Route exact path="/time" component={Time}/>
@@ -20,7 +24,7 @@ class App extends Component {
                         <Route exact path="/social" component={Social}/>
                         <Route exact path="/" component={Landing}/>
                     </Switch>
-                </div>
+                </MuiThemeProvider>
             </Router>
         );
     }
