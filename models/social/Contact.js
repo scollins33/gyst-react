@@ -40,9 +40,27 @@ const ContactSchema = new Schema({
     },
     methods: {
         home: {
-            type:
+            type: Number,
+        },
+        work: {
+            type: Number,
+        },
+        mobile: {
+            type: Number,
+        },
+        email: {
+            type: String,
+        },
+    },
+    birthday: {
+        type: Date,
+    },
+    interactions: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Interaction"
         }
-    }
+    ]
 });
 
 const Contact = mongoose.model("Contact", ContactSchema);
