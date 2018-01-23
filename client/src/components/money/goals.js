@@ -13,7 +13,7 @@ class GoalsDeadline extends React.Component {
 
     handleInputChange(event) {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const value = target.value;
         const name = target.name;
 
         this.setState({
@@ -41,6 +41,10 @@ class GoalsDeadline extends React.Component {
                         value={this.state.numberOfWeeks}
                         onChange={this.handleInputChange} />
                 </label>
+                <br />
+                <button type="submit">
+                    Submit
+                </button>
             </form>
         );
     }
