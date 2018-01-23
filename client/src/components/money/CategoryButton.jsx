@@ -11,9 +11,16 @@ export default class CategoryButton extends React.Component {
 
     render() {
         return (
-            <button className={this.props.className} onClick={ this.handleClick }>
-                {this.props.className}
-            </button>
+            <form>
+                <label>
+
+                    <input type="text" className={this.props.className} onClick={ this.handleClick }/>
+
+                </label>
+                <input type="submit" value= {this.props.className} />
+            </form>
         );
     }
 }
+
+

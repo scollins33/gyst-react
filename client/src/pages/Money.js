@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import Calculator from '../components/money/Calculator.jsx';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
-
+import RentForm from "../components/money/RentForm";
+import UtilForm from "../components/money/UtilForm";
+import GasForm from "../components/money/GasForm"
 
 
  class Money extends React.Component {
@@ -34,9 +36,9 @@ import Graph from '../components/money/graphs';
     render() {
         return (
             <div className="budget">
-            <div className="calculator">
-            <Calculator handleAnswer={this.handleAnswer}/>
-        </div>
+            {/*<div className="calculator">*/}
+            {/*<Calculator handleAnswer={this.handleAnswer}/>*/}
+        {/*</div>*/}
         <div className="bills">
             <Bills updateCategory={this.updateCategoryAmount}/>
 
