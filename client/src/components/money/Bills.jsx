@@ -11,7 +11,13 @@ export default class Bills extends React.Component {
                 <div className="status">{status}</div>
                 <div className="board-row">
                     {categories.map((category, i) => {
-                        return <CategoryForm updateCategory={this.props.updateCategory} key={i} className={category}/>
+                        return <CategoryForm submit={this.props.submit}
+                                             handleChange={this.props.handleChange}
+                                             updateCategory={this.props.updateCategory}
+                                             key={i} className={category}
+                                                setValue={this.props.setValue}
+                                                i={i}
+                                             {...this.props}/>
                     })}
                 </div>
             </div>

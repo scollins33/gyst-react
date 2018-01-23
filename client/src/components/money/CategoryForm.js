@@ -6,22 +6,17 @@ class CategoryForm extends React.Component {
         super(props);
         this.state = {input: ''};
 
-        this.handleChange = this.handleChange.bind(this);
-
-    }
-
-    handleChange(event) {
-        this.setState({input: event.target.input});
     }
 
 
     render() {
+        console.log('props', this.props);
         return (
             <form onSubmit={this.handleAnswer}>
                 <label>
-                    <input type="text" value={this.state.input} onChange={this.handleChange} />
+                    <input type="text" name={'input'+this.props.i} value={this.props['input'+this.props.i]} onChange={this.props.handleChange} />
                 </label>
-                <input type="submit" value= {this.props.className}/>
+                <input type="submit" value={this.props.className} onClick={this.props.submit}/>
             </form>
         );
     }
