@@ -1,53 +1,32 @@
+// React and Material UI imports
 import React, { Component } from "react";
-import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import Subheader from 'material-ui/Subheader';
-import Divider from 'material-ui/Divider';
+import { withStyles } from 'material-ui/styles';
+import Card, {CardContent} from 'material-ui/Card';
+import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
+import Typography from 'material-ui/Typography';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
+import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import FavoriteIcon from 'material-ui-icons/Favorite';
+import ModeEdit from 'material-ui-icons/ModeEdit';
 
-/*
-	name: {
-        type: String,
-        required: true,
+// custom Component
+import Interaction from "./Interaction";
+
+const styles = theme => ({
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
     },
-    favorite: {
-        type: Boolean,
-        default: false,
+    formControl: {
+        margin: theme.spacing.unit,
     },
-    relation: {
-        type: String,
-    },
-    methods: {
-        home: {
-            type: Number,
-        },
-        work: {
-            type: Number,
-        },
-        mobile: {
-            type: Number,
-        },
-        email: {
-            type: String,
-        },
-    },
-    birthday: {
-        type: Date,
-    },
-    interactions: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Interaction"
-        }
-    ]
- */
+});
 
 class Contact extends Component {
     constructor(props) {
-        super();
+        super(props);
 
         // State matches the JSON from the MongoDB Schema
         // Methods is nested object with home/work/mobile/email
@@ -74,9 +53,6 @@ class Contact extends Component {
         const property = event.target.id;
         const val = event.target.value;
 
-        console.log(property);
-        console.log(val);
-
         this.setState({
             [property]: val,
         });
@@ -87,69 +63,83 @@ class Contact extends Component {
     };
 
     render() {
+        const { classes } = this.props;
+
         return (
-            <div className={"col-lg-4 col-md-12 mb-3"}>
-                <div>
-                    <Card className={"p-2"}>
-                        <CardTitle style={{padding: "8px"}}
-                                   title={"Name: " + this.state.name}/>
-                        <CardText style={{padding: "8px"}}>Relation: {this.state.relation}</CardText>
-                        <CardText style={{padding: "8px"}}>Last Interaction: {this.state.birthday}</CardText>
-                        <CardActions>
-                            <FlatButton label="Edit Contact" onClick={this.handleToggle} />
-                        </CardActions>
+                <div className={"col-lg-4 col-md-12 mb-3"}>
+                    <Card>
+                        <IconButton style={{"float": "right"}} aria-label="Add to favorites">
+                            <FavoriteIcon />
+                        </IconButton>
+                        <IconButton style={{"float": "right"}} aria-label="Edit Contact"
+                                    onClick={this.handleToggle}>
+                            <ModeEdit />
+                        </IconButton>
+
+                        <CardContent>
+                            <Typography type="headline">{this.state.name}</Typography>
+                            <Typography type="body2">Relation: {this.state.relation}</Typography>
+                            <Typography type="body2">Last Interaction: {this.state.birthday}</Typography>
+                        </CardContent>
                     </Card>
-                </div>
 
-                <div>
-                    <Dialog
-                        actions={<FlatButton label="Close" primary={true} onClick={this.handleToggle}/>}
-                        modal={true} open={this.state.open}
-                        onRequestClose={this.handleToggle} >
+                    <Dialog open={this.state.open} autoScrollBodyContent={true} modal={true}>
+                        <DialogTitle>Edit Contact</DialogTitle>
+                        <DialogContent className={classes.container}>
 
-                        <TextField id="name" floatingLabelText="Name"
-                                   value={this.state.name} onChange={this.handleChange}
-                                   className={"m-2"} />
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Name</InputLabel>
+                                <Input id="name" value={this.state.name} onChange={this.handleChange} />
+                            </FormControl>
 
-                        <TextField id="birthday" floatingLabelText="Birthday"
-                                   value={this.state.birthday} onChange={this.handleChange}
-                                   type="date" className={"m-2"}/>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Relation</InputLabel>
+                                <Input id="relation" value={this.state.relation} onChange={this.handleChange} />
+                            </FormControl>
 
-                        <SelectField id="relation" floatingLabelText="Relation"
-                                     value={this.state.relation} onChange={this.handlePick} >
-                            <MenuItem value={"Family"} primaryText="Family" />
-                            <MenuItem value={"Friend"} primaryText="Friend" />
-                            <MenuItem value={"Professional"} primaryText="Professional" />
-                            <MenuItem value={"Acquaintance"} primaryText="Acquaintance" />
-                        </SelectField>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Birthday</InputLabel>
+                                <Input id="birthday" value={this.state.birthday} onChange={this.handleChange} type="date" />
+                            </FormControl>
 
-                        <Divider />
-                        <Subheader>Contact Info</Subheader>
+                            {/*<Menu id="relation" floatingLabelText="Relation"*/}
+                            {/*value={this.state.relation} onChange={this.handlePick} >*/}
+                            {/*<MenuItem value={"Family"} primaryText="Family" />*/}
+                            {/*<MenuItem value={"Friend"} primaryText="Friend" />*/}
+                            {/*<MenuItem value={"Professional"} primaryText="Professional" />*/}
+                            {/*<MenuItem value={"Acquaintance"} primaryText="Acquaintance" />*/}
+                            {/*</Menu>*/}
 
-                        <TextField id="mobile" floatingLabelText="Mobile"
-                                   value={this.state.mobile} onChange={this.handleChange}
-                                   className={"m-2"} />
-                        <TextField id="work" floatingLabelText="Work"
-                                   value={this.state.work} onChange={this.handleChange}
-                                   className={"m-2"} />
-                        <TextField id="email" floatingLabelText="Email"
-                                   value={this.state.email} onChange={this.handleChange}
-                                   className={"m-2"} />
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Mobile</InputLabel>
+                                <Input id="mobile" value={this.state.mobile} onChange={this.handleChange} />
+                            </FormControl>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Work</InputLabel>
+                                <Input id="work" value={this.state.work} onChange={this.handleChange} />
+                            </FormControl>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Email</InputLabel>
+                                <Input id="email" value={this.state.email} onChange={this.handleChange} />
+                            </FormControl>
 
-                        <Divider />
-                        <Subheader>Interactions</Subheader>
+                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
+                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
+                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
+                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
+                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
+                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
+                        </DialogContent>
 
-                        <TextField
-                            id="interactions" value={this.state.interactions}
-                            hintText="Notes on Interactions"
-                            multiLine={true} rows={3} rowsMax={10}
-                            onChange={this.handleChange} />
-
+                        <DialogActions>
+                            <Button raised onClick={this.handleToggle} color="default">Close</Button>
+                            <Button raised onClick={this.handleToggle} color="primary">Save</Button>
+                            <Button raised onClick={this.handleToggle} color="secondary">Delete</Button>
+                        </DialogActions>
                     </Dialog>
                 </div>
-            </div>
         );
     }
 }
 
-export default Contact;
+export default withStyles(styles)(Contact);
