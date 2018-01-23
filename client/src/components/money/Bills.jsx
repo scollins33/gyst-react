@@ -1,5 +1,5 @@
 import React from 'react';
-import CategoryButton from './CategoryButton';
+import CategoryForm from './CategoryForm';
 
 export default class Bills extends React.Component {
     render() {
@@ -11,7 +11,7 @@ export default class Bills extends React.Component {
                 <div className="status">{status}</div>
                 <div className="board-row">
                     {categories.map((category, i) => {
-                        return <CategoryButton updateCategory={this.props.updateCategory} key={i} className={category}/>
+                        return <CategoryForm updateCategory={this.props.updateCategory} key={i} className={category}/>
                     })}
                 </div>
             </div>

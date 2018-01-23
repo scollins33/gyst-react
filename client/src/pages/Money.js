@@ -12,20 +12,21 @@ class Money extends React.Component {
         super(props)
 
         this.state = {
-            answer: 0,
+            input: 0,
             rent: 0,
             utilities: 0,
             gas: 0
         }
     }
 
-    handleAnswer = (answer) => {
-        this.setState({ answer });
+    handleAnswer = (input) => {
+        this.setState({ input });
     };
 
     updateCategoryAmount = (category) => {
         this.setState((state, props) => {
-            state[category] = state.answer;
+            state[category] = state.input;
+            console.log('what is my input',state.input);
             return state
 
         })
@@ -35,10 +36,10 @@ class Money extends React.Component {
         return (
             <div className="budget">
                 <div className="calculator">
-                <Calculator handleAnswer={this.handleAnswer}  />
+
                 </div>
                 <div className="bills">
-                    <Bills   updateCategory={this.updateCategoryAmount}/>
+                    <Bills  updateCategory={this.updateCategoryAmount}/>
 
                 </div>
                 <div className="graph">

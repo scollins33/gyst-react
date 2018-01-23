@@ -21,6 +21,14 @@ class GoalsDeadline extends React.Component {
         });
     }
 
+    // returnWeeks = (amount) => {
+    //     this.setState((goal, number) => {
+    //        state.amount= (goal/number);
+    //         return state
+    //
+    //     })
+    // };
+
     render() {
         return (
             <form>
