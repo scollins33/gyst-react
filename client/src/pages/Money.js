@@ -3,21 +3,19 @@ import ReactDOM from 'react-dom';
 import Calculator from '../components/money/Calculator.jsx';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
-import RentForm from "../components/money/RentForm";
-import UtilForm from "../components/money/UtilForm";
-import GasForm from "../components/money/GasForm"
+import GoalsDeadline from "../components/money/goals";
 
 
- class Money extends React.Component {
+
+class Money extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            question: 0,
+            answer: 0,
             rent: 0,
             utilities: 0,
-            gas: 0,
-            goals: 0
+            gas: 0
         }
     }
 
@@ -36,18 +34,21 @@ import GasForm from "../components/money/GasForm"
     render() {
         return (
             <div className="budget">
-            {/*<div className="calculator">*/}
-            {/*<Calculator handleAnswer={this.handleAnswer}/>*/}
-        {/*</div>*/}
-        <div className="bills">
-            <Bills updateCategory={this.updateCategoryAmount}/>
+                <div className="calculator">
+                <Calculator handleAnswer={this.handleAnswer}  />
+                </div>
+                <div className="bills">
+                    <Bills   updateCategory={this.updateCategoryAmount}/>
 
-        </div>
-        <div className="graph">
-        <Graph bills={this.state} rent={this.state.rent}/>
-        </div>
-    </div>
-    );
+                </div>
+                <div className="graph">
+                    <Graph bills={this.state} rent={this.state.rent}/>
+                </div>
+                <div className="GoalsDeadline">
+                    <GoalsDeadline/>
+                </div>
+            </div>
+        );
     }
 }
 export default Money;

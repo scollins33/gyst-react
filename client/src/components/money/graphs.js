@@ -1,14 +1,6 @@
 
 import React from 'react';
 import BarChart from 'react-bar-chart';
-import Bills from './Bills';
-
-import createReactClass from 'create-react-class';
-var _this = this;
-
-
-
-
 
 
 const margin = { top: 20, right: 20, bottom: 30, left: 40 };

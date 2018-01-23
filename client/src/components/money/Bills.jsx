@@ -4,7 +4,7 @@ import CategoryButton from './CategoryButton';
 export default class Bills extends React.Component {
     render() {
         const status = "Let's Manage Your Budget!";
-        const categories = ['rent', 'utilities', 'gas', 'goals',]
+        const categories = ['rent', 'utilities', 'gas',]
 
         return (
             <div>
