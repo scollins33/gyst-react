@@ -64,7 +64,7 @@ class Money extends React.Component {
                         {...this.state}
                         submit={this.submit}/>
                 <div className="GoalsDeadline">
-                    <GoalsDeadline/>
+                    <GoalsDeadline submit={this.submit}/>
                 </div>
             </div>
         );

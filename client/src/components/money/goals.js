@@ -44,14 +44,14 @@ class GoalsDeadline extends React.Component {
                 <label>
                     Number of Weeks:
                     <input
-                        name="numberOfWeekss"
+                        name="numberOfWeeks"
                         type="number"
                         value={this.state.numberOfWeeks}
                         onChange={this.handleInputChange} />
                 </label>
                 <br />
-                <button type="submit">
-                    Submit
+                <button type="submit" onClick={this.props.submit}>
+                    Calculate
                 </button>
             </form>
         );
