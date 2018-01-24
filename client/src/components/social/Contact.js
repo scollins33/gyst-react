@@ -5,7 +5,8 @@ import Card, {CardContent} from 'material-ui/Card';
 import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
 import Typography from 'material-ui/Typography';
 import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
+import { FormControl, FormControlLabel } from 'material-ui/Form';
+import Radio from 'material-ui/Radio';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import FavoriteIcon from 'material-ui-icons/Favorite';
@@ -21,6 +22,9 @@ const styles = theme => ({
     },
     formControl: {
         margin: theme.spacing.unit,
+    },
+    group: {
+        margin: `${theme.spacing.unit}px 0`,
     },
 });
 
@@ -58,8 +62,8 @@ class Contact extends Component {
         });
     };
 
-    handlePick = (event, index, value) => {
-        this.setState({ relation: value });
+    handlePick = (event) => {
+        this.setState({ relation: event.target.value });
     };
 
     render() {
@@ -83,7 +87,7 @@ class Contact extends Component {
                         </CardContent>
                     </Card>
 
-                    <Dialog open={this.state.open} autoScrollBodyContent={true} modal={true}>
+                    <Dialog open={this.state.open}>
                         <DialogTitle>Edit Contact</DialogTitle>
                         <DialogContent className={classes.container}>
 
@@ -93,22 +97,20 @@ class Contact extends Component {
                             </FormControl>
 
                             <FormControl className={classes.formControl}>
-                                <InputLabel>Relation</InputLabel>
-                                <Input id="relation" value={this.state.relation} onChange={this.handleChange} />
-                            </FormControl>
-
-                            <FormControl className={classes.formControl}>
                                 <InputLabel>Birthday</InputLabel>
                                 <Input id="birthday" value={this.state.birthday} onChange={this.handleChange} type="date" />
                             </FormControl>
 
-                            {/*<Menu id="relation" floatingLabelText="Relation"*/}
-                            {/*value={this.state.relation} onChange={this.handlePick} >*/}
-                            {/*<MenuItem value={"Family"} primaryText="Family" />*/}
-                            {/*<MenuItem value={"Friend"} primaryText="Friend" />*/}
-                            {/*<MenuItem value={"Professional"} primaryText="Professional" />*/}
-                            {/*<MenuItem value={"Acquaintance"} primaryText="Acquaintance" />*/}
-                            {/*</Menu>*/}
+                            <div className={"m-2"}>
+                                <FormControlLabel value={"Family"} label={"Family"} control={<Radio />}
+                                       onChange={this.handlePick} checked={this.state.relation === 'Family'}/>
+                                <FormControlLabel value={"Friend"} label={"Friend"} control={<Radio />}
+                                       onChange={this.handlePick} checked={this.state.relation === 'Friend'}/>
+                                <FormControlLabel value={"Professional"} label={"Professional"} control={<Radio />}
+                                       onChange={this.handlePick} checked={this.state.relation === 'Professional'}/>
+                                <FormControlLabel value={"Acquaintance"} label={"Acquaintance"} control={<Radio />}
+                                       onChange={this.handlePick} checked={this.state.relation === 'Acquaintance'}/>
+                            </div>
 
                             <FormControl className={classes.formControl}>
                                 <InputLabel>Mobile</InputLabel>
@@ -132,6 +134,7 @@ class Contact extends Component {
                         </DialogContent>
 
                         <DialogActions>
+                            <Button raised onClick={this.handleToggle} color="default">New Interaction</Button>
                             <Button raised onClick={this.handleToggle} color="default">Close</Button>
                             <Button raised onClick={this.handleToggle} color="primary">Save</Button>
                             <Button raised onClick={this.handleToggle} color="secondary">Delete</Button>
