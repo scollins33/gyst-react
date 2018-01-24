@@ -4,8 +4,8 @@ class GoalsDeadline extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            Goal: true,
-            numberOfWeeks: 4
+            Goal: 0,
+            numberOfWeeks: 0
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -19,15 +19,12 @@ class GoalsDeadline extends React.Component {
         this.setState({
             [name]: value
         });
+
+    }
+    returnWeek = () => {
+        return this.state.Goal * this.state.numberOfWeeks
     }
 
-    // returnWeeks = (amount) => {
-    //     this.setState((goal, number) => {
-    //        state.amount= (goal/number);
-    //         return state
-    //
-    //     })
-    // };
 
     render() {
         return (
@@ -50,12 +47,16 @@ class GoalsDeadline extends React.Component {
                         onChange={this.handleInputChange} />
                 </label>
                 <br />
-                <button type="submit" onClick={this.props.submit}>
+                <button type="calculate" onClick={this.props.submit}>
                     Calculate
                 </button>
             </form>
         );
+
+
     }
 }
+
+
 
 export default GoalsDeadline;
