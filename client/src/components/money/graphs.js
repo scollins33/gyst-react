@@ -3,7 +3,7 @@ import React from 'react';
 import BarChart from 'react-bar-chart';
 
 
-const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+const margin = { top: 40, right: 40, bottom: 30, left: 40 };
 
 // createReactClass
 // React.createComponent?
@@ -19,16 +19,16 @@ class Graph extends React.Component{
     displayName = 'graphBills';
 
     state = {
-        width: 500
+        width: 400,
     };
 
     componentDidMount =  () => {
 
     };
 
-    handleBarClick(element, id) {
-        console.log(`The bin ${element.text} with id ${id} was clicked`);
-    };
+    // handleBarClick(element, id) {
+    //     console.log(`The bin ${element.text} with id ${id} was clicked`);
+    // };
 
     render() {
         const data = [
@@ -48,7 +48,7 @@ class Graph extends React.Component{
                 { style: { width: '50%' } },
                 React.createElement(BarChart, { ylabel: '',
                     width: this.state.width,
-                    height: 500,
+                    height:400,
                     margin: margin,
                     data: data,
                     onBarClick: this.handleBarClick })
