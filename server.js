@@ -14,7 +14,7 @@ const app = express();
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, 'client/public')));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // set Mongoose to use Promises
 // connect to the MongoDB
@@ -27,7 +27,7 @@ mongoose.connect(MONGODB_URI, {
 // if no API routes are hit, send the React app
 app.use('/api', routes);
 app.use('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/build/index.html"));
+    res.sendFile(path.join(__dirname, "client/build/index.html"));
 });
 
 // start up the router on the PORT

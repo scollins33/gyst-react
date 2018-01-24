@@ -1,17 +1,9 @@
 
 import React from 'react';
 import BarChart from 'react-bar-chart';
-import Bills from './Bills';
-
-import createReactClass from 'create-react-class';
-var _this = this;
 
 
-
-
-
-
-const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+const margin = { top: 40, right: 40, bottom: 30, left: 40 };
 
 // createReactClass
 // React.createComponent?
@@ -27,27 +19,27 @@ class Graph extends React.Component{
     displayName = 'graphBills';
 
     state = {
-        width: 500
+        width: 400,
     };
 
     componentDidMount =  () => {
 
     };
 
-    handleBarClick(element, id) {
-        console.log(`The bin ${element.text} with id ${id} was clicked`);
-    };
+    // handleBarClick(element, id) {
+    //     console.log(`The bin ${element.text} with id ${id} was clicked`);
+    // };
 
     render() {
         const data = [
 
-            {text: 'rent', value: this.props.bills.rent},
-            {text: 'utilities', value: this.props.bills.utilities},
-            {text: 'gas', value: this.props.bills.gas},
-            {text: 'goals', value: this.props.bills.goals}
+            {text: 'rent', value: this.props.input0},
+            {text: 'utilities', value: this.props.input1},
+            {text: 'gas', value: this.props.input2},
+            // {text: 'goals', value: this.props.bills.goals}
         ];
 
-        console.log("Bills: ", this.props.bills);
+        console.log("graph: ", this.props);
         return React.createElement(
             'div',
             { ref: 'root' },
@@ -56,7 +48,7 @@ class Graph extends React.Component{
                 { style: { width: '50%' } },
                 React.createElement(BarChart, { ylabel: '',
                     width: this.state.width,
-                    height: 500,
+                    height:400,
                     margin: margin,
                     data: data,
                     onBarClick: this.handleBarClick })
