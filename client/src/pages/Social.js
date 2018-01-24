@@ -70,7 +70,7 @@ class Social extends Component {
                 <div className={'row'}>
                     {this.sampleUsers.map((each, i) => {
                         return <Contact key={i} name={each.name} relation={each.relation} birthday={each.birthday}
-                                        mobile={each.mobile} work={each.work} email={each.email}/>;
+                                        mobile={each.mobile} work={each.work} email={each.email} interactions={each.interactions}/>;
                     })}
                 </div>
             </div>
