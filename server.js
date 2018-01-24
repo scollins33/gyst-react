@@ -15,6 +15,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'client/public')));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // set Mongoose to use Promises
 // connect to the MongoDB
