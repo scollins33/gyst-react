@@ -5,7 +5,7 @@ const TimeSummary = props =>{
 
     return(
         <div className={"col-12 col-sm-6 my-3"}>
-            <div style={{backgroundColor: "#fff"}}>
+            <div style={{backgroundColor: "#fff", boxShadow: "0px 3px 5px rgba(100, 100, 100, 0.49)"}}>
                 <table className={"table"}>
                     <theaad>
                         <tr>
