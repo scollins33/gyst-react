@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
-const routes = require('./routes/apiUser');
+const apiRoute = require('./routes/api');
 
 // set the port for the express server and mongoDB URI
 const PORT = process.env.PORT || 4000;
@@ -12,6 +12,8 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/gystDB";
 const app = express();
 
 // middleware
+app.use(bodyParser.json());
+app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -25,7 +27,7 @@ mongoose.connect(MONGODB_URI, {
 
 // bring in the API Routes
 // if no API routes are hit, send the React app
-app.use('/api', routes);
+app.use('/api/', apiRoute);
 app.use('/', (req, res) => {
     res.sendFile(path.join(__dirname, "client/build/index.html"));
 });

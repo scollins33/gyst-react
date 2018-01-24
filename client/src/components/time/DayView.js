@@ -8,9 +8,7 @@ class DayView extends Component {
 
     render(){
         return(
-            <div className={"col-12 col-sm-6 my-3"}>
-                {this.props.dailyTasks.map(task=><Event name={task.name} startTime={task.startTime} endTime={task.endTime} notes={task.notes}/>)}
-            </div>
+            <div>this is what the dayview ways</div>
         )
     }
 }
