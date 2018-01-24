@@ -1,31 +1,46 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Calculator from '../components/money/Calculator.jsx';
+import Calculator from '../components/money/calculator/Calculator.jsx';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
+import GoalsDeadline from "../components/money/goals";
 
 
 
- class Money extends React.Component {
+class Money extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            question: 0,
+            input: '',
             rent: 0,
             utilities: 0,
-            gas: 0,
-            goals: 0
-        }
+            gas: 0
+        };
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleAnswer = (answer) => {
-        this.setState({ answer });
+    handleAnswer = (input) => {
+        this.setState({ input });
     };
+
+    submit=(event) => {
+        event.preventDefault()
+        console.log(this.state);
+    }
+
+    handleChange(event) {
+        console.log('is it working', event.target.name);
+        this.setState({[event.target.name]: event.target.value});
+
+    }
 
     updateCategoryAmount = (category) => {
         this.setState((state, props) => {
-            state[category] = state.answer;
+            state[category] = state.input;
+            console.log('what is my input',state.input);
+
             return state
 
         })
@@ -34,18 +49,25 @@ import Graph from '../components/money/graphs';
     render() {
         return (
             <div className="budget">
-            <div className="calculator">
-            <Calculator handleAnswer={this.handleAnswer}/>
-        </div>
-        <div className="bills">
-            <Bills updateCategory={this.updateCategoryAmount}/>
+                <div className="calculator">
 
-        </div>
-        <div className="graph">
-        <Graph bills={this.state} rent={this.state.rent}/>
-        </div>
-    </div>
-    );
+                </div>
+                <div className="bills">
+
+
+                </div>
+                <div className="graph">
+                    <Graph bills={this.state} {...this.state} rent={this.state.rent}/>
+                </div>
+                <Bills  updateCategory={this.updateCategoryAmount}
+                        handleChange={this.handleChange}
+                        {...this.state}
+                        submit={this.submit}/>
+                <div className="GoalsDeadline">
+                    <GoalsDeadline/>
+                </div>
+            </div>
+        );
     }
 }
 export default Money;
