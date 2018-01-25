@@ -6,14 +6,15 @@ const db = require("../models");
 
 const router = express.Router();
 
-/*
-    ROUTES
- */
+/* ------------------------------------
+       API Routes for All Pages
+------------------------------------ */
 
-//////////////////////////////////USER API/////////////////////////////////
-
+/* ------------------------------------
+            User APIs
+------------------------------------ */
 // POST a new User
-router.post('/addUser', function(req, res) {
+router.post('/addUser', (req, res) => {
     console.log(`Got a request to add:`);
     console.log(req.body);
 
@@ -35,7 +36,11 @@ router.get('/getUsers', (req, res) => {
         .catch(err => res.json(err));
 });
 
-//////////////////////////////////EVENT API/////////////////////////////////
+
+/* ------------------------------------
+            Event APIs
+------------------------------------ */
+
 // POST a new event
 router.post('/addEvent', (req, res) => {
     console.log(`Got a request to add an event:`);
@@ -83,5 +88,34 @@ router.get('/getEvents/byClass/:userId', (req, res) => {
 //Update an event
 
 //Delete an event
+
+
+/* ------------------------------------
+            SOCIAL APIs
+------------------------------------ */
+
+// GET User Contacts
+// populated with Interactions
+router.get('/getContactsPopulated/:userId', (req, res) => {
+    db.User
+        .find({_id: req.params.userId})
+        .populate('contacts')
+        .then((data) => res.status(200).send(data))
+        .catch(err => res.json(err));
+});
+
+router.post('/addContact', (req, res) => {
+    console.log(`Got a request to add an event:`);
+    console.log(req.body);
+
+    db.Event
+        .create(req.body)
+        .then(() => {
+            console.log(`Created event for ${req.body.name}`);
+            res.status(200).send('Created');
+        })
+        .catch(err => res.json(err));
+});
+
 
 module.exports = router;

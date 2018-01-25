@@ -1,4 +1,3 @@
-// React and Material UI imports
 import React, { Component } from "react";
 import { withStyles } from 'material-ui/styles';
 import Card, {CardContent} from 'material-ui/Card';

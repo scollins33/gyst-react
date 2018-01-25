@@ -9,6 +9,7 @@ class Social extends Component {
         this.sampleUsers = [
             {
                 name: "Sean",
+                favorite: false,
                 relation: "Family",
                 birthday: "1990-05-15",
                 mobile: "770-333-4412",
@@ -18,6 +19,7 @@ class Social extends Component {
             },
             {
                 name: "Kim",
+                favorite: true,
                 relation: "Friend",
                 birthday: "1990-05-15",
                 mobile: "770-333-4412",
@@ -27,6 +29,7 @@ class Social extends Component {
             },
             {
                 name: "Mike",
+                favorite: false,
                 relation: "Friend",
                 birthday: "1990-05-15",
                 mobile: "",
@@ -36,6 +39,7 @@ class Social extends Component {
             },
             {
                 name: "Musa",
+                favorite: false,
                 relation: "Professional",
                 birthday: "1990-05-15",
                 mobile: "770-333-4412",
@@ -45,6 +49,7 @@ class Social extends Component {
             },
             {
                 name: "Shahein",
+                favorite: true,
                 relation: "Lover",
                 birthday: "1990-05-15",
                 mobile: "770-333-4412",
@@ -54,6 +59,7 @@ class Social extends Component {
             },
             {
                 name: "Franklin",
+                favorite: false,
                 relation: "Family",
                 birthday: "1990-05-15",
                 mobile: "770-333-4412",
@@ -69,8 +75,8 @@ class Social extends Component {
             <div className={"container mt-5"}>
                 <div className={'row'}>
                     {this.sampleUsers.map((each, i) => {
-                        return <Contact key={i} name={each.name} relation={each.relation} birthday={each.birthday}
-                                        mobile={each.mobile} work={each.work} email={each.email}/>;
+                        return <Contact key={i} name={each.name} favorite={each.favorite} relation={each.relation} birthday={each.birthday}
+                                        mobile={each.mobile} work={each.work} email={each.email} interactions={each.interactions}/>;
                     })}
                 </div>
             </div>
