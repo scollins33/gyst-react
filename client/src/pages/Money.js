@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import Calculator from '../components/money/calculator/Calculator.jsx';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
-import GoalsDeadline from "../components/money/goals";
-
+import GoalsDeadline from "../components/money/GoalsDeadline";
+// import GoalsCalculation from "../components/money/GoalsCalculation";
 
 
 class Money extends React.Component {
@@ -59,12 +59,12 @@ class Money extends React.Component {
                 <div className="graph">
                     <Graph bills={this.state} {...this.state} rent={this.state.rent}/>
                 </div>
-                <Bills  updateCategory={this.updateCategoryAmount}
+                <Bills updateCategory={this.updateCategoryAmount}
                         handleChange={this.handleChange}
                         {...this.state}
                         submit={this.submit}/>
                 <div className="GoalsDeadline">
-                    <GoalsDeadline submit={this.submit}/>
+                    <GoalsDeadline submit={this.submit} />
                 </div>
             </div>
         );
