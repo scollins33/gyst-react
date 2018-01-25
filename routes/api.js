@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 
 // require models for the DB
 const db = require("../models");
@@ -61,7 +60,7 @@ router.get('/getEvents', (req, res) => {
 });
 
 
-//Get events by user
+// GET events by user
 router.get('/getEvents/:userId', (req, res) => {
 
     db.User
@@ -71,7 +70,7 @@ router.get('/getEvents/:userId', (req, res) => {
         .catch(err => res.json(err));
 });
 
-//Get events by user and class
+// GET events by user and class
 router.get('/getEvents/byClass/:userId', (req, res) => {
     const classType= "work";
     db.User
@@ -80,8 +79,31 @@ router.get('/getEvents/byClass/:userId', (req, res) => {
         .then((data) => res.status(200).send(data))
         .catch(err => res.json(err));
 });
-//Update an event
 
-//Delete an event
+// UPDATE an event
+router.get('/getEvents/:userId', (req, res) => {
 
+    db.User
+        .findOneAndUpdate(
+            {_id: req.param.userId},
+            {
+                $set: {
+                    name: req.body.name,
+                    startTime: req.body.startTime,
+                    endTime: req.body.endTime,
+                    class: req.body.class,
+                    repeat: req.body.repeat
+                }
+            })
+        .then((data) => res.status(200).send(data))
+        .catch(err => res.json(err));
+});
+
+//DELETE an event
+router.post('/getEvents/remove/:userId', (req, res) => {
+    db.User
+        .findOneAndRemove({_id: req.params.userId})
+        .then((data) => res.status(200).send(data))
+        .catch(err => res.json(err));
+});
 module.exports = router;
