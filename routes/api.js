@@ -168,8 +168,10 @@ router.get('/getUserSocial/:userId', (req, res) => {
 
     db.User
         .find({_id: req.params.userId})
-        .populate('contacts')
-        .populate({path: 'Contact.interactions'})
+        .populate({
+            path: 'contacts',
+            populate: { path: 'interactions'}
+        })
         .then((data) => res.status(200).send(data))
         .catch(err => res.json(err));
 });
