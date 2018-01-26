@@ -1,18 +1,20 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 // require models for the DB
 const db = require("../models");
 
 const router = express.Router();
 
-/*
-    ROUTES
- */
+/* ------------------------------------
+       API Routes for All Pages
+------------------------------------ */
 
-//////////////////////////////////USER API/////////////////////////////////
-
+/* ------------------------------------
+            User APIs
+------------------------------------ */
 // POST a new User
-router.post('/addUser', function(req, res) {
+router.post('/addUser', (req, res) => {
     console.log(`Got a request to add:`);
     console.log(req.body);
 
@@ -34,7 +36,11 @@ router.get('/getUsers', (req, res) => {
         .catch(err => res.json(err));
 });
 
-//////////////////////////////////EVENT API/////////////////////////////////
+
+/* ------------------------------------
+            Event APIs
+------------------------------------ */
+
 // POST a new event
 router.post('/addEvent', (req, res) => {
     console.log(`Got a request to add an event:`);
@@ -106,4 +112,68 @@ router.post('/getEvents/remove/:userId', (req, res) => {
         .then((data) => res.status(200).send(data))
         .catch(err => res.json(err));
 });
+//Delete an event
+
+
+/* ------------------------------------
+            SOCIAL APIs
+------------------------------------ */
+
+// Create new Contact for User
+router.post('/addContact', (req, res) => {
+    console.log(`Got a request to add a Contact:`);
+    console.log(req.body);
+
+    db.Contact
+        .create(req.body)
+        .then((contact) => {
+            console.log(`Created contact for User ${req.body.user}`);
+
+            db.User.findOneAndUpdate(
+                {_id: req.body.user},
+                {$push: {contacts: contact._id}})
+                .then(() => {
+                    res.status(200).send('Created and updated User');
+                })
+                .catch(err => res.json(err));
+        })
+        .catch(err => res.json(err));
+});
+
+// Create new Interaction for Contact
+router.post('/addInteraction', (req, res) => {
+    console.log(`Got a request to add an Interaction:`);
+    console.log(req.body);
+
+    db.Interaction
+        .create(req.body)
+        .then((interact) => {
+            console.log(`Created interaction for Contact ${req.body.contact}`);
+
+            db.Contact.findOneAndUpdate(
+                {_id: req.body.contact},
+                {$push: {interactions: interact._id}})
+                .then(() => {
+                    res.status(200).send('Created Interaction and updated Contact');
+                })
+                .catch(err => res.json(err));
+        })
+        .catch(err => res.json(err));
+});
+
+// GET User's Social info
+// populated with Contacts and Interactions
+router.get('/getUserSocial/:userId', (req, res) => {
+    console.log(`Trying to fetch User Social for ${req.params.userId}`);
+
+    db.User
+        .findOne({_id: req.params.userId})
+        .populate({
+            path: 'contacts',
+            populate: { path: 'interactions'}
+        })
+        .then((data) => res.status(200).send(data))
+        .catch(err => res.json(err));
+});
+
 module.exports = router;

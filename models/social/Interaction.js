@@ -11,6 +11,10 @@ const Schema = mongoose.Schema;
  */
 
 const InteractionSchema = new Schema({
+    contact: {
+        type: Schema.Types.ObjectId,
+        ref: "Contact"
+    },
     date: {
         type: Date,
         required: true,
