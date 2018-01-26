@@ -9,7 +9,7 @@ const Interaction = props => {
         <FormControl fullWidth>
 
             <InputLabel>Interaction</InputLabel>
-            <Input id="interaction" value={props.interactions} cb={props.onChange}
+            <Input id="interaction" value={props.note} cb={props.onChange}
                    multiline={true} rows={1} rowsMax={10}/>
 
             <IconButton raised onClick={this.handleToggle} color="secondary">

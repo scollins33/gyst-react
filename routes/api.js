@@ -167,7 +167,7 @@ router.get('/getUserSocial/:userId', (req, res) => {
     console.log(`Trying to fetch User Social for ${req.params.userId}`);
 
     db.User
-        .find({_id: req.params.userId})
+        .findOne({_id: req.params.userId})
         .populate({
             path: 'contacts',
             populate: { path: 'interactions'}

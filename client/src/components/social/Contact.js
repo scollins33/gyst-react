@@ -124,12 +124,9 @@ class Contact extends Component {
                                 <Input id="email" value={this.state.email} onChange={this.handleChange} />
                             </FormControl>
 
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
+                            {this.state.interactions.map((each, i) => {
+                                return <Interaction key={i} {...each} cb={this.handleChange}/>;
+                            })}
                         </DialogContent>
 
                         <DialogActions>
