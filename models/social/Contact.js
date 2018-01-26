@@ -44,10 +44,10 @@ const ContactSchema = new Schema({
     },
     methods: {
         work: {
-            type: Number,
+            type: String,
         },
         mobile: {
-            type: Number,
+            type: String,
         },
         email: {
             type: String,
