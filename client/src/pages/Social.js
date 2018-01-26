@@ -23,10 +23,14 @@ class Social extends Component {
         return (
             <div className={"container mt-5"}>
                 <div className={'row'}>
+
                     {this.state.contacts.map((each, i) => {
-                        return <Contact key={i} name={each.name} favorite={each.favorite} relation={each.relation} birthday={each.birthday}
-                                        mobile={each.mobile} work={each.work} email={each.email} interactions={each.interactions}/>;
+                        return <Contact key={i} name={each.name} favorite={each.favorite}
+                                        relation={each.relation} birthday={each.birthday}
+                                        methods={each.methods}
+                                        interactions={each.interactions}/>;
                     })}
+
                 </div>
             </div>
         );
