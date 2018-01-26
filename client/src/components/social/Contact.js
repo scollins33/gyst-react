@@ -57,6 +57,10 @@ class Contact extends Component {
         const property = event.target.id;
         const val = event.target.value;
 
+        console.log('changing something on the page');
+        console.log(event);
+        console.log(event.target);
+
         this.setState({
             [property]: val,
         });
