@@ -1,15 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Calculator from '../components/money/calculator/Calculator.jsx';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
 import GoalsDeadline from "../components/money/GoalsDeadline";
-// import GoalsCalculation from "../components/money/GoalsCalculation";
 
 
 class Money extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             input: '',
@@ -26,9 +23,9 @@ class Money extends React.Component {
     };
 
     submit=(event) => {
-        event.preventDefault()
+        event.preventDefault();
         console.log(this.state);
-    }
+    };
 
     handleChange(event) {
         console.log('is it working', event.target.name);

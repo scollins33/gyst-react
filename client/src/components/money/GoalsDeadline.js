@@ -1,12 +1,12 @@
 import React from 'react';
-// import goalsCalculation from '../components/money/goalsCalculation';
+
 
 class GoalsDeadline extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            Goal: 10,
-            numberOfWeeks: 3,
+            Goal: 1,
+            numberOfWeeks: 1,
             weekly: 0,
         };
 
@@ -72,7 +72,7 @@ class GoalsDeadline extends React.Component {
                     Calculate
                 </button>
                 <div>
-                    <h1>{this.state.weekly}</h1>
+                    <h1>Set Aside:${this.state.weekly} Each Week</h1>
                 </div>
             </form>
 
