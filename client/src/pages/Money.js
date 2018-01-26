@@ -2,9 +2,33 @@ import React from 'react';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
 import GoalsDeadline from "../components/money/GoalsDeadline";
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Grid from 'material-ui/Grid';
+import { FormLabel, FormControlLabel } from 'material-ui/Form';
+import Radio, { RadioGroup } from 'material-ui/Radio';
+import Paper from 'material-ui/Paper';
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        height: 140,
+        width: 100,
+    },
+    control: {
+        padding: theme.spacing.unit * 2,
+    },
+});
+
+
 
 
 class Money extends React.Component {
+    state = {
+        spacing: '16',
+    };
     constructor(props) {
         super(props);
 
@@ -44,22 +68,18 @@ class Money extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
+        const { spacing } = this.state;
+
         return (
             <div className="budget">
-                <div className="calculator">
-
-                </div>
-                <div className="bills">
-
-
-                </div>
                 <div className="graph">
                     <Graph bills={this.state} {...this.state} rent={this.state.rent}/>
                 </div>
                 <Bills updateCategory={this.updateCategoryAmount}
-                        handleChange={this.handleChange}
-                        {...this.state}
-                        submit={this.submit}/>
+                       handleChange={this.handleChange}
+                       {...this.state}
+                       submit={this.submit}/>
                 <div className="GoalsDeadline">
                     <GoalsDeadline submit={this.submit} />
                 </div>
