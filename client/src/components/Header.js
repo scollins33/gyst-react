@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 
 const Header = props => {
-    let headerLogo = <Link to={'/'}><h1 cl style={{fontFamily: "\"Arial Black\", Gadget, sans-serif"}}>GYST</h1></Link>;
+    let headerLogo = <Link to={'/'}><h1 style={{fontFamily: "\"Arial Black\", Gadget, sans-serif"}}>GYST</h1></Link>;
     let headerStyle = {backgroundColor: "#fff", boxShadow: "0px 3px 5px rgba(100, 100, 100, 0.49)"};
     if (props.mainPage === true) {
         headerLogo = null;
@@ -21,6 +21,6 @@ const Header = props => {
                 </div>
             </div>
         )
-    }
-;
+    };
+
 export default Header;
