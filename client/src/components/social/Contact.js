@@ -11,9 +11,10 @@ import IconButton from 'material-ui/IconButton';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import FavoriteBorder from 'material-ui-icons/FavoriteBorder';
 import ModeEdit from 'material-ui-icons/ModeEdit';
-
-// custom Component
 import Interaction from "./Interaction";
+
+// require moment.js
+// const moment = require('moment');
 
 const styles = theme => ({
     container: {
@@ -49,6 +50,8 @@ class Contact extends Component {
         };
     }
 
+    // Custom functions to update state
+
     handleToggle = () => this.state.open ? this.setState({ open: false }) : this.setState({ open: true });
 
     handleFav = () => this.state.favorite ? this.setState({ favorite: false }) : this.setState({ favorite: true });
@@ -56,10 +59,6 @@ class Contact extends Component {
     handleChange = (event) => {
         const property = event.target.id;
         const val = event.target.value;
-
-        console.log('changing something on the page');
-        console.log(event);
-        console.log(event.target);
 
         this.setState({
             [property]: val,
@@ -69,6 +68,23 @@ class Contact extends Component {
     handlePick = (event) => {
         this.setState({ relation: event.target.value });
     };
+
+    handleInteract = (event) => {
+        let interactions = this.state.interactions;
+        interactions[parseInt(event.target.name, 10)].note = event.target.value;
+
+        this.setState({ interactions });
+    };
+
+    // React Lifecycle
+
+    componentWillMount() {
+        // add Array Location to each Interaction
+        // need to this so it can be edited in the State
+        this.state.interactions.map((each, i) => {
+            return each.arrLoc = i;
+        });
+    }
 
     render() {
         const { classes } = this.props;
@@ -131,7 +147,7 @@ class Contact extends Component {
                             </FormControl>
 
                             {this.state.interactions.map((each, i) => {
-                                return <Interaction key={i} {...each} cb={this.handleChange.bind(this)}/>;
+                                return <Interaction key={i} {...each} cb={this.handleInteract.bind(this)}/>;
                             })}
 
                         </DialogContent>

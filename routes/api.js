@@ -176,4 +176,11 @@ router.get('/getUserSocial/:userId', (req, res) => {
         .catch(err => res.json(err));
 });
 
+// POST updated Contact to User
+router.post('/updateContact', (req, res) => {
+    console.log('');
+
+
+});
+
 module.exports = router;
