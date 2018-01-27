@@ -178,9 +178,9 @@ router.get('/getUserSocial/:userId', (req, res) => {
 
 // POST updated Contact to User
 router.post('/updateContact', (req, res) => {
-    console.log('');
-
-
+    console.log('updating contact');
 });
+
+//
 
 module.exports = router;
