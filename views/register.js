@@ -1,30 +1,39 @@
-<h2 class="page-header">Register</h2>
-<form method="post" action="/users/register">
-    <div class="form-group">
-        <label>Name</label>
-        <input type="text" class="form-control" placeholder="Name"
-               name="name">
-    </div>
-      <div class="form-group">
-          <label>Username</label>
-          <input type="test" class="form-control"
-                 placeholder="Username" name="username">
-      </div>
-    <div class="form-group">
-        <label>Email</label>
-        <input type="email" class="form-control"
-               placeholder="Email" name="email">
-    </div>
+import React from 'react';
 
-    <div class="form-group">
-        <label>Password</label>
-        <input type="password" class="form-control"
-               placeholder="Password" name="password">
-    </div>
-    <div class="form-group">
-        <label>Confirm Password</label>
-        <input type="password" class="form-control"
-               placeholder="Password" name="password2">
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-</form>
+class registerForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {input: ''};
+    }
+
+    render() {
+        return (
+            <form>
+            <div className="register-group">
+                <label>Name
+                    <input type="text" name={'Name'}/>
+                </label>
+                <label>Username
+                    <input type="test" name={'Username'}/>
+                </label>
+                <label>Email
+                    <input type="email" name={'Email'}/>
+                </label>
+                <label>Password
+                    <input type="password" name=""{'Password'}/>
+                </label>
+                <label>Confirm Password
+                    <input type="password" name={'ConfirmPassword'}/>
+                </label>
+                <input type="submit" value={'Submit'}/>
+            </div>
+        </form>
+    );
+
+    }
+
+    }
+
+
+
+    export default registerForm;
