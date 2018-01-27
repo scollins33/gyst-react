@@ -27,6 +27,10 @@ const Schema = mongoose.Schema;
  */
 
 const ContactSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
     name: {
         type: String,
         required: true,
@@ -39,14 +43,11 @@ const ContactSchema = new Schema({
         type: String,
     },
     methods: {
-        home: {
-            type: Number,
-        },
         work: {
-            type: Number,
+            type: String,
         },
         mobile: {
-            type: Number,
+            type: String,
         },
         email: {
             type: String,

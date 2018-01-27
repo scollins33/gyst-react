@@ -1,15 +1,36 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Calculator from '../components/money/calculator/Calculator.jsx';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
-import GoalsDeadline from "../components/money/goals";
+import GoalsDeadline from "../components/money/GoalsDeadline";
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Grid from 'material-ui/Grid';
+import { FormLabel, FormControlLabel } from 'material-ui/Form';
+import Radio, { RadioGroup } from 'material-ui/Radio';
+import Paper from 'material-ui/Paper';
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        height: 140,
+        width: 100,
+    },
+    control: {
+        padding: theme.spacing.unit * 2,
+    },
+});
+
 
 
 
 class Money extends React.Component {
+    state = {
+        spacing: '16',
+    };
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             input: '',
@@ -26,9 +47,9 @@ class Money extends React.Component {
     };
 
     submit=(event) => {
-        event.preventDefault()
+        event.preventDefault();
         console.log(this.state);
-    }
+    };
 
     handleChange(event) {
         console.log('is it working', event.target.name);
@@ -47,26 +68,26 @@ class Money extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
+        const { spacing } = this.state;
+
         return (
-            <div className="budget">
-                <div className="calculator">
-
-                </div>
-                <div className="bills">
-
-
-                </div>
-                <div className="graph">
+            /*<Grid container className="budget" justify="flex-end">*/
+                <Grid item lg={8}>
+                <Grid container className="graph" align-items="flex-start" spacing={Number(spacing)}>
                     <Graph bills={this.state} {...this.state} rent={this.state.rent}/>
-                </div>
-                <Bills  updateCategory={this.updateCategoryAmount}
-                        handleChange={this.handleChange}
-                        {...this.state}
-                        submit={this.submit}/>
-                <div className="GoalsDeadline">
-                    <GoalsDeadline/>
-                </div>
-            </div>
+                </Grid>
+                    <Grid container className="bills" align-items="flex-start" spacing={Number(spacing)}>
+                <Bills updateCategory={this.updateCategoryAmount}
+                       handleChange={this.handleChange}
+                       {...this.state}
+                       submit={this.submit}/>
+                    </Grid>
+                <Grid container className="GoalsDeadline" justify="flex-end" spacing={Number(spacing)}>
+                    <GoalsDeadline submit={this.submit} />
+                </Grid>
+            </Grid>
+            /*</Grid>*/
         );
     }
 }

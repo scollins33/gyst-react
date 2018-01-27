@@ -2,7 +2,6 @@
 import React from 'react';
 import BarChart from 'react-bar-chart';
 
-
 const margin = { top: 40, right: 40, bottom: 30, left: 40 };
 
 // createReactClass
@@ -22,21 +21,13 @@ class Graph extends React.Component{
         width: 400,
     };
 
-    componentDidMount =  () => {
-
-    };
-
-    // handleBarClick(element, id) {
-    //     console.log(`The bin ${element.text} with id ${id} was clicked`);
-    // };
-
     render() {
         const data = [
 
             {text: 'rent', value: this.props.input0},
             {text: 'utilities', value: this.props.input1},
             {text: 'gas', value: this.props.input2},
-            // {text: 'goals', value: this.props.bills.goals}
+
         ];
 
         console.log("graph: ", this.props);
