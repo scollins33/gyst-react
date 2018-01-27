@@ -21,6 +21,9 @@ const EventSchema = new Schema({
     repeat: {
         type: String,
     },
+    notes: {
+        type: String,
+    },
     user:[
         {
             type: Schema.Types.ObjectId,
