@@ -1,5 +1,7 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
 
 class GoalsDeadline extends React.Component {
     constructor(props) {
@@ -49,12 +51,14 @@ class GoalsDeadline extends React.Component {
 
     render() {
         return (
+
             <form>
+
                 <label>
                     Goal Amount:
                     <input
                         name="Goal"
-                        type="number"
+                        type="monetary"
                         value={this.state.Goal}
                         onChange={this.handleFloatChange} />
                 </label>
@@ -68,9 +72,9 @@ class GoalsDeadline extends React.Component {
                         onChange={this.handleFloatChange} />
                 </label>
                 <br/>
-                <button type="calculate" onClick={(event) => {this.submit(event); this.budgetPerWeek(event)}}>
+                <Button raised type="calculate" onClick={(event) => {this.submit(event); this.budgetPerWeek(event)}}>
                     Calculate
-                </button>
+                </Button>
                 <div>
                     <h1>Set Aside:${this.state.weekly} Each Week</h1>
                 </div>

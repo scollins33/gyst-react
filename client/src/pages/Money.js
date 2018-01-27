@@ -72,18 +72,22 @@ class Money extends React.Component {
         const { spacing } = this.state;
 
         return (
-            <div className="budget">
-                <div className="graph">
+            /*<Grid container className="budget" justify="flex-end">*/
+                <Grid item lg={8}>
+                <Grid container className="graph" align-items="flex-start" spacing={Number(spacing)}>
                     <Graph bills={this.state} {...this.state} rent={this.state.rent}/>
-                </div>
+                </Grid>
+                    <Grid container className="bills" align-items="flex-start" spacing={Number(spacing)}>
                 <Bills updateCategory={this.updateCategoryAmount}
                        handleChange={this.handleChange}
                        {...this.state}
                        submit={this.submit}/>
-                <div className="GoalsDeadline">
+                    </Grid>
+                <Grid container className="GoalsDeadline" justify="flex-end" spacing={Number(spacing)}>
                     <GoalsDeadline submit={this.submit} />
-                </div>
-            </div>
+                </Grid>
+            </Grid>
+            /*</Grid>*/
         );
     }
 }
