@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
+import Button from "material-ui/Button";
 
 
-handleToggle = () => this.state.open ? this.setState({ open: false }) : this.setState({ open: true });
+class LoginSpace extends Component {
+    constructor(props) {
+        super(props);
 
-const LoginSpace = props => {
+        this.state = {
+            logged: props.loggedin,
+            reg: false,
+            log: false,
+        };
+    }
 
-    if(props.loggedin === false){
+    toggleReg = () => this.state.reg ? this.setState({ reg: false }) : this.setState({ reg: true });
+    toggleLog = () => this.state.log ? this.setState({ log: false }) : this.setState({ log: true });
+
+    render() {
         return(
             <div className={"d-flex flex-row"}>
-                <Dialog open={this.state.open}>
+                <Button onClick={this.toggleReg}>REGISTER</Button>
+                <Dialog open={this.state.reg}>
                     <form>
                         <div className="register-group">
                             <label>Name
@@ -30,6 +42,10 @@ const LoginSpace = props => {
                             <input type="submit" value={'Submit'}/>
                         </div>
                     </form>
+                </Dialog>
+
+                <Button onClick={this.toggleLog}>LOGIN</Button>
+                <Dialog open={this.state.log}>
                     <form>
                         <div className="login-group">
                             <label>Username
@@ -43,10 +59,10 @@ const LoginSpace = props => {
                     </form>
                 </Dialog>
             </div>
-    );
-    }
+        );
     }
 
+}
 
 
     // else
@@ -61,4 +77,4 @@ const LoginSpace = props => {
 
 
 
-export default LoginSpace
+export default LoginSpace;
