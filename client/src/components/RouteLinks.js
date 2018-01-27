@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-const RouteLinks = props =>(
+const RouteLinks = () =>(
     <div className={"d-flex flex-row align-content-start"}>
         <p className={"mx-1"}><Link to={"/contact"}>contact us</Link></p>
         <p className={"mx-1"}><Link to={'/time'}>time</Link></p>

@@ -1,4 +1,3 @@
-// React and Material UI imports
 import React, { Component } from "react";
 import { withStyles } from 'material-ui/styles';
 import Card, {CardContent} from 'material-ui/Card';
@@ -10,6 +9,7 @@ import Radio from 'material-ui/Radio';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import FavoriteIcon from 'material-ui-icons/Favorite';
+import FavoriteBorder from 'material-ui-icons/FavoriteBorder';
 import ModeEdit from 'material-ui-icons/ModeEdit';
 
 // custom Component
@@ -36,26 +36,30 @@ class Contact extends Component {
         // Methods is nested object with home/work/mobile/email
         // Interactions is an array, populated from Interactions schema
         this.state = {
+            id: props._id,
             name: props.name,
             favorite: props.favorite,
             relation: props.relation,
-            mobile: props.mobile,
-            work: props.work,
-            email: props.email,
+            mobile: props.methods.mobile,
+            work: props.methods.work,
+            email: props.methods.email,
             birthday: props.birthday,
             interactions: props.interactions,
             open: false,
         };
     }
 
-    handleToggle = () => {
-        if (this.state.open === true) { this.setState( {open: false}); }
-        else { this.setState({open: true}); }
-    };
+    handleToggle = () => this.state.open ? this.setState({ open: false }) : this.setState({ open: true });
+
+    handleFav = () => this.state.favorite ? this.setState({ favorite: false }) : this.setState({ favorite: true });
 
     handleChange = (event) => {
         const property = event.target.id;
         const val = event.target.value;
+
+        console.log('changing something on the page');
+        console.log(event);
+        console.log(event.target);
 
         this.setState({
             [property]: val,
@@ -72,8 +76,9 @@ class Contact extends Component {
         return (
                 <div className={"col-lg-4 col-md-12 mb-3"}>
                     <Card>
-                        <IconButton style={{"float": "right"}} aria-label="Add to favorites">
-                            <FavoriteIcon />
+                        <IconButton style={{"float": "right"}} aria-label="Toggle Favorite"
+                                    onClick={this.handleFav}>
+                            {(this.state.favorite ? <FavoriteIcon /> : <FavoriteBorder />)}
                         </IconButton>
                         <IconButton style={{"float": "right"}} aria-label="Edit Contact"
                                     onClick={this.handleToggle}>
@@ -125,12 +130,10 @@ class Contact extends Component {
                                 <Input id="email" value={this.state.email} onChange={this.handleChange} />
                             </FormControl>
 
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
-                            <Interaction className={classes.formControl} interactions={this.state.interactions} cb={this.handleChange} />
+                            {this.state.interactions.map((each, i) => {
+                                return <Interaction key={i} {...each} cb={this.handleChange.bind(this)}/>;
+                            })}
+
                         </DialogContent>
 
                         <DialogActions>
