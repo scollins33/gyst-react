@@ -38,12 +38,14 @@ router.get('/getUsers', (req, res) => {
 // POST a new event
 router.post('/addEvent', (req, res) => {
     console.log(`Got a request to add an event:`);
-    console.log(req.body);
-
+    let newEvent = req.body;
+    // newEvent.startTime = moment(req.body.startTime).format("LT");
+    // newEvent.endTime = moment(req.body.endTime).format("LT");
+    console.log(newEvent);
     db.Event
-        .create(req.body)
+        .create(newEvent)
         .then(() => {
-            console.log(`Created event for ${req.body.name}`);
+            console.log(`Created event for ${newEvent.name}`);
             res.status(200).send('Created');
         })
         .catch(err => res.json(err));
@@ -56,7 +58,7 @@ router.get('/getEvents', (req, res) => {
     db.Event
         .find({})
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
 });
 
 
@@ -67,7 +69,7 @@ router.get('/getEvents/:userId', (req, res) => {
         .find({_id: req.params.userId})
         .populate('events')
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
 });
 
 // GET events by user and class
@@ -77,15 +79,15 @@ router.get('/getEvents/byClass/:userId', (req, res) => {
         .find({_id: req.params.userId, class: classType})
         .populate('events')
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
 });
 
 // UPDATE an event
-router.get('/getEvents/:userId', (req, res) => {
-
-    db.User
+router.post('/updateEvent/:eventId', (req, res) => {
+    console.log(req.params.eventId);
+    db.Event
         .findOneAndUpdate(
-            {_id: req.param.userId},
+            {_id: req.params.eventId},
             {
                 $set: {
                     name: req.body.name,
@@ -96,14 +98,25 @@ router.get('/getEvents/:userId', (req, res) => {
                 }
             })
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
 });
 
 //DELETE an event
 router.post('/getEvents/remove/:userId', (req, res) => {
+
     db.User
         .findOneAndRemove({_id: req.params.userId})
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
+});
+
+//DELETE an event by querying the id
+router.post('/deleteEvent/:eventId?', (req, res) => {
+    console.log("Deleting event #: ");
+    console.log(req.params.eventId);
+    db.Event
+        .findOneAndRemove({_id: req.params.eventId})
+        .then(data => res.status(200).send(data))
+        .catch(err => res.status(422).json(err));
 });
 module.exports = router;

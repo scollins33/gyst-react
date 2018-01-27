@@ -7,24 +7,24 @@ const TimeSummary = props =>{
         <div className={"col-12 col-sm-6 my-3"}>
             <div style={{backgroundColor: "#fff", boxShadow: "0px 3px 5px rgba(100, 100, 100, 0.49)"}}>
                 <table className={"table"}>
-                    <theaad>
+                    <thead>
                         <tr>
                             <th scope={"col"}>Time Summary</th>
                             <th scope={"col"}>hours accumulated</th>
                         </tr>
-                    </theaad>
+                    </thead>
                     <tbody>
                     <tr>
-                        <td scope={"col"}>work</td>
-                        <td scope={"col"}>{props.work}</td>
+                        <td>work</td>
+                        <td>{props.work}</td>
                     </tr>
                     <tr>
-                        <td scope={"col"}>play</td>
-                        <td scope={"col"}>{props.playHours}</td>
+                        <td>play</td>
+                        <td>{props.playHours}</td>
                     </tr>
                     <tr>
-                        <td scope={"col"}>focus</td>
-                        <td scope={"col"}>{props.focusHours}</td>
+                        <td>focus</td>
+                        <td>{props.focusHours}</td>
                     </tr>
                     </tbody>
                 </table>
