@@ -23,7 +23,7 @@ class App extends Component {
         return (
             <Router>
                 <MuiThemeProvider theme={this.theme}>
-                    <Header mainpage={true} login={<LoginSpace loggedin={false}/>}/>
+                    <Header mainpage={true} />
                     <Switch>
                         <Route exact path="/time" component={Time}/>
                         <Route exact path="/money" component={Money}/>
