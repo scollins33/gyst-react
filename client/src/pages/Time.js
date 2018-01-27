@@ -14,11 +14,11 @@ class Time extends Component {
         }
     }
 
-//     componentDidMount(){
-// fetch("/api/getEvents",{method: "GET"})
-//     .then(res=> res.json())
-//     .then(data=> this.setState({workload: data}));
-//     }
+    componentDidMount(){
+fetch("/api/getEvents",{method: "GET"})
+    .then(res=> res.json())
+    .then(data=> this.setState({workload: data}));
+    }
 
     render() {
         return (

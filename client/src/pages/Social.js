@@ -10,14 +10,14 @@ class Social extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     fetch("/api/getUserSocial/5a6a7a67f7719e16e6f749cb",{method: "GET"})
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             console.log(data);
-    //             this.setState({contacts: data.contacts});
-    //         });
-    // }
+    componentDidMount() {
+        fetch("/api/getUserSocial/5a6a7a67f7719e16e6f749cb",{method: "GET"})
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                this.setState({contacts: data.contacts});
+            });
+    }
 
     render() {
         return (
