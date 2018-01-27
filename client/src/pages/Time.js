@@ -16,7 +16,7 @@ class Time extends Component {
             modalStatus: false,
             newName: null,
             newStart: null,
-            newNewEnd: null,
+            newEnd: null,
             newClass: null,
             newNotes: null,
             newRepeat: null
@@ -30,10 +30,34 @@ class Time extends Component {
             .catch(err=>console.log(err));
     }
 
-    handleAddEvent=(e, data)=>{
+    handleAddEvent=(e)=>{
+        if (!this.state.modalStatus){
+            return
+        }
         e.preventDefault();
-        fetch("/api/addEvent",{method: "POST", data: data})
-            .then(res=>res.json());
+        const newEvent = {
+            name: this.state.newName,
+            startTime: this.state.newStart,
+            endTime: this.state.newEnd,
+            class: this.state.newClass,
+            notes: this.state.newNotes,
+            repeat: this.state.newRepeat,
+        };
+
+        console.log(newEvent);
+
+        const myRequest = new Request("/api/addEvent", {
+                method: "POST",
+                headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newEvent)
+        });
+
+        fetch(myRequest)
+            .then(res=> console.log(res))
+            .catch(err=> console.log(err));
         console.log("event submitted")
     };
 

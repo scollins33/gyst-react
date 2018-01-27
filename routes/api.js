@@ -1,4 +1,5 @@
 const express = require('express');
+const moment =require('moment');
 
 // require models for the DB
 const db = require("../models");
@@ -38,12 +39,14 @@ router.get('/getUsers', (req, res) => {
 // POST a new event
 router.post('/addEvent', (req, res) => {
     console.log(`Got a request to add an event:`);
-    console.log(req.body);
-
+    let newEvent = req.body;
+    // newEvent.startTime = moment(req.body.startTime).format("LT");
+    // newEvent.endTime = moment(req.body.endTime).format("LT");
+    console.log(newEvent);
     db.Event
-        .create(req.body)
+        .create(newEvent)
         .then(() => {
-            console.log(`Created event for ${req.body.name}`);
+            console.log(`Created event for ${newEvent.name}`);
             res.status(200).send('Created');
         })
         .catch(err => res.json(err));

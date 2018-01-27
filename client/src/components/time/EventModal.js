@@ -48,6 +48,13 @@ const EventModal = props =>{
                 onChange={props.handleInputChange}
             />
             <br/>
+            <label>class:</label>
+            <input
+                type="text"
+                name="newClass"
+                onChange={props.handleInputChange}
+            />
+            <br/>
             <label>notes: </label>
             <textarea
                 type="text"
