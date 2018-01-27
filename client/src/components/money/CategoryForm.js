@@ -1,4 +1,7 @@
 import React from 'react';
+import Button from 'material-ui/Grid';
+
+
 
 
 class CategoryForm extends React.Component {
@@ -14,7 +17,7 @@ class CategoryForm extends React.Component {
         return (
             <form onSubmit={this.handleAnswer}>
                 <label>
-                    <input type="text" name={'input'+this.props.i} value={this.props['input'+this.props.i]} onChange={this.props.handleChange} />
+                    <input type="text" name={'input'+this.props.i}  onChange={this.props.handleChange} />
                 </label>
                 <input type="submit" value={this.props.className} onClick={this.props.submit}/>
             </form>
