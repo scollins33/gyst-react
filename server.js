@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const apiRoute = require('./routes/api');
 
 // set the port for the express server and mongoDB URI
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3001;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/gystDB";
 
 // create the app
@@ -13,7 +13,6 @@ const app = express();
 
 // middleware
 app.use(bodyParser.json());
-app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'client/public')));

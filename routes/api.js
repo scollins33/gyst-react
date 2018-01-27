@@ -1,5 +1,4 @@
 const express = require('express');
-const moment =require('moment');
 
 // require models for the DB
 const db = require("../models");
@@ -59,7 +58,7 @@ router.get('/getEvents', (req, res) => {
     db.Event
         .find({})
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
 });
 
 
@@ -70,7 +69,7 @@ router.get('/getEvents/:userId', (req, res) => {
         .find({_id: req.params.userId})
         .populate('events')
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
 });
 
 // GET events by user and class
@@ -80,15 +79,15 @@ router.get('/getEvents/byClass/:userId', (req, res) => {
         .find({_id: req.params.userId, class: classType})
         .populate('events')
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
 });
 
 // UPDATE an event
-router.get('/getEvents/:userId', (req, res) => {
-
-    db.User
+router.post('/updateEvent/:eventId', (req, res) => {
+    console.log(req.params.eventId);
+    db.Event
         .findOneAndUpdate(
-            {_id: req.param.userId},
+            {_id: req.params.eventId},
             {
                 $set: {
                     name: req.body.name,
@@ -99,14 +98,25 @@ router.get('/getEvents/:userId', (req, res) => {
                 }
             })
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
 });
 
 //DELETE an event
 router.post('/getEvents/remove/:userId', (req, res) => {
+
     db.User
         .findOneAndRemove({_id: req.params.userId})
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(422).json(err));
+});
+
+//DELETE an event by querying the id
+router.post('/deleteEvent/:eventId?', (req, res) => {
+    console.log("Deleting event #: ");
+    console.log(req.params.eventId);
+    db.Event
+        .findOneAndRemove({_id: req.params.eventId})
+        .then(data => res.status(200).send(data))
+        .catch(err => res.status(422).json(err));
 });
 module.exports = router;

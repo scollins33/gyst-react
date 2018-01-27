@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import DayView from "../components/time/DayView";
 import Event from '../components/time/Event'
 import TimeSummary from "../components/time/TimeSummary";
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
-import EventModal from "../components/time/EventModal";
+import NewEventModal from "../components/time/NewEventModal";
+import UpdateEventModal from "../components/time/UpdateEventModal";
 const moment = require('moment');
 
 class Time extends Component {
@@ -13,25 +13,37 @@ class Time extends Component {
         this.state={
             workload: [],
             view: "daily",
-            modalStatus: false,
-            newName: null,
-            newStart: null,
-            newEnd: null,
-            newClass: null,
-            newNotes: null,
-            newRepeat: null
+            newEventModal: false,
+            updateEventModal: false,
+            newName: "",
+            newStart: "",
+            newEnd: "",
+            newClass: "",
+            newNotes: "",
+            newRepeat: "",
+            updateName: "",
+            updateStart: "",
+            updateEnd: "",
+            updateClass: "",
+            updateNotes: "",
+            updateRepeat: "",
+            updateModalId: ""
         }
     }
 
-    componentDidMount(){
+    loadEvents =()=>{
         fetch("/api/getEvents",{method: "GET"})
             .then(res=> res.json())
             .then(data=> this.setState({workload: data}))
             .catch(err=>console.log(err));
+    };
+
+    componentDidMount(){
+       this.loadEvents()
     }
 
     handleAddEvent=(e)=>{
-        if (!this.state.modalStatus){
+        if (!this.state.newEventModal){
             return
         }
         e.preventDefault();
@@ -46,7 +58,7 @@ class Time extends Component {
 
         console.log(newEvent);
 
-        const myRequest = new Request("/api/addEvent", {
+        const postEvent = new Request("/api/addEvent", {
                 method: "POST",
                 headers: {
                 Accept: 'application/json',
@@ -55,10 +67,63 @@ class Time extends Component {
             body: JSON.stringify(newEvent)
         });
 
-        fetch(myRequest)
-            .then(res=> console.log(res))
+        fetch(postEvent)
+            .then(res=> res.json())
             .catch(err=> console.log(err));
-        console.log("event submitted")
+        console.log("event submitted");
+        this.loadEvents();
+    };
+
+
+    handleUpdateEvent=(e)=>{
+        if (!this.state.updateEventModal){
+            return
+        }
+        e.preventDefault();
+
+        let updatedEvent = {
+            name: this.state.updateName,
+            startTime: this.state.updateStart,
+            endTime: this.state.updateEnd,
+            class: this.state.updateClass,
+            notes: this.state.updateNotes,
+            repeat: this.state.updateRepeat
+        };
+
+        console.log('????????????///?????????????')
+        console.log(this.state);
+        console.log(updatedEvent);
+        console.log('????????????///?????????????')
+
+        const query = new Request("/api/updateEvent/" + this.state.updateModalId, {
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedEvent)
+        });
+
+        fetch(query)
+            .then(res=> res.json())
+            .catch(err=> console.log(err));
+        console.log("event submitted");
+        this.loadEvents();
+    };
+
+    handleDelete=(e, eventId)=>{
+        e.preventDefault();
+        const deleteRequest = new Request("api/deleteEvent/" + eventId,{
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+        fetch(deleteRequest)
+            .then(res=> res.json())
+            .catch(err=>console.log(err));
+        this.loadEvents();
     };
 
     handleInputChange=(e)=>{
@@ -69,9 +134,16 @@ class Time extends Component {
         console.log(this.state)
     };
 
+
     onAddClick=(e)=>{
         e.preventDefault();
-        this.setState({modalStatus: !this.state.modalStatus})
+        this.setState({newEventModal: !this.state.newEventModal})
+    };
+
+    onUpdateClick=(e, eventId)=>{
+        e.preventDefault();
+        this.setState({updateModalId: eventId});
+        this.setState({updateEventModal: !this.state.updateEventModal})
     };
 
     render() {
@@ -85,15 +157,21 @@ class Time extends Component {
                 <div className={"container"}>
                     <div className={"row"}>
                         <div className={"col-12 col-sm-6 my-3"}>
-                            {this.state.workload.map((task,index)=><Event key={index} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} notes={task.notes}/>)}
+                            {this.state.workload.map((task, i)=><Event key={i} id={task._id} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} notes={task.notes} update={this.onUpdateClick} delete={this.handleDelete}/>)}
                         </div>
                         <TimeSummary/>
-                        <DayView/>
-                        <EventModal
-                            open={this.state.modalStatus}
+                        <NewEventModal
+                            open={this.state.newEventModal}
                             onClose={(e)=>this.onAddClick(e)}
                             onClick={(e)=> this.handleAddEvent(e)}
                             handleInputChange={this.handleInputChange}
+                        />
+                        <UpdateEventModal
+                            open={this.state.updateEventModal}
+                            onClose={(e)=>this.onUpdateClick(e)}
+                            onClick={(e)=> this.handleUpdateEvent(e)}
+                            handleInputChange={this.handleInputChange}
+                            id={this.state.updateModalId}
                         />
                     </div>
                 </div>

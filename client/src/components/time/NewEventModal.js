@@ -1,6 +1,5 @@
 import React from 'react'
 import Modal from 'material-ui/Modal'
-const moment = require('moment');
 
 const EventModal = props =>{
     return(
