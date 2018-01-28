@@ -4,7 +4,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const apiRoute = require('./routes/api');
 const cookieParser = require('cookie-parser');
-const exphbs = require('express-handlebars');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -21,11 +20,11 @@ const app = express();
 const routes = require('./routes/index');
 const users = require('./routes/users');
 
-//View Engine
-
-app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({defaultLayout: 'layouts'}));
-app.set('view engine', 'handlebars');
+// //View Engine
+//
+// app.set('views', path.join(__dirname, 'views'));
+// app.engine('handlebars', exphbs({defaultLayout: 'layouts'}));
+// app.set('view engine', 'handlebars');
 
 
 // middleware
