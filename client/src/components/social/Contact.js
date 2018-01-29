@@ -33,11 +33,12 @@ class Contact extends Component {
     constructor(props) {
         super(props);
 
+        this.id = props.id;
+
         // State matches the JSON from the MongoDB Schema
         // Methods is nested object with home/work/mobile/email
         // Interactions is an array, populated from Interactions schema
         this.state = {
-            id: props._id,
             name: props.name,
             favorite: props.favorite,
             relation: props.relation,
@@ -54,9 +55,18 @@ class Contact extends Component {
        Custom functions to update state
     ------------------------------------ */
 
-    handleToggle = () => this.state.open ? this.setState({ open: false }) : this.setState({ open: true });
+    handleToggle = () => this.state.open ?
+        this.setState({ open: false }) : this.setState({ open: true });
 
-    handleFav = () => this.state.favorite ? this.setState({ favorite: false }) : this.setState({ favorite: true });
+    handleFav = () => {
+        if (this.state.favorite) {
+            this.setState({ favorite: false });
+            this.updateFavorite(false);
+        } else {
+            this.setState({ favorite: true });
+            this.updateFavorite(true);
+        }
+    };
 
     handleChange = (event) => {
         const property = event.target.id;
@@ -82,14 +92,41 @@ class Contact extends Component {
         let interactions = this.state.interactions;
 
         const newInteract = {
-            _id: "",
+            _id: null,
             contact: "",
             date: 641520000,
             method: "",
             note: "Enter notes...",
         };
 
+        // add the new Interaction to the head of the array
         interactions.unshift(newInteract);
+
+        // update the arrLoc attributes
+        interactions.map((each, i) => {
+            return each.arrLoc = i;
+        });
+
+        this.setState({ interactions });
+    };
+
+
+    // pArrLoc is inherently added from the .bind(this, each.arrLoc) in render()
+    deleteInteract = (pArrLoc) => {
+        let interactions = this.state.interactions;
+
+        if (interactions[pArrLoc]._id != null) {
+            this.removeInteract(interactions[pArrLoc]._id, interactions[pArrLoc].contact);
+        }
+        // remove the selected Interaction from the array
+        interactions.splice(pArrLoc, 1);
+
+        // update the arrLoc attributes
+        interactions.map((each, i) => {
+            return each.arrLoc = i;
+        });
+
+        console.log(interactions);
 
         this.setState({ interactions });
     };
@@ -98,48 +135,38 @@ class Contact extends Component {
             API calls to CRUD DB
     ------------------------------------ */
 
-    // Save changes Contact based on State
-    saveContact = (event) => {
-        fetch("/api/getUserSocial/5a6a7a67f7719e16e6f749cb",
+    // Update Favorite
+    updateFavorite (pStatus) {
+        const data = {
+            contact: this.id,
+            favorite: pStatus,
+        };
+
+        fetch("/api/setFavorite",
             {
                 method: "POST",
-                body: {}
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
             })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                this.setState({contacts: data.contacts});
+            .then(res => {
+                console.log(res);
             });
     };
 
+    removeInteract (pID, pContact) {
+        const data ={
+            interaction: pID,
+            contact: pContact
+        };
 
-    // Delete Contact
-    deleteContact = (event) => {
-        fetch("/api/getUserSocial/5a6a7a67f7719e16e6f749cb", {method: "GET"})
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                this.setState({contacts: data.contacts});
-            });
-    };
-
-    // Delete Interaction
-    deleteInteract = (event) => {
-        fetch("/api/getUserSocial/5a6a7a67f7719e16e6f749cb", {method: "GET"})
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                this.setState({contacts: data.contacts});
-            });
-    };
-
-    // Update Favorite
-    updateFavorite = (event) => {
-        fetch("/api/getUserSocial/5a6a7a67f7719e16e6f749cb", {method: "GET"})
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                this.setState({contacts: data.contacts});
+        fetch("/api/deleteInteraction",
+            {
+                method: "DELETE",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
             });
     };
 
@@ -149,14 +176,6 @@ class Contact extends Component {
     ------------------------------------ */
 
     componentWillMount() {
-        // add Array Location to each Interaction
-        // need to this so it can be edited in the State
-        this.state.interactions.map((each, i) => {
-            return each.arrLoc = i;
-        });
-    }
-
-    componentWillUpdate() {
         // add Array Location to each Interaction
         // need to this so it can be edited in the State
         this.state.interactions.map((each, i) => {
@@ -240,7 +259,8 @@ class Contact extends Component {
 
                             {this.state.interactions.map((each, i) => {
                                 return <Interaction key={i} {...each}
-                                                    cb={this.handleInteract.bind(this)}/>;
+                                                    cb={this.handleInteract.bind(this)}
+                                                    cb2={this.deleteInteract.bind(this, each.arrLoc)}/>;
                             })}
 
                         </DialogContent>

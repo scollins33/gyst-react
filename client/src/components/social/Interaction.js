@@ -13,7 +13,7 @@ const Interaction = props => {
                    onChange={props.cb}
                    multiline={true} rows={1} rowsMax={10}/>
 
-            <IconButton raised color="secondary">
+            <IconButton raised color="secondary" onClick={props.cb2}>
                 <DeleteIcon />
             </IconButton>
 

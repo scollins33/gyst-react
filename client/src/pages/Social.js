@@ -64,6 +64,7 @@ class Social extends Component {
                     <div className="row mt-3">
                         {this.state.contacts.map((each, i) => {
                             return <Contact key={i}
+                                            id={each._id}
                                             name={each.name}
                                             favorite={each.favorite}
                                             relation={each.relation}

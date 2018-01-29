@@ -181,6 +181,37 @@ router.post('/updateContact', (req, res) => {
     console.log('updating contact');
 });
 
-//
+// POST to set Favorite status in DB
+router.post('/setFavorite', (req, res) => {
+    console.log('Trying to set Favorite status');
+
+    db.Contact
+        .findOneAndUpdate(
+            {_id: req.body.contact},
+            {$set: { favorite: req.body.favorite }})
+        .then(() => {
+            res.status(200).send('Updated Favorite status');
+        })
+        .catch(err => res.json(err));
+});
+
+// DELETE to remove Interaction from DB
+router.delete('/deleteInteraction', (req, res) => {
+    console.log('Trying to delete Interaction');
+
+    db.Contact
+        .update(
+            {_id: req.body.contact},
+            {$pull: { "interactions": {_id: req.body.interaction}}})
+        .then(() => {
+            db.Interaction
+                .remove({_id: req.body.interaction})
+                .then(() => {
+                    res.status(200).send('Removed Interaction');
+                })
+                .catch(err => res.json(err));
+        })
+        .catch(err => res.json(err));
+});
 
 module.exports = router;
