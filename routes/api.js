@@ -189,4 +189,53 @@ router.get('/getUserSocial/:userId', (req, res) => {
         .catch(err => res.json(err));
 });
 
+
+/* ------------------------------------
+            FINANCE APIs
+------------------------------------ */
+
+
+// POST new finances
+router.post('/addFinances', (req, res) => {
+    console.log(`Got a request to add new finances:`);
+    let newFinances = req.body;
+    console.log(newFinances);
+    db.Finances
+        .create(newFinances)
+        .then(() => {
+            console.log(`Created event for ${newFinances.name}`);
+            res.status(200).send('Created');
+        })
+        .catch(err => res.json(err));
+});
+
+// GET finances by user
+router.get('/getFinances/:userId', (req, res) => {
+
+    db.User
+        .find({_id: req.params.userId})
+        .populate('finances')
+        .then((data) => res.status(200).send(data))
+        .catch(err => res.status(422).json(err));
+});
+
+
+// UPDATE finances
+router.post('/updateFinances/:financesId', (req, res) => {
+    console.log(req.params.financesId);
+    db.Event
+        .findOneAndUpdate(
+            {_id: req.params.eventId},
+            {
+                $set: {
+                    name: req.body.rent,
+                    utilities: req.body.utilities,
+                    transportation: req.body.transportation,
+
+                }
+            })
+        .then((data) => res.status(200).send(data))
+        .catch(err => res.status(422).json(err));
+});
+
 module.exports = router;
