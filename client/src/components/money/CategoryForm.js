@@ -17,7 +17,7 @@ class CategoryForm extends React.Component {
         return (
             <FormControl onSubmit={this.handleAnswer}>
                 <label>
-                    <input type="text" name={'input'+this.props.i}  onChange={this.props.handleChange} />
+                    <Input type="text" name={'input'+this.props.i}  onChange={this.props.handleChange} />
                 </label>
                 <input type="submit" value={this.props.className} onClick={this.props.submit}/>
             </FormControl>

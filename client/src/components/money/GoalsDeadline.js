@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
+import Input, { InputLabel } from 'material-ui/Input';
+
 
 class GoalsDeadline extends React.Component {
     constructor(props) {
@@ -56,7 +58,7 @@ class GoalsDeadline extends React.Component {
 
                 <label>
                     Goal Amount:
-                    <input
+                    <Input
                         name="Goal"
                         type="monetary"
                         value={this.state.Goal}
@@ -65,7 +67,7 @@ class GoalsDeadline extends React.Component {
                 <br />
                 <label>
                     Number of Weeks:
-                    <input
+                    <Input
                         name="numberOfWeeks"
                         type="number"
                         value={this.state.numberOfWeeks}
