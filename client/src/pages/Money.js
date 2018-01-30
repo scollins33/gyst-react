@@ -73,8 +73,8 @@ class Money extends React.Component {
 
         return (
             /*<Grid container className="budget" justify="flex-end">*/
-                <Grid item lg={8}>
-                <Grid container className="graph" align-items="flex-start" spacing={Number(spacing)}>
+                <Grid item lg={8} style={{backgroundColor: "#C8E1B5"}}>
+                <Grid container className="graph" align-items="flex-start" spacing={Number(spacing)} style={{backgroundColor: "#C8E1B5"}}>
                     <Graph bills={this.state} {...this.state} rent={this.state.rent}/>
                 </Grid>
                     <Grid container className="bills" align-items="flex-start" spacing={Number(spacing)}>
