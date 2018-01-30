@@ -135,9 +135,9 @@ router.post('/addContact', (req, res) => {
                 .then(() => {
                     res.status(200).send('Created and updated User');
                 })
-                .catch(err => res.json(err));
+                .catch(err => res.status(500).json(err));
         })
-        .catch(err => res.json(err));
+        .catch(err => res.status(500).json(err));
 });
 
 // Create new Interaction for Contact
@@ -156,9 +156,9 @@ router.post('/addInteraction', (req, res) => {
                 .then(() => {
                     res.status(200).send('Created Interaction and updated Contact');
                 })
-                .catch(err => res.json(err));
+                .catch(err => res.status(500).json(err));
         })
-        .catch(err => res.json(err));
+        .catch(err => res.status(500).json(err));
 });
 
 // GET User's Social info
@@ -173,7 +173,7 @@ router.get('/getUserSocial/:userId', (req, res) => {
             populate: { path: 'interactions'}
         })
         .then((data) => res.status(200).send(data))
-        .catch(err => res.json(err));
+        .catch(err => res.status(500).json(err));
 });
 
 // POST updated Contact to User
@@ -192,7 +192,7 @@ router.post('/setFavorite', (req, res) => {
         .then(() => {
             res.status(200).send('Updated Favorite status');
         })
-        .catch(err => res.json(err));
+        .catch(err => res.status(500).json(err));
 });
 
 // DELETE to remove Interaction from DB
@@ -202,16 +202,44 @@ router.delete('/deleteInteraction', (req, res) => {
     db.Contact
         .update(
             {_id: req.body.contact},
-            {$pull: { "interactions": {_id: req.body.interaction}}})
+            {$pull:
+                    { "interactions": {_id: req.body.interaction}}
+            })
         .then(() => {
             db.Interaction
                 .remove({_id: req.body.interaction})
                 .then(() => {
                     res.status(200).send('Removed Interaction');
                 })
-                .catch(err => res.json(err));
+                .catch(err => res.status(500).json(err));
         })
-        .catch(err => res.json(err));
+        .catch(err => res.status(500).json(err));
+});
+
+// DELETE to remove Contact from User in DB
+// Need to delete ref in User, Contact, and Interaction Refs
+router.delete('/deleteContact', (req, res) => {
+    console.log('Trying to delete Contact ref in User');
+
+    db.User
+        .update(
+            {_id: req.body.user},
+            {$pull:
+                    { "contacts": {_id: req.body.contact}}
+            })
+        .then(() => {
+            // remove all ref'd interactions
+
+            // remove Contact entry in DB
+            console.log('Trying to remove Contact entry');
+            db.Contact
+                .remove({_id: req.body.contact})
+                .then(() => {
+                    res.status(200).send('Removed Contact');
+                })
+                .catch(err => res.status(500).json(err));
+        })
+        .catch(err => res.status(500).json(err));
 });
 
 module.exports = router;

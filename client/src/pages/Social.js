@@ -9,6 +9,7 @@ class Social extends Component {
         super(props);
 
         this.state = {
+            user: "5a6a7a67f7719e16e6f749cb",
             contacts: [],
         }
     }
@@ -21,7 +22,8 @@ class Social extends Component {
         let contacts = this.state.contacts;
 
         const newContact = {
-            _id: "",
+            _id: null,
+            user: this.state.user,
             name: "New Contact",
             favorite: "",
             relation: "",
@@ -39,12 +41,46 @@ class Social extends Component {
         this.setState({ contacts });
     };
 
+
+    // remove and delete Contact from User
+    deleteContact = (pArrLoc) => {
+        let contacts = this.state.contacts;
+
+        // if it has an id then it is in the DB
+        if (contacts[pArrLoc]._id != null) {
+            this.removeContact(contacts[pArrLoc]._id);
+        }
+
+        // remove the selected Interaction from the array
+        contacts.splice(pArrLoc, 1);
+
+        this.setState({ contacts });
+    };
+
+    // also delete all Interactions in the DB for that Contact
+    removeContact (pID) {
+        const data ={
+            contact: pID,
+            user: this.state.user,
+        };
+
+        fetch("/api/deleteContact",
+            {
+                method: "DELETE",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
+            });
+    };
+
     /* ------------------------------------
                 React Lifecycle
     ------------------------------------ */
 
     componentDidMount() {
-        fetch("/api/getUserSocial/5a6a7a67f7719e16e6f749cb", {method: "GET"})
+        fetch(`/api/getUserSocial/${this.state.user}`, {method: "GET"})
             .then(res => res.json())
             .then(data => {
                 this.setState({contacts: data.contacts});
@@ -52,6 +88,8 @@ class Social extends Component {
     }
 
     render() {
+        // console.log(this.state);
+        console.log(this.state.contacts);
         return (
             <div className={"container mt-3"}>
                 <div className={'row'}>
@@ -71,7 +109,9 @@ class Social extends Component {
                                             birthday={each.birthday}
                                             methods={each.methods}
                                             interactions={each.interactions}
-                                            open={false}/>;
+                                            open={false}
+                                            cb={this.deleteContact.bind(this, i)}
+                            />;
                         })}
                     </div>
 
