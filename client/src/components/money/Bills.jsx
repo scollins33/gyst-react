@@ -15,8 +15,8 @@ export default class Bills extends React.Component {
                                              handleChange={this.props.handleChange}
                                              updateCategory={this.props.updateCategory}
                                              key={i} className={category}
-                                                setValue={this.props.setValue}
-                                                i={i}
+                                             setValue={this.props.setValue}
+                                             i={i}
                                              {...this.props}/>
                     })}
                 </div>
