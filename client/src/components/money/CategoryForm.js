@@ -16,10 +16,10 @@ class CategoryForm extends React.Component {
         console.log('props', this.props);
         return (
             <FormControl onSubmit={this.handleAnswer}>
-                <label>
+
                     <Input type="text" name={'input'+this.props.i}  onChange={this.props.handleChange} />
-                </label>
-                <input type="submit" value={this.props.className} onClick={this.props.submit}/>
+
+               <Input type="submit" value={this.props.className} onClick={this.props.submit}/>
             </FormControl>
         );
     }

@@ -24,9 +24,9 @@ class Graph extends React.Component{
     render() {
         const data = [
 
-            {text: 'rent', value: this.props.input0},
-            {text: 'utilities', value: this.props.input1},
-            {text: 'gas', value: this.props.input2},
+            {text: 'Rent', value: this.props.input0},
+            {text: 'Utilities', value: this.props.input1},
+            {text: 'Transportation', value: this.props.input2},
 
         ];
 
