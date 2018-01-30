@@ -11,9 +11,10 @@ import IconButton from 'material-ui/IconButton';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import FavoriteBorder from 'material-ui-icons/FavoriteBorder';
 import ModeEdit from 'material-ui-icons/ModeEdit';
-
-// custom Component
 import Interaction from "./Interaction";
+
+// require moment.js
+// const moment = require('moment');
 
 const styles = theme => ({
     container: {
@@ -32,11 +33,12 @@ class Contact extends Component {
     constructor(props) {
         super(props);
 
+        this.id = props.id;
+
         // State matches the JSON from the MongoDB Schema
         // Methods is nested object with home/work/mobile/email
         // Interactions is an array, populated from Interactions schema
         this.state = {
-            id: props._id,
             name: props.name,
             favorite: props.favorite,
             relation: props.relation,
@@ -49,17 +51,26 @@ class Contact extends Component {
         };
     }
 
-    handleToggle = () => this.state.open ? this.setState({ open: false }) : this.setState({ open: true });
+    /* ------------------------------------
+       Custom functions to update state
+    ------------------------------------ */
 
-    handleFav = () => this.state.favorite ? this.setState({ favorite: false }) : this.setState({ favorite: true });
+    handleToggle = () => this.state.open ?
+        this.setState({ open: false }) : this.setState({ open: true });
+
+    handleFav = () => {
+        if (this.state.favorite) {
+            this.setState({ favorite: false });
+            this.updateFavorite(false);
+        } else {
+            this.setState({ favorite: true });
+            this.updateFavorite(true);
+        }
+    };
 
     handleChange = (event) => {
         const property = event.target.id;
         const val = event.target.value;
-
-        console.log('changing something on the page');
-        console.log(event);
-        console.log(event.target);
 
         this.setState({
             [property]: val,
@@ -69,6 +80,92 @@ class Contact extends Component {
     handlePick = (event) => {
         this.setState({ relation: event.target.value });
     };
+
+    handleInteract = (pArrLoc, event) => {
+        let interactions = this.state.interactions;
+
+        interactions[pArrLoc].note = event.target.value;
+
+        this.setState({ interactions });
+    };
+
+    createInteract = () => {
+        let interactions = this.state.interactions;
+
+        const newInteract = {
+            _id: null,
+            contact: null,
+            date: Date.now(),
+            method: "",
+            note: "Enter notes...",
+        };
+
+        // add the new Interaction to the head of the array
+        interactions.unshift(newInteract);
+
+        this.setState({ interactions });
+    };
+
+    // remove and delete Interaction from Contact
+    // pArrLoc is inherently added from the .bind(this, each.arrLoc) in render()
+    deleteInteract = (pArrLoc) => {
+        let interactions = this.state.interactions;
+
+        // if it has an id then it is in the DB
+        if (interactions[pArrLoc]._id != null) {
+            this.removeInteract(interactions[pArrLoc]._id);
+        }
+        // remove the selected Interaction from the array
+        interactions.splice(pArrLoc, 1);
+
+        this.setState({ interactions });
+    };
+
+
+    /* ------------------------------------
+            API calls to CRUD DB
+    ------------------------------------ */
+
+    // Update Favorite
+    updateFavorite (pStatus) {
+        const data = {
+            contact: this.id,
+            favorite: pStatus,
+        };
+
+        fetch("/api/setFavorite",
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
+            });
+    };
+
+    // remove and delete Interaction from Contact
+    removeInteract (pID) {
+        const data ={
+            interaction: pID,
+            contact: this.id,
+        };
+
+        fetch("/api/deleteInteraction",
+            {
+                method: "DELETE",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
+            });
+    };
+
+
+    /* ------------------------------------
+                React Lifecycle
+    ------------------------------------ */
 
     render() {
         const { classes } = this.props;
@@ -93,54 +190,74 @@ class Contact extends Component {
                     </Card>
 
                     <Dialog open={this.state.open}>
+
                         <DialogTitle>Edit Contact</DialogTitle>
                         <DialogContent className={classes.container}>
 
                             <FormControl className={classes.formControl}>
                                 <InputLabel>Name</InputLabel>
-                                <Input id="name" value={this.state.name} onChange={this.handleChange} />
+                                <Input id="name" value={this.state.name}
+                                       onChange={this.handleChange} />
                             </FormControl>
 
                             <FormControl className={classes.formControl}>
                                 <InputLabel>Birthday</InputLabel>
-                                <Input id="birthday" value={this.state.birthday} onChange={this.handleChange} type="date" />
+                                <Input id="birthday" value={this.state.birthday}
+                                       onChange={this.handleChange} type="date" />
                             </FormControl>
 
                             <div className={"m-2"}>
-                                <FormControlLabel value={"Family"} label={"Family"} control={<Radio />}
-                                       onChange={this.handlePick} checked={this.state.relation === 'Family'}/>
-                                <FormControlLabel value={"Friend"} label={"Friend"} control={<Radio />}
-                                       onChange={this.handlePick} checked={this.state.relation === 'Friend'}/>
-                                <FormControlLabel value={"Professional"} label={"Professional"} control={<Radio />}
-                                       onChange={this.handlePick} checked={this.state.relation === 'Professional'}/>
-                                <FormControlLabel value={"Acquaintance"} label={"Acquaintance"} control={<Radio />}
-                                       onChange={this.handlePick} checked={this.state.relation === 'Acquaintance'}/>
+                                <FormControlLabel value={"Family"} label={"Family"}
+                                                  control={<Radio />}
+                                                  onChange={this.handlePick}
+                                                  checked={this.state.relation === 'Family'}/>
+                                <FormControlLabel value={"Friend"} label={"Friend"}
+                                                  control={<Radio />}
+                                                  onChange={this.handlePick}
+                                                  checked={this.state.relation === 'Friend'}/>
+                                <FormControlLabel value={"Professional"} label={"Professional"}
+                                                  control={<Radio />}
+                                                  onChange={this.handlePick}
+                                                  checked={this.state.relation === 'Professional'}/>
+                                <FormControlLabel value={"Acquaintance"} label={"Acquaintance"}
+                                                  control={<Radio />}
+                                                  onChange={this.handlePick}
+                                                  checked={this.state.relation === 'Acquaintance'}/>
                             </div>
 
                             <FormControl className={classes.formControl}>
                                 <InputLabel>Mobile</InputLabel>
-                                <Input id="mobile" value={this.state.mobile} onChange={this.handleChange} />
+                                <Input id="mobile" value={this.state.mobile}
+                                       onChange={this.handleChange} />
                             </FormControl>
                             <FormControl className={classes.formControl}>
                                 <InputLabel>Work</InputLabel>
-                                <Input id="work" value={this.state.work} onChange={this.handleChange} />
+                                <Input id="work" value={this.state.work}
+                                       onChange={this.handleChange} />
                             </FormControl>
                             <FormControl className={classes.formControl}>
                                 <InputLabel>Email</InputLabel>
-                                <Input id="email" value={this.state.email} onChange={this.handleChange} />
+                                <Input id="email" value={this.state.email}
+                                       onChange={this.handleChange} />
                             </FormControl>
 
                             {this.state.interactions.map((each, i) => {
-                                return <Interaction key={i} {...each} cb={this.handleChange.bind(this)}/>;
+                                return <Interaction key={i} {...each}
+                                                    cb={this.handleInteract.bind(this, i)}
+                                                    cb2={this.deleteInteract.bind(this, i)}/>;
                             })}
 
                         </DialogContent>
 
                         <DialogActions>
-                            <Button raised onClick={this.handleToggle} color="default">New Interaction</Button>
-                            <Button raised onClick={this.handleToggle} color="default">Close</Button>
-                            <Button raised onClick={this.handleToggle} color="primary">Save</Button>
-                            <Button raised onClick={this.handleToggle} color="secondary">Delete</Button>
+                            <Button raised onClick={this.createInteract}
+                                    color="default">New Interaction</Button>
+                            <Button raised onClick={this.handleToggle}
+                                    color="default">Close</Button>
+                            <Button raised onClick={this.handleToggle}
+                                    color="primary">Save</Button>
+                            <Button raised onClick={this.props.cb}
+                                    color="secondary">Delete</Button>
                         </DialogActions>
                     </Dialog>
                 </div>
