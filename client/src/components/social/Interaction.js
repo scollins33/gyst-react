@@ -9,8 +9,7 @@ const Interaction = props => {
         <FormControl fullWidth>
 
             <InputLabel>Interaction</InputLabel>
-            <Input id={props._id} name={String(props.arrLoc)} value={props.note}
-                   onChange={props.cb}
+            <Input id={props._id} value={props.note} onChange={props.cb}
                    multiline={true} rows={1} rowsMax={10}/>
 
             <IconButton raised color="secondary" onClick={props.cb2}>

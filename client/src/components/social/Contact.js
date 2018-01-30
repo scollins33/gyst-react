@@ -81,9 +81,10 @@ class Contact extends Component {
         this.setState({ relation: event.target.value });
     };
 
-    handleInteract = (event) => {
+    handleInteract = (pArrLoc, event) => {
         let interactions = this.state.interactions;
-        interactions[parseInt(event.target.name, 10)].note = event.target.value;
+
+        interactions[pArrLoc].note = event.target.value;
 
         this.setState({ interactions });
     };
@@ -93,8 +94,8 @@ class Contact extends Component {
 
         const newInteract = {
             _id: null,
-            contact: "",
-            date: 641520000,
+            contact: null,
+            date: Date.now(),
             method: "",
             note: "Enter notes...",
         };
@@ -102,34 +103,24 @@ class Contact extends Component {
         // add the new Interaction to the head of the array
         interactions.unshift(newInteract);
 
-        // update the arrLoc attributes
-        interactions.map((each, i) => {
-            return each.arrLoc = i;
-        });
-
         this.setState({ interactions });
     };
 
-
+    // remove and delete Interaction from Contact
     // pArrLoc is inherently added from the .bind(this, each.arrLoc) in render()
     deleteInteract = (pArrLoc) => {
         let interactions = this.state.interactions;
 
+        // if it has an id then it is in the DB
         if (interactions[pArrLoc]._id != null) {
-            this.removeInteract(interactions[pArrLoc]._id, interactions[pArrLoc].contact);
+            this.removeInteract(interactions[pArrLoc]._id);
         }
         // remove the selected Interaction from the array
         interactions.splice(pArrLoc, 1);
 
-        // update the arrLoc attributes
-        interactions.map((each, i) => {
-            return each.arrLoc = i;
-        });
-
-        console.log(interactions);
-
         this.setState({ interactions });
     };
+
 
     /* ------------------------------------
             API calls to CRUD DB
@@ -153,10 +144,11 @@ class Contact extends Component {
             });
     };
 
-    removeInteract (pID, pContact) {
+    // remove and delete Interaction from Contact
+    removeInteract (pID) {
         const data ={
             interaction: pID,
-            contact: pContact
+            contact: this.id,
         };
 
         fetch("/api/deleteInteraction",
@@ -174,14 +166,6 @@ class Contact extends Component {
     /* ------------------------------------
                 React Lifecycle
     ------------------------------------ */
-
-    componentWillMount() {
-        // add Array Location to each Interaction
-        // need to this so it can be edited in the State
-        this.state.interactions.map((each, i) => {
-            return each.arrLoc = i;
-        });
-    }
 
     render() {
         const { classes } = this.props;
@@ -259,8 +243,8 @@ class Contact extends Component {
 
                             {this.state.interactions.map((each, i) => {
                                 return <Interaction key={i} {...each}
-                                                    cb={this.handleInteract.bind(this)}
-                                                    cb2={this.deleteInteract.bind(this, each.arrLoc)}/>;
+                                                    cb={this.handleInteract.bind(this, i)}
+                                                    cb2={this.deleteInteract.bind(this, i)}/>;
                             })}
 
                         </DialogContent>
@@ -272,7 +256,7 @@ class Contact extends Component {
                                     color="default">Close</Button>
                             <Button raised onClick={this.handleToggle}
                                     color="primary">Save</Button>
-                            <Button raised onClick={this.handleToggle}
+                            <Button raised onClick={this.props.cb}
                                     color="secondary">Delete</Button>
                         </DialogActions>
                     </Dialog>
