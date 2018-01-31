@@ -22,6 +22,7 @@ class Graph extends React.Component{
     };
 
     render() {
+
         const data = [
 
             {text: 'Rent', value: this.props.input0},

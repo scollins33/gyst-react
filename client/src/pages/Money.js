@@ -70,9 +70,9 @@ class Money extends React.Component {
     render() {
         const { classes } = this.props;
         const { spacing } = this.state;
+        const status = "Let's Manage Your Finances!";
 
         return (
-            /*<Grid container className="budget" justify="flex-end">*/
                 <Grid item lg={8} style={{backgroundColor: "#C8E1B5"}}>
                 <Grid container className="graph" align-items="flex-start" spacing={Number(spacing)} style={{backgroundColor: "#C8E1B5"}}>
                     <Graph bills={this.state} {...this.state} rent={this.state.rent}/>
@@ -87,7 +87,6 @@ class Money extends React.Component {
                     <GoalsDeadline submit={this.submit} />
                 </Grid>
             </Grid>
-            /*</Grid>*/
         );
     }
 }

@@ -3,7 +3,6 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormControlLabel } from 'material-ui/Form';
 
 
-
 class CategoryForm extends React.Component {
     constructor(props) {
         super(props);
@@ -19,10 +18,13 @@ class CategoryForm extends React.Component {
 
                     <Input type="text" name={'input'+this.props.i}  onChange={this.props.handleChange} />
 
-               <Input type="submit" value={this.props.className} onClick={this.props.submit}/>
+                <label>{this.props.className}</label>
+
             </FormControl>
         );
     }
 }
 
 export default CategoryForm;
+
+// *<Input type="submit" value={this.props.className} onClick={this.props.submit}/>*
