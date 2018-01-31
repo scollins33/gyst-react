@@ -20,12 +20,6 @@ const app = express();
 const routes = require('./routes/index');
 const users = require('./routes/users');
 
-// //View Engine
-//
-// app.set('views', path.join(__dirname, 'views'));
-// app.engine('handlebars', exphbs({defaultLayout: 'layouts'}));
-// app.set('view engine', 'handlebars');
-
 
 // middleware
 app.use(bodyParser.json());

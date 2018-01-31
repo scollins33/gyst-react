@@ -5,12 +5,16 @@ import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import NewEventModal from "../components/time/NewEventModal";
 import UpdateEventModal from "../components/time/UpdateEventModal";
+import { FormControl } from 'material-ui/Form';
+import Input, {InputLabel} from 'material-ui/Input';
+
 const moment = require('moment');
 
 class Time extends Component {
     constructor(props){
         super(props);
         this.state={
+            displayDate: moment().format('YYYY-MM-DD'),
             workload: [],
             view: "daily",
             newEventModal: false,
@@ -32,14 +36,26 @@ class Time extends Component {
     }
 
     loadEvents =()=>{
+
         fetch("/api/getEvents",{method: "GET"})
             .then(res=> res.json())
-            .then(data=> this.setState({workload: data}))
+            .then(data=> {
+                const displayedDates = data.filter(event=>{
+                    return (
+                        event.repeat === "daily"||
+                        event.repeat === "never" && moment(event.startTime).format("LL") === moment(this.state.displayDate).format("LL")||
+                        event.repeat === "weekly" && moment(event.startTime).format('dddd') === moment(this.state.displayDate).format('dddd') ||
+                        event.repeat === "monthly" && moment(event.startTime).format("MMM Do") === moment(this.state.displayDate).format("MMM Do") ||
+                        event.repeat === "yearly" && moment(event.startTime).format("MMM Do") === moment(this.state.displayDate).format("MMM Do")
+                    )
+                });
+                this.setState({workload: displayedDates})
+            })
             .catch(err=>console.log(err));
     };
 
     componentDidMount(){
-       this.loadEvents()
+        this.loadEvents()
     }
 
     handleAddEvent=(e)=>{
@@ -59,8 +75,8 @@ class Time extends Component {
         console.log(newEvent);
 
         const postEvent = new Request("/api/addEvent", {
-                method: "POST",
-                headers: {
+            method: "POST",
+            headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
@@ -71,6 +87,7 @@ class Time extends Component {
             .then(res=> res.json())
             .catch(err=> console.log(err));
         console.log("event submitted");
+        this.setState({newEventModal: !this.state.newEventModal});
         this.loadEvents();
     };
 
@@ -90,10 +107,10 @@ class Time extends Component {
             repeat: this.state.updateRepeat
         };
 
-        console.log('????????????///?????????????')
+        console.log('????????????///?????????????');
         console.log(this.state);
         console.log(updatedEvent);
-        console.log('????????????///?????????????')
+        console.log('????????????///?????????????');
 
         const query = new Request("/api/updateEvent/" + this.state.updateModalId, {
             method: "POST",
@@ -108,6 +125,7 @@ class Time extends Component {
             .then(res=> res.json())
             .catch(err=> console.log(err));
         console.log("event submitted");
+        this.setState({updateEventModal: !this.state.updateEventModal});
         this.loadEvents();
     };
 
@@ -134,6 +152,15 @@ class Time extends Component {
         console.log(this.state)
     };
 
+    handleDateChange=(e)=>{
+        e.preventDefault();
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState({ [name]: moment(value).format('YYYY-MM-DD') });
+        console.log(this.state);
+        this.loadEvents();
+    };
+
 
     onAddClick=(e)=>{
         e.preventDefault();
@@ -153,6 +180,11 @@ class Time extends Component {
                     <Button fab color="primary" aria-label="add" onClick={(e)=>this.onAddClick(e)}>
                         <AddIcon />
                     </Button>
+                    <FormControl>
+                        <InputLabel>Date</InputLabel>
+                        <Input name="displayDate" value={this.state.displayDate}
+                               onChange={this.handleDateChange} type="date" />
+                    </FormControl>
                 </div>
                 <div className={"container"}>
                     <div className={"row"}>

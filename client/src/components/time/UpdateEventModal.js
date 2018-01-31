@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from 'material-ui/Modal'
-
+import TextField from 'material-ui/TextField'
 const UpdateEventModal = props =>{
     return(
         <Modal
@@ -53,6 +53,7 @@ const UpdateEventModal = props =>{
                 name="updateClass"
                 onChange={props.handleInputChange}
             />
+
             <br/>
             <label>notes: </label>
             <textarea
