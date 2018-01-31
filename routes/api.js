@@ -132,48 +132,6 @@ router.post('/deleteEvent/:eventId?', (req, res) => {
             SOCIAL APIs
 ------------------------------------ */
 
-// Create new Contact for User
-router.post('/addContact', (req, res) => {
-    console.log(`Got a request to add a Contact:`);
-    console.log(req.body);
-
-    db.Contact
-        .create(req.body)
-        .then((contact) => {
-            console.log(`Created contact for User ${req.body.user}`);
-
-            db.User.findOneAndUpdate(
-                {_id: req.body.user},
-                {$push: {contacts: contact._id}})
-                .then(() => {
-                    res.status(200).send('Created and updated User');
-                })
-                .catch(err => res.status(500).json(err));
-        })
-        .catch(err => res.status(500).json(err));
-});
-
-// Create new Interaction for Contact
-router.post('/addInteraction', (req, res) => {
-    console.log(`Got a request to add an Interaction:`);
-    console.log(req.body);
-
-    db.Interaction
-        .create(req.body)
-        .then((interact) => {
-            console.log(`Created interaction for Contact ${req.body.contact}`);
-
-            db.Contact.findOneAndUpdate(
-                {_id: req.body.contact},
-                {$push: {interactions: interact._id}})
-                .then(() => {
-                    res.status(200).send('Created Interaction and updated Contact');
-                })
-                .catch(err => res.status(500).json(err));
-        })
-        .catch(err => res.status(500).json(err));
-});
-
 // GET User's Social info
 // populated with Contacts and Interactions
 router.get('/getUserSocial/:userId', (req, res) => {
@@ -187,11 +145,6 @@ router.get('/getUserSocial/:userId', (req, res) => {
         })
         .then((data) => res.status(200).send(data))
         .catch(err => res.status(500).json(err));
-});
-
-// POST updated Contact to User
-router.post('/updateContact', (req, res) => {
-    console.log('updating contact');
 });
 
 // POST to set Favorite status in DB
@@ -216,7 +169,7 @@ router.delete('/deleteInteraction', (req, res) => {
         .update(
             {_id: req.body.contact},
             {$pull:
-                    { "interactions": {_id: req.body.interaction}}
+                    { interactions: {_id: req.body.interaction}}
             })
         .then(() => {
             db.Interaction
@@ -253,6 +206,79 @@ router.delete('/deleteContact', (req, res) => {
                 .catch(err => res.status(500).json(err));
         })
         .catch(err => res.status(500).json(err));
+});
+
+// Create new Contact for User
+router.post('/addContact', (req, res) => {
+    console.log(`Got a request to add a Contact:`);
+    console.log(req.body);
+
+    db.Contact
+        .create(req.body)
+        .then((contact) => {
+            console.log(`Created contact for User ${req.body.user}`);
+
+            db.User.findOneAndUpdate(
+                {_id: req.body.user},
+                {$push: {contacts: contact._id}})
+                .then(() => {
+                    res.status(200).send('Created and updated User');
+                })
+                .catch(err => res.status(500).json(err));
+        })
+        .catch(err => res.status(500).json(err));
+});
+
+router.post('/updateContact', (req, res) => {
+    console.log(req.body);
+
+    if (req.body.id === null) {
+        console.log('Contact does not exist, creating new one instead');
+
+        db.Contact
+            .create({
+                user: req.body.user,
+                name: req.body.name,
+                favorite: false,
+                relation: req.body.relation,
+                birthday: req.body.birthday,
+                methods: req.body.methods,
+            })
+            .then((contact) => {
+                console.log(`Created contact for User ${req.body.user}`);
+
+                db.User.findOneAndUpdate(
+                    {_id: req.body.user},
+                    {$push: {contacts: contact._id}})
+                    .then(() => {
+                        console.log('Created Contact and updated User');
+                    })
+                    .catch(err => console.log(err));
+
+                console.log('Creating Interactions for new Contact');
+
+
+            })
+            .catch(err => console.log(err));
+
+    } else {
+        console.log('Contact exists, performing update');
+
+        db.Contact
+            .update({
+                user: req.body.user,
+                name: req.body.name,
+                relation: req.body.relation,
+                birthday: req.body.birthday,
+                methods: req.body.methods,
+            })
+            .then(() => {
+                console.log('Done updating Contact');
+            })
+            .catch(err => console.log(err));
+    }
+
+    res.status(200).send('Contact created / updated');
 });
 
 module.exports = router;

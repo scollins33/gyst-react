@@ -33,6 +33,7 @@ class Contact extends Component {
     constructor(props) {
         super(props);
 
+        this.user = props.user;
         this.id = props.id;
 
         // State matches the JSON from the MongoDB Schema
@@ -146,7 +147,7 @@ class Contact extends Component {
 
     // remove and delete Interaction from Contact
     removeInteract (pID) {
-        const data ={
+        const data = {
             interaction: pID,
             contact: this.id,
         };
@@ -154,6 +155,32 @@ class Contact extends Component {
         fetch("/api/deleteInteraction",
             {
                 method: "DELETE",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
+            });
+    };
+
+    saveContact = () => {
+        const data = {
+            user: this.user,
+            id: this.id,
+            name: this.state.name,
+            relation: this.state.relation,
+            birthday: this.state.birthday,
+            methods: {
+                mobile: this.state.mobile,
+                work: this.state.work,
+                email: this.state.email
+            },
+            interactions: this.state.interactions,
+        };
+
+        fetch("/api/updateContact",
+            {
+                method: "POST",
                 body: JSON.stringify(data),
                 headers: new Headers({'Content-Type': 'application/json'}),
             })
@@ -254,7 +281,7 @@ class Contact extends Component {
                                     color="default">New Interaction</Button>
                             <Button raised onClick={this.handleToggle}
                                     color="default">Close</Button>
-                            <Button raised onClick={this.handleToggle}
+                            <Button raised onClick={this.saveContact}
                                     color="primary">Save</Button>
                             <Button raised onClick={this.props.cb}
                                     color="secondary">Delete</Button>
