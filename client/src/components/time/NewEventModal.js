@@ -1,6 +1,7 @@
 import React from 'react'
 import Modal from 'material-ui/Modal'
 import Button from 'material-ui/Button'
+import Picker from './Picker'
 const rowStyle = "d-flex d-row mb-2";
 const EventModal = props =>{
     return(
@@ -30,19 +31,21 @@ const EventModal = props =>{
                 </div>
 
                 <div className={rowStyle}>
-                    <label>start time:</label>
-                    <input
+                    <Picker
+                        title="Start Time"
                         name="newStart"
-                        type="text"
-                        onChange={props.handleInputChange}
+                        value={props.startTime}
+                        handleChange={props.handleTimeChange}
+                        type="datetime-local"
                     />
                 </div>
                 <div className={rowStyle}>
-                    <label>end time:</label>
-                    <input
-                        type="text"
+                    <Picker
+                        title="End Time"
                         name="newEnd"
-                        onChange={props.handleInputChange}
+                        value={props.endTime}
+                        handleChange={props.handleTimeChange}
+                        type="datetime-local"
                     />
                 </div>
                 <div className={rowStyle}>

@@ -91,6 +91,7 @@ router.get('/getEvents/byClass/:userId', (req, res) => {
 // UPDATE an event
 router.post('/updateEvent/:eventId', (req, res) => {
     console.log(req.params.eventId);
+    console.log(req.body);
     db.Event
         .findOneAndUpdate(
             {_id: req.params.eventId},
@@ -100,7 +101,8 @@ router.post('/updateEvent/:eventId', (req, res) => {
                     startTime: req.body.startTime,
                     endTime: req.body.endTime,
                     class: req.body.class,
-                    repeat: req.body.repeat
+                    repeat: req.body.repeat,
+                    notes: req.body.notes
                 }
             })
         .then((data) => res.status(200).send(data))

@@ -21,6 +21,10 @@ const Event = props =>(
         <br/>
         <TextField value={props.endTime}/>
         <br/>
+        <label><strong>Class:</strong></label>
+        <br/>
+        <TextField value={props.class}/>
+        <br/>
         <label><strong>Notes:</strong></label>
         <br/>
         <TextField value={props.notes}/>

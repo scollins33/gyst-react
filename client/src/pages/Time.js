@@ -5,8 +5,7 @@ import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import NewEventModal from "../components/time/NewEventModal";
 import UpdateEventModal from "../components/time/UpdateEventModal";
-import { FormControl } from 'material-ui/Form';
-import Input, {InputLabel} from 'material-ui/Input';
+import Picker from '../components/time/Picker'
 
 const moment = require('moment');
 
@@ -45,7 +44,7 @@ class Time extends Component {
                         event.repeat === "daily"||
                         event.repeat === "never" && moment(event.startTime).format("LL") === moment(this.state.displayDate).format("LL")||
                         event.repeat === "weekly" && moment(event.startTime).format('dddd') === moment(this.state.displayDate).format('dddd') ||
-                        event.repeat === "monthly" && moment(event.startTime).format("MMM Do") === moment(this.state.displayDate).format("MMM Do") ||
+                        event.repeat === "monthly" && moment(event.startTime).format("Do") === moment(this.state.displayDate).format("Do") ||
                         event.repeat === "yearly" && moment(event.startTime).format("MMM Do") === moment(this.state.displayDate).format("MMM Do")
                     )
                 });
@@ -152,11 +151,19 @@ class Time extends Component {
         console.log(this.state)
     };
 
+    handleTimeChange=(e)=>{
+        e.preventDefault();
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState({ [name]: moment(value, moment.HTML5_FMT.DATETIME_LOCAL)});
+        console.log(this.state);
+    };
+
     handleDateChange=(e)=>{
         e.preventDefault();
         const name = e.target.name;
         const value = e.target.value;
-        this.setState({ [name]: moment(value).format('YYYY-MM-DD') });
+        this.setState({ [name]: moment(value).format('YYYY-MM-DD')});
         console.log(this.state);
         this.loadEvents();
     };
@@ -180,16 +187,18 @@ class Time extends Component {
                     <Button fab color="primary" aria-label="add" onClick={(e)=>this.onAddClick(e)}>
                         <AddIcon />
                     </Button>
-                    <FormControl>
-                        <InputLabel>Date</InputLabel>
-                        <Input name="displayDate" value={this.state.displayDate}
-                               onChange={this.handleDateChange} type="date" />
-                    </FormControl>
+                    <Picker
+                        title="Date"
+                        name="displayDate"
+                        value={this.state.displayDate}
+                        type="date"
+                        handleChange={this.handleDateChange}
+                    />
                 </div>
                 <div className={"container"}>
                     <div className={"row"}>
                         <div className={"col-12 col-sm-6 my-3"}>
-                            {this.state.workload.map((task, i)=><Event key={i} id={task._id} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} notes={task.notes} update={this.onUpdateClick} delete={this.handleDelete}/>)}
+                            {this.state.workload.map((task, i)=><Event key={i} id={task._id} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} class={task.class} notes={task.notes} update={this.onUpdateClick} delete={this.handleDelete}/>)}
                         </div>
                         <TimeSummary/>
                         <NewEventModal
@@ -197,12 +206,18 @@ class Time extends Component {
                             onClose={(e)=>this.onAddClick(e)}
                             onClick={(e)=> this.handleAddEvent(e)}
                             handleInputChange={this.handleInputChange}
+                            handleTimeChange={this.handleTimeChange}
+                            startTime={this.state.newStart}
+                            endTime={this.state.newEnd}
                         />
                         <UpdateEventModal
                             open={this.state.updateEventModal}
                             onClose={(e)=>this.onUpdateClick(e)}
                             onClick={(e)=> this.handleUpdateEvent(e)}
                             handleInputChange={this.handleInputChange}
+                            handleTimeChange={this.handleTimeChange}
+                            startTime={this.state.updateStart}
+                            endTime={this.state.updateEnd}
                             id={this.state.updateModalId}
                         />
                     </div>
