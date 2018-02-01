@@ -135,7 +135,6 @@ router.post('/deleteEvent/:eventId?', (req, res) => {
 // GET User's Social info
 // populated with Contacts and Interactions
 router.get('/getUserSocial/:userId', (req, res) => {
-    console.log(`Trying to fetch User Social for ${req.params.userId}`);
 
     db.User
         .findOne({_id: req.params.userId})
@@ -149,7 +148,6 @@ router.get('/getUserSocial/:userId', (req, res) => {
 
 // POST to set Favorite status in DB
 router.post('/setFavorite', (req, res) => {
-    console.log('Trying to set Favorite status');
 
     db.Contact
         .findOneAndUpdate(
@@ -163,77 +161,104 @@ router.post('/setFavorite', (req, res) => {
 
 // DELETE to remove Interaction from DB
 router.delete('/deleteInteraction', (req, res) => {
-    console.log('Trying to delete Interaction');
 
+    // Step 1
+    // pull the interaction from the Contact array
     db.Contact
-        .update(
+        .findOneAndUpdate(
             {_id: req.body.contact},
-            {$pull:
-                    { interactions: {_id: req.body.interaction}}
-            })
+            {$pull: {interactions: req.body.interaction}})
+        .catch(err => res.status(500).json(err));
+
+    // Step 2
+    // remove the Interaction from the DB
+    db.Interaction
+        .remove({_id: req.body.interaction})
         .then(() => {
-            db.Interaction
-                .remove({_id: req.body.interaction})
-                .then(() => {
-                    res.status(200).send('Removed Interaction');
-                })
-                .catch(err => res.status(500).json(err));
+            res.status(200).send('Removed Interaction');
         })
         .catch(err => res.status(500).json(err));
 });
 
 // DELETE to remove Contact from User in DB
-// Need to delete ref in User, Contact, and Interaction Refs
 router.delete('/deleteContact', (req, res) => {
-    console.log('Trying to delete Contact ref in User');
 
+    // Step 1
+    // pull the Contact from the User array
     db.User
-        .update(
+        .findOneAndUpdate(
             {_id: req.body.user},
-            {$pull:
-                    { "contacts": {_id: req.body.contact}}
-            })
+            {$pull: {contacts: req.body.contact}})
         .then(() => {
-            // remove all ref'd interactions
 
-            // remove Contact entry in DB
-            console.log('Trying to remove Contact entry');
+            // Step 2
+            // remove all ref'd Interactions
             db.Contact
-                .remove({_id: req.body.contact})
+                .findOne({_id: req.body.contact})
+                .then((contact) => {
+                    // loop through interactions and remove them
+                    contact.interactions.map((each) => {
+                        db.Interaction
+                            .remove({_id: each})
+                            .catch(err => res.status(500).json(err));
+                    });
+                })
                 .then(() => {
-                    res.status(200).send('Removed Contact');
+
+                    // Step 3
+                    // remove Contact entry in DB
+                    db.Contact
+                        .remove({_id: req.body.contact})
+                        .then(() => {
+                            res.status(200).send('Removed Contact and supporting Interactions');
+                        })
+                        .catch(err => res.status(500).json(err));
+
                 })
                 .catch(err => res.status(500).json(err));
+
         })
         .catch(err => res.status(500).json(err));
 });
 
-// Create new Contact for User
-router.post('/addContact', (req, res) => {
-    console.log(`Got a request to add a Contact:`);
-    console.log(req.body);
-
-    db.Contact
-        .create(req.body)
-        .then((contact) => {
-            console.log(`Created contact for User ${req.body.user}`);
-
-            db.User.findOneAndUpdate(
-                {_id: req.body.user},
-                {$push: {contacts: contact._id}})
-                .then(() => {
-                    res.status(200).send('Created and updated User');
+// Helper to DRY up Contact Update
+function updateHelper (contactID, interactArray, pRes) {
+    interactArray.map((each) => {
+        if (each._id === null) {
+            db.Interaction
+                .create({
+                    contact: contactID,
+                    date: each.date,
+                    method: each.method,
+                    note: each.note,
                 })
-                .catch(err => res.status(500).json(err));
-        })
-        .catch(err => res.status(500).json(err));
-});
+                .then((newInteract) => {
+                    db.Contact.findOneAndUpdate(
+                        {_id: newInteract.contact},
+                        {$push: {interactions: newInteract._id}})
+                        .catch(err => pRes.status(500).send(err));
+                })
+                .catch(err => pRes.status(500).send(err));
 
+        } else {
+
+            db.Interaction
+                .findOneAndUpdate(
+                    { _id: each._id},
+                    {
+                        date: each.date,
+                        method: each.method,
+                        note: each.note,
+                    })
+                .catch(err => pRes.status(500).send(err));
+        }
+    });
+}
+
+// POST to create or update a contact
 router.post('/updateContact', (req, res) => {
-    console.log(req.body);
 
     if (req.body.id === null) {
-        console.log('Contact does not exist, creating new one instead');
 
         db.Contact
             .create({
@@ -244,41 +269,42 @@ router.post('/updateContact', (req, res) => {
                 birthday: req.body.birthday,
                 methods: req.body.methods,
             })
-            .then((contact) => {
-                console.log(`Created contact for User ${req.body.user}`);
+            .then((newContact) => {
 
                 db.User.findOneAndUpdate(
                     {_id: req.body.user},
-                    {$push: {contacts: contact._id}})
-                    .then(() => {
-                        console.log('Created Contact and updated User');
-                    })
+                    {$push: {contacts: newContact._id}})
                     .catch(err => console.log(err));
 
-                console.log('Creating Interactions for new Contact');
-
+                // use update helper to handle Interaction update/creation
+                updateHelper(newContact._id, req.body.interactions, res);
 
             })
-            .catch(err => console.log(err));
+            // putting res send in separate "then" due to Map promises and async issues
+            .then(() => res.status(200).send('Contact created / updated'))
+            .catch(err => res.status(500).send(err));
 
     } else {
-        console.log('Contact exists, performing update');
 
         db.Contact
-            .update({
-                user: req.body.user,
-                name: req.body.name,
-                relation: req.body.relation,
-                birthday: req.body.birthday,
-                methods: req.body.methods,
-            })
+            .findOneAndUpdate(
+                { _id: req.body.id},
+                {
+                    user: req.body.user,
+                    name: req.body.name,
+                    relation: req.body.relation,
+                    birthday: req.body.birthday,
+                    methods: req.body.methods,
+                })
             .then(() => {
-                console.log('Done updating Contact');
+
+                // use update helper to handle Interaction update/creation
+                updateHelper(req.body.id, req.body.interactions, res);
             })
+            // putting res send in separate "then" due to Map promises and async issues
+            .then(() => res.status(200).send('Contact created / updated'))
             .catch(err => console.log(err));
     }
-
-    res.status(200).send('Contact created / updated');
 });
 
 module.exports = router;

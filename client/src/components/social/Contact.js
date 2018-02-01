@@ -161,6 +161,7 @@ class Contact extends Component {
             .then(res => {
                 console.log(res);
             });
+
     };
 
     saveContact = () => {
@@ -186,6 +187,8 @@ class Contact extends Component {
             })
             .then(res => {
                 console.log(res);
+                this.handleToggle();
+                this.props.action();
             });
     };
 

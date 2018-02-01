@@ -8,6 +8,8 @@ class Social extends Component {
     constructor (props) {
         super(props);
 
+        this.pullSocialDB = this.pullSocialDB.bind(this);
+
         this.state = {
             user: "5a6a7a67f7719e16e6f749cb",
             contacts: [],
@@ -115,6 +117,7 @@ class Social extends Component {
                                             interactions={each.interactions}
                                             open={false}
                                             cb={this.deleteContact.bind(this, i)}
+                                            action={this.pullSocialDB}
                             />;
                         })}
                     </div>
