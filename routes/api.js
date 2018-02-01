@@ -269,7 +269,7 @@ router.post('/addFinances', (req, res) => {
     db.Finances
         .create(newFinances)
         .then(() => {
-            console.log(`Created event for ${newFinances.name}`);
+            console.log(`Created finances for ${newFinances.name}`);
             res.status(200).send('Created');
         })
         .catch(err => res.json(err));
@@ -278,7 +278,7 @@ router.post('/addFinances', (req, res) => {
 // GET finances by user
 router.get('/getFinances/:userId', (req, res) => {
 
-    db.User
+    db.Finances
         .find({_id: req.params.userId})
         .populate('finances')
         .then((data) => res.status(200).send(data))
@@ -289,9 +289,9 @@ router.get('/getFinances/:userId', (req, res) => {
 // UPDATE finances
 router.post('/updateFinances/:financesId', (req, res) => {
     console.log(req.params.financesId);
-    db.Event
+    db.Finances
         .findOneAndUpdate(
-            {_id: req.params.eventId},
+            {_id: req.params.financesId},
             {
                 $set: {
                     name: req.body.rent,
