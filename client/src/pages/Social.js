@@ -8,6 +8,8 @@ class Social extends Component {
     constructor (props) {
         super(props);
 
+        this.pullSocialDB = this.pullSocialDB.bind(this);
+
         this.state = {
             user: "5a6a7a67f7719e16e6f749cb",
             contacts: [],
@@ -59,7 +61,7 @@ class Social extends Component {
 
     // also delete all Interactions in the DB for that Contact
     removeContact (pID) {
-        const data ={
+        const data = {
             contact: pID,
             user: this.state.user,
         };
@@ -75,21 +77,24 @@ class Social extends Component {
             });
     };
 
-    /* ------------------------------------
-                React Lifecycle
-    ------------------------------------ */
-
-    componentDidMount() {
+    pullSocialDB () {
         fetch(`/api/getUserSocial/${this.state.user}`, {method: "GET"})
             .then(res => res.json())
             .then(data => {
                 this.setState({contacts: data.contacts});
             });
+    };
+
+    /* ------------------------------------
+                React Lifecycle
+    ------------------------------------ */
+
+    componentDidMount() {
+        this.pullSocialDB();
     }
 
     render() {
-        // console.log(this.state);
-        console.log(this.state.contacts);
+
         return (
             <div className={"container mt-3"}>
                 <div className={'row'}>
@@ -103,6 +108,7 @@ class Social extends Component {
                         {this.state.contacts.map((each, i) => {
                             return <Contact key={i}
                                             id={each._id}
+                                            user={this.state.user}
                                             name={each.name}
                                             favorite={each.favorite}
                                             relation={each.relation}
@@ -111,6 +117,7 @@ class Social extends Component {
                                             interactions={each.interactions}
                                             open={false}
                                             cb={this.deleteContact.bind(this, i)}
+                                            action={this.pullSocialDB}
                             />;
                         })}
                     </div>
