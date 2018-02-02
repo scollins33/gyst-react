@@ -1,6 +1,7 @@
 import React from 'react'
 import Modal from 'material-ui/Modal'
 import Picker from './Picker'
+import RadioButton from "./RadioButton";
 
 const UpdateEventModal = props =>{
     return(
@@ -34,7 +35,6 @@ const UpdateEventModal = props =>{
                     handleChange={props.handleTimeChange}
                     type="datetime-local"
                 />
-                <br/>
                 <Picker
                     title="End Time"
                     name="updateEnd"
@@ -44,20 +44,14 @@ const UpdateEventModal = props =>{
                 />
                 <br/>
                 <label>repeat:</label>
-                <input
-                    type="text"
-                    name="updateRepeat"
-                    onChange={props.handleInputChange}
-                />
+                <br/>
+                {props.repeatRadio.map((btnName, i)=> <RadioButton key={i} selectedValue={props.repeatChecked} name={btnName} value={btnName} handleChange={props.handleRepeatChange} aria={btnName}/>)}
                 <br/>
                 <label>class:</label>
-                <input
-                    type="text"
-                    name="updateClass"
-                    onChange={props.handleInputChange}
-                />
-
                 <br/>
+                {props.classRadio.map((btnName, i)=> <RadioButton selectedValue={props.classChecked} key={i} name={btnName} value={btnName} handleChange={props.handleClassChange} aria={btnName}/>)}
+                <br/>
+
                 <label>notes: </label>
                 <input
                     type="text"

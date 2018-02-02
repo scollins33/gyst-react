@@ -55,7 +55,7 @@ mongoose.connect(MONGODB_URI, {
 // if no API routes are hit, send the React app
 app.use('/api/', apiRoute);
 app.use('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "client/build/index.html"));
+    res.sendFile(path.join(__dirname, "client/public/index.html"));
 });
 app.use('/', routes);
 app.use('/users', users);

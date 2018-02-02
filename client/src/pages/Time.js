@@ -19,18 +19,20 @@ class Time extends Component {
             newEventModal: false,
             updateEventModal: false,
             newName: "",
-            newStart: "",
-            newEnd: "",
+            newStart: Date.now(),
+            newEnd: Date.now(),
             newClass: "",
             newNotes: "",
             newRepeat: "",
             updateName: "",
-            updateStart: "",
-            updateEnd: "",
+            updateStart: Date.now(),
+            updateEnd: Date.now(),
             updateClass: "",
             updateNotes: "",
             updateRepeat: "",
-            updateModalId: ""
+            updateModalId: "",
+            classOptions: ["work", "focus", "play"],
+            repeatOptions: ["never", "daily", "weekly", "monthly", "yearly"]
         }
     }
 
@@ -41,11 +43,11 @@ class Time extends Component {
             .then(data=> {
                 const displayedDates = data.filter(event=>{
                     return (
-                        event.repeat === "daily"||
-                        event.repeat === "never" && moment(event.startTime).format("LL") === moment(this.state.displayDate).format("LL")||
-                        event.repeat === "weekly" && moment(event.startTime).format('dddd') === moment(this.state.displayDate).format('dddd') ||
-                        event.repeat === "monthly" && moment(event.startTime).format("Do") === moment(this.state.displayDate).format("Do") ||
-                        event.repeat === "yearly" && moment(event.startTime).format("MMM Do") === moment(this.state.displayDate).format("MMM Do")
+                        (event.repeat === "daily")||
+                        (event.repeat === "never" && moment(event.startTime).format("LL") === moment(this.state.displayDate).format("LL"))||
+                        (event.repeat === "weekly" && moment(event.startTime).format('dddd') === moment(this.state.displayDate).format('dddd')) ||
+                        (event.repeat === "monthly" && moment(event.startTime).format("Do") === moment(this.state.displayDate).format("Do") )||
+                        (event.repeat === "yearly" && moment(event.startTime).format("MMM Do") === moment(this.state.displayDate).format("MMM Do"))
                     )
                 });
                 this.setState({workload: displayedDates})
@@ -168,6 +170,25 @@ class Time extends Component {
         this.loadEvents();
     };
 
+    handleRepeatSelect=e=>{
+        const value = e.target.value;
+        this.setState({ updateRepeat: value });
+    };
+
+    handleClassSelect=e=>{
+        const value = e.target.value;
+        this.setState({ updateClass: value });
+
+    };
+    handleNewClass=e=>{
+        const value = e.target.value;
+        this.setState({ newClass: value });
+    };
+
+    handleNewRepeat=e=>{
+        const value = e.target.value;
+        this.setState({ newRepeat: value });
+    };
 
     onAddClick=(e)=>{
         e.preventDefault();
@@ -188,7 +209,7 @@ class Time extends Component {
                         <AddIcon />
                     </Button>
                     <Picker
-                        title="Date"
+                        title="Diplay Date"
                         name="displayDate"
                         value={this.state.displayDate}
                         type="date"
@@ -207,8 +228,14 @@ class Time extends Component {
                             onClick={(e)=> this.handleAddEvent(e)}
                             handleInputChange={this.handleInputChange}
                             handleTimeChange={this.handleTimeChange}
+                            handleRepeatChange={this.handleNewRepeat}
+                            handleClassChange={this.handleNewClass}
                             startTime={this.state.newStart}
                             endTime={this.state.newEnd}
+                            classRadio={this.state.classOptions}
+                            classChecked={this.state.newClass}
+                            repeatRadio={this.state.repeatOptions}
+                            repeatChecked={this.state.newRepeat}
                         />
                         <UpdateEventModal
                             open={this.state.updateEventModal}
@@ -216,9 +243,15 @@ class Time extends Component {
                             onClick={(e)=> this.handleUpdateEvent(e)}
                             handleInputChange={this.handleInputChange}
                             handleTimeChange={this.handleTimeChange}
+                            handleRepeatChange={this.handleRepeatSelect}
+                            handleClassChange={this.handleClassSelect}
                             startTime={this.state.updateStart}
                             endTime={this.state.updateEnd}
                             id={this.state.updateModalId}
+                            classRadio={this.state.classOptions}
+                            classChecked={this.state.updateClass}
+                            repeatRadio={this.state.repeatOptions}
+                            repeatChecked={this.state.updateRepeat}
                         />
                     </div>
                 </div>

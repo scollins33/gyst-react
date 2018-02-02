@@ -2,7 +2,10 @@ import React from 'react'
 import Modal from 'material-ui/Modal'
 import Button from 'material-ui/Button'
 import Picker from './Picker'
+import RadioButton from './RadioButton'
+
 const rowStyle = "d-flex d-row mb-2";
+
 const EventModal = props =>{
     return(
         <Modal
@@ -50,19 +53,12 @@ const EventModal = props =>{
                 </div>
                 <div className={rowStyle}>
                     <label>repeat:</label>
-                    <input
-                        type="text"
-                        name="newRepeat"
-                        onChange={props.handleInputChange}
-                    />
+                    {props.repeatRadio.map((btnName, i)=> <RadioButton key={i} selectedValue={props.repeatChecked} name={btnName} value={btnName} handleChange={props.handleRepeatChange} aria={btnName}/>)}
+
                 </div>
                 <div className={rowStyle}>
                     <label>class:</label>
-                    <input
-                        type="text"
-                        name="newClass"
-                        onChange={props.handleInputChange}
-                    />
+                    {props.classRadio.map((btnName, i)=> <RadioButton selectedValue={props.classChecked} key={i} name={btnName} value={btnName} handleChange={props.handleClassChange} aria={btnName}/>)}
                 </div>
                 <div className={rowStyle}>
                     <label>notes: </label>
