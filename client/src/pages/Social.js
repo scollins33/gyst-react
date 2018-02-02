@@ -34,7 +34,7 @@ class Social extends Component {
                 work: "",
                 email: "",
             },
-            birthday: "",
+            birthday: 1517461200,
             interactions: [],
         };
 

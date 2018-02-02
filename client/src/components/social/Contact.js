@@ -35,9 +35,6 @@ class Contact extends Component {
         this.user = props.user;
         this.id = props.id;
 
-        console.log(props.birthday);
-        console.log(parseInt(props.birthday, 10));
-        console.log(moment(parseInt(props.birthday, 10)).format('YYYY-MM-DD'));
         // State matches the JSON from the MongoDB Schema
         // Methods is nested object with home/work/mobile/email
         // Interactions is an array, populated from Interactions schema
@@ -48,7 +45,7 @@ class Contact extends Component {
             mobile: props.methods.mobile,
             work: props.methods.work,
             email: props.methods.email,
-            birthday: moment(parseInt(props.birthday, 10)).format('YYYY-MM-DD'),
+            birthday: moment.unix(props.birthday).format('YYYY-MM-DD'),
             interactions: props.interactions,
             open: false,
         };
@@ -75,6 +72,10 @@ class Contact extends Component {
         const property = event.target.id;
         const val = event.target.value;
 
+        console.log('THIS IS THE SHIT FROM THE EVENT HANDLER');
+        console.log(property);
+        console.log(val);
+
         this.setState({
             [property]: val,
         });
@@ -98,7 +99,7 @@ class Contact extends Component {
         const newInteract = {
             _id: null,
             contact: null,
-            date: Date.now(),
+            date: 1517461200,
             method: "",
             note: "Enter notes...",
         };
@@ -172,7 +173,7 @@ class Contact extends Component {
             id: this.id,
             name: this.state.name,
             relation: this.state.relation,
-            birthday: moment(this.state.birthday, 'YYYY-MM-DD').unix().toString(),
+            birthday: moment(this.state.birthday, 'YYYY-MM-DD').unix(),
             methods: {
                 mobile: this.state.mobile,
                 work: this.state.work,
@@ -181,7 +182,8 @@ class Contact extends Component {
             interactions: this.state.interactions,
         };
 
-        console.log(data);
+        console.log('SENDING THE BELOW FOR BDAY');
+        console.log(data.birthday);
 
         fetch("/api/updateContact",
             {
@@ -205,6 +207,9 @@ class Contact extends Component {
         this.user = nextProps.user;
         this.id = nextProps.id;
 
+        console.log('THIS IS THE NEXT PROP BEING RECEIVED');
+        console.log(nextProps.birthday);
+
         this.setState({
             name: nextProps.name,
             favorite: nextProps.favorite,
@@ -212,15 +217,19 @@ class Contact extends Component {
             mobile: nextProps.methods.mobile,
             work: nextProps.methods.work,
             email: nextProps.methods.email,
-            birthday: moment(parseInt(nextProps.birthday, 10)).format('YYYY-MM-DD'),
+            birthday: moment.unix(nextProps.birthday).format('YYYY-MM-DD'),
             interactions: nextProps.interactions,
             open: false,
         });
+
+        console.log('THIS IS WHAT WAS SAVED TO THE STATE FROM NEXTPROP CONVERSION');
+        console.log(moment.unix(nextProps.birthday).format('YYYY-MM-DD'));
     }
 
     render() {
         const { classes } = this.props;
 
+        console.log('THIS IS WHAT IS ABOUT TO BE RENDERED AND ITS TYPE');
         console.log(this.state.birthday);
         console.log(typeof this.state.birthday);
 

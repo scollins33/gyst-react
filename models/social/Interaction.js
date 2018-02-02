@@ -16,7 +16,7 @@ const InteractionSchema = new Schema({
         ref: "Contact"
     },
     date: {
-        type: String,
+        type: Number,
         required: true,
     },
     method: {
