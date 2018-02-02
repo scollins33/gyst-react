@@ -15,21 +15,25 @@
     "install-run": "yarn install && cd client && yarn install && cd .. && yarn dev"
   },
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "1.0.3",
+    "bcryptjs": "2.4.3",
     "body-parser": "^1.18.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "create-react-app": "^1.5.0",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
-    "express-validator": "^4.3.0",
+    "express-validator": "4.3.0",
+    "flash": "1.1.0",
     "moment": "^2.20.1",
     "mongoose": "^4.13.9",
     "nodemon": "^1.14.11",
-    "passport": "^0.4.0",
+    "passport": "0.4.0",
+    "passport-local": "1.0.0",
     "path": "^0.12.7",
     "react-bar-chart": "0.1.2",
-    "react-redux": "^5.0.6"
+    "react-redux": "^5.0.6",
+    "session": "0.1.0"
   },
   "devDependencies": {
     "concurrently": "^3.5.1",

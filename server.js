@@ -20,12 +20,6 @@ const app = express();
 const routes = require('./routes/index');
 const users = require('./routes/users');
 
-// //View Engine
-//
-// app.set('views', path.join(__dirname, 'views'));
-// app.engine('handlebars', exphbs({defaultLayout: 'layouts'}));
-// app.set('view engine', 'handlebars');
-
 
 // middleware
 app.use(bodyParser.json());
@@ -58,13 +52,13 @@ mongoose.connect(MONGODB_URI, {
 //
 
 // bring in the API Routes
-// if no API routes are hit, send the React app
+app.use('/', routes);
 app.use('/api/', apiRoute);
+app.use('/users', users);
+// if no API routes are hit, send the React app
 app.use('/', (req, res) => {
     res.sendFile(path.join(__dirname, "client/build/index.html"));
 });
-app.use('/', routes);
-app.use('/users', users);
 
 
 // start up the router on the PORT
@@ -90,11 +84,11 @@ app.use(expressValidator({
 //connect flash middleware
 app.use(flash());
 
-//Global Vars
-app.use(function(req, res, next){
+// Global Vars
+app.use(function (req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
-    res.locals.errors_msg = req.flash('error_msg');
+    res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;
     next();
 });
-

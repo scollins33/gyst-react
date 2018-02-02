@@ -69,7 +69,7 @@ class GoalsDeadline extends React.Component {
                     Number of Weeks:
                     <Input
                         name="numberOfWeeks"
-                        type="number"
+                        type="monetary"
                         value={this.state.numberOfWeeks}
                         onChange={this.handleFloatChange} />
                 </label>
@@ -92,3 +92,4 @@ class GoalsDeadline extends React.Component {
 
 
 export default GoalsDeadline;
+

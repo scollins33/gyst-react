@@ -74,16 +74,16 @@ class Money extends React.Component {
 
         return (
                 <Grid container style={{backgroundColor: "#C8E1B5", justifyContent: "flex-start", }}>
-                <Grid className="graph" spacing={Number(spacing)} style={{backgroundColor: "#C8E1B5", width:'auto', height:'200px'}} >
+                <Grid className="graph" style={{backgroundColor: "#C8E1B5", width:'auto', height:'200px'}} >
                     <Graph bills={this.state} {...this.state} rent={this.state.rent} />
                 </Grid>
-                    <Grid container className="bills" spacing={Number(spacing)} style={{backgroundColor: "#C8E1B5", width:'auto', height:'auto', marginTop:'180px'}}>
+                    <Grid container className="bills" style={{backgroundColor: "#C8E1B5", width:'auto', height:'auto', marginTop:'80px'}}>
                 <Bills updateCategory={this.updateCategoryAmount}
                        handleChange={this.handleChange}
                        {...this.state}
                        submit={this.submit}/>
                     </Grid>
-                    <Grid container className="GoalsDeadline" spacing={Number(spacing)} style={{backgroundColor: "#C8E1B5", justifyContent: "left", height:'1000px', width:'300px',
+                    <Grid container className="GoalsDeadline" style={{backgroundColor: "#C8E1B5", justifyContent: "left", height:'1000px', width:'300px',
                         marginTop:'350px'}} >
                     <GoalsDeadline submit={this.submit}/>
                 </Grid>

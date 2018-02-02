@@ -9,15 +9,55 @@ class LoginSpace extends Component {
 
         this.state = {
             logged: props.loggedin,
+            name: "",
+            username: "",
+            email: "",
+            password: "",
             reg: false,
             log: false,
         };
     }
 
+
+
     toggleReg = () => this.state.reg ? this.setState({ reg: false }) : this.setState({ reg: true });
     toggleLog = () => this.state.log ? this.setState({ log: false }) : this.setState({ log: true });
 
+    handleChange = (event) => {
+        console.log(event.target);
+        const property = event.target.name;
+        const val = event.target.value;
+
+        this.setState({
+            [property]: val,
+        });
+    };
+
+    submit = (event) => {
+        event.preventDefault();
+        const data = {
+            name: this.state.name,
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password,
+        };
+
+        console.log(data);
+
+        fetch("/users/register",
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
+                this.toggleReg();
+            });
+    };
+
     render() {
+
         return(
             <div className={"d-flex flex-row"}>
                 <Button onClick={this.toggleReg}>REGISTER</Button>
@@ -25,21 +65,25 @@ class LoginSpace extends Component {
                     <form>
                         <div className="register-group">
                             <label>Name
-                                <input type="text" name={'Name'}/>
+                                <input type="text" name={'name'}
+                                       value={this.state.name} onChange={this.handleChange}/>
                             </label>
                             <label>Username
-                                <input type="test" name={'Username'}/>
+                                <input type="test" name={'username'}
+                                       value={this.state.username} onChange={this.handleChange}/>
                             </label>
                             <label>Email
-                                <input type="email" name={'Email'}/>
+                                <input type="email" name={'email'}
+                                       value={this.state.email}  onChange={this.handleChange}/>
                             </label>
                             <label>Password
-                                <input type="password" name={'Password'}/>
+                                <input type="password" name={'password'}
+                                       value={this.state.password} onChange={this.handleChange}/>
                             </label>
                             <label>Confirm Password
                                 <input type="password" name={'ConfirmPassword'}/>
                             </label>
-                            <input type="submit" value={'Submit'}/>
+                            <input type="submit" value={'Submit'} onClick={(event) => {this.submit(event)}}/>
                         </div>
                     </form>
                 </Dialog>
@@ -62,7 +106,7 @@ class LoginSpace extends Component {
         );
     }
 
-}
+};
 
 
     // else
