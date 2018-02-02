@@ -9,10 +9,10 @@ const Interaction = props => {
         <FormControl fullWidth>
 
             <InputLabel>Interaction</InputLabel>
-            <Input id={props._id} value={`${props.date} | ${props.method} | ${props.note}`} onChange={props.cb}
+            <Input id={props._id} value={props.note} onChange={props.cb}
                    multiline={true} rows={1} rowsMax={10}/>
 
-            <IconButton raised onClick={props.remove} color="secondary">
+            <IconButton raised color="secondary" onClick={props.cb2}>
                 <DeleteIcon />
             </IconButton>
 
