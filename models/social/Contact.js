@@ -54,7 +54,7 @@ const ContactSchema = new Schema({
         },
     },
     birthday: {
-        type: Date,
+        type: String,
     },
     interactions: [
         {
