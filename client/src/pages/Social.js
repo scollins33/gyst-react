@@ -34,7 +34,7 @@ class Social extends Component {
                 work: "",
                 email: "",
             },
-            birthday: 641520000,
+            birthday: "",
             interactions: [],
         };
 
@@ -46,16 +46,12 @@ class Social extends Component {
 
     // remove and delete Contact from User
     deleteContact = (pArrLoc) => {
-        let contacts = this.state.contacts;
-
         // if it has an id then it is in the DB
-        if (contacts[pArrLoc]._id != null) {
-            this.removeContact(contacts[pArrLoc]._id);
+        if (this.state.contacts[pArrLoc]._id != null) {
+            this.removeContact(this.state.contacts[pArrLoc]._id);
         }
-
-        // remove the selected Interaction from the array
+        const contacts = this.state.contacts;
         contacts.splice(pArrLoc, 1);
-
         this.setState({ contacts });
     };
 
@@ -82,6 +78,7 @@ class Social extends Component {
             .then(res => res.json())
             .then(data => {
                 this.setState({contacts: data.contacts});
+                console.log(data);
             });
     };
 
@@ -94,7 +91,6 @@ class Social extends Component {
     }
 
     render() {
-
         return (
             <div className={"container mt-3"}>
                 <div className={'row'}>
