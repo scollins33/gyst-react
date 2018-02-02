@@ -5,41 +5,58 @@ import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import NewEventModal from "../components/time/NewEventModal";
 import UpdateEventModal from "../components/time/UpdateEventModal";
+import Picker from '../components/time/Picker'
+
 const moment = require('moment');
 
 class Time extends Component {
     constructor(props){
         super(props);
         this.state={
+            displayDate: moment().format('YYYY-MM-DD'),
             workload: [],
             view: "daily",
             newEventModal: false,
             updateEventModal: false,
             newName: "",
-            newStart: "",
-            newEnd: "",
+            newStart: Date.now(),
+            newEnd: Date.now(),
             newClass: "",
             newNotes: "",
             newRepeat: "",
             updateName: "",
-            updateStart: "",
-            updateEnd: "",
+            updateStart: Date.now(),
+            updateEnd: Date.now(),
             updateClass: "",
             updateNotes: "",
             updateRepeat: "",
-            updateModalId: ""
+            updateModalId: "",
+            classOptions: ["work", "focus", "play"],
+            repeatOptions: ["never", "daily", "weekly", "monthly", "yearly"]
         }
     }
 
     loadEvents =()=>{
+
         fetch("/api/getEvents",{method: "GET"})
             .then(res=> res.json())
-            .then(data=> this.setState({workload: data}))
+            .then(data=> {
+                const displayedDates = data.filter(event=>{
+                    return (
+                        (event.repeat === "daily")||
+                        (event.repeat === "never" && moment(event.startTime).format("LL") === moment(this.state.displayDate).format("LL"))||
+                        (event.repeat === "weekly" && moment(event.startTime).format('dddd') === moment(this.state.displayDate).format('dddd')) ||
+                        (event.repeat === "monthly" && moment(event.startTime).format("Do") === moment(this.state.displayDate).format("Do") )||
+                        (event.repeat === "yearly" && moment(event.startTime).format("MMM Do") === moment(this.state.displayDate).format("MMM Do"))
+                    )
+                });
+                this.setState({workload: displayedDates})
+            })
             .catch(err=>console.log(err));
     };
 
     componentDidMount(){
-       this.loadEvents()
+        this.loadEvents()
     }
 
     handleAddEvent=(e)=>{
@@ -59,8 +76,8 @@ class Time extends Component {
         console.log(newEvent);
 
         const postEvent = new Request("/api/addEvent", {
-                method: "POST",
-                headers: {
+            method: "POST",
+            headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
@@ -71,6 +88,7 @@ class Time extends Component {
             .then(res=> res.json())
             .catch(err=> console.log(err));
         console.log("event submitted");
+        this.setState({newEventModal: !this.state.newEventModal});
         this.loadEvents();
     };
 
@@ -90,10 +108,10 @@ class Time extends Component {
             repeat: this.state.updateRepeat
         };
 
-        console.log('????????????///?????????????')
+        console.log('????????????///?????????????');
         console.log(this.state);
         console.log(updatedEvent);
-        console.log('????????????///?????????????')
+        console.log('????????????///?????????????');
 
         const query = new Request("/api/updateEvent/" + this.state.updateModalId, {
             method: "POST",
@@ -108,6 +126,7 @@ class Time extends Component {
             .then(res=> res.json())
             .catch(err=> console.log(err));
         console.log("event submitted");
+        this.setState({updateEventModal: !this.state.updateEventModal});
         this.loadEvents();
     };
 
@@ -134,6 +153,42 @@ class Time extends Component {
         console.log(this.state)
     };
 
+    handleTimeChange=(e)=>{
+        e.preventDefault();
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState({ [name]: moment(value, moment.HTML5_FMT.DATETIME_LOCAL)});
+        console.log(this.state);
+    };
+
+    handleDateChange=(e)=>{
+        e.preventDefault();
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState({ [name]: moment(value).format('YYYY-MM-DD')});
+        console.log(this.state);
+        this.loadEvents();
+    };
+
+    handleRepeatSelect=e=>{
+        const value = e.target.value;
+        this.setState({ updateRepeat: value });
+    };
+
+    handleClassSelect=e=>{
+        const value = e.target.value;
+        this.setState({ updateClass: value });
+
+    };
+    handleNewClass=e=>{
+        const value = e.target.value;
+        this.setState({ newClass: value });
+    };
+
+    handleNewRepeat=e=>{
+        const value = e.target.value;
+        this.setState({ newRepeat: value });
+    };
 
     onAddClick=(e)=>{
         e.preventDefault();
@@ -153,11 +208,18 @@ class Time extends Component {
                     <Button fab color="primary" aria-label="add" onClick={(e)=>this.onAddClick(e)}>
                         <AddIcon />
                     </Button>
+                    <Picker
+                        title="Diplay Date"
+                        name="displayDate"
+                        value={this.state.displayDate}
+                        type="date"
+                        handleChange={this.handleDateChange}
+                    />
                 </div>
                 <div className={"container"}>
                     <div className={"row"}>
                         <div className={"col-12 col-sm-6 my-3"}>
-                            {this.state.workload.map((task, i)=><Event key={i} id={task._id} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} notes={task.notes} update={this.onUpdateClick} delete={this.handleDelete}/>)}
+                            {this.state.workload.map((task, i)=><Event key={i} id={task._id} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} class={task.class} notes={task.notes} update={this.onUpdateClick} delete={this.handleDelete}/>)}
                         </div>
                         <TimeSummary/>
                         <NewEventModal
@@ -165,13 +227,31 @@ class Time extends Component {
                             onClose={(e)=>this.onAddClick(e)}
                             onClick={(e)=> this.handleAddEvent(e)}
                             handleInputChange={this.handleInputChange}
+                            handleTimeChange={this.handleTimeChange}
+                            handleRepeatChange={this.handleNewRepeat}
+                            handleClassChange={this.handleNewClass}
+                            startTime={this.state.newStart}
+                            endTime={this.state.newEnd}
+                            classRadio={this.state.classOptions}
+                            classChecked={this.state.newClass}
+                            repeatRadio={this.state.repeatOptions}
+                            repeatChecked={this.state.newRepeat}
                         />
                         <UpdateEventModal
                             open={this.state.updateEventModal}
                             onClose={(e)=>this.onUpdateClick(e)}
                             onClick={(e)=> this.handleUpdateEvent(e)}
                             handleInputChange={this.handleInputChange}
+                            handleTimeChange={this.handleTimeChange}
+                            handleRepeatChange={this.handleRepeatSelect}
+                            handleClassChange={this.handleClassSelect}
+                            startTime={this.state.updateStart}
+                            endTime={this.state.updateEnd}
                             id={this.state.updateModalId}
+                            classRadio={this.state.classOptions}
+                            classChecked={this.state.updateClass}
+                            repeatRadio={this.state.repeatOptions}
+                            repeatChecked={this.state.updateRepeat}
                         />
                     </div>
                 </div>
