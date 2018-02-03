@@ -98,7 +98,7 @@ class Social extends Component {
                 position: "absolute",
                 width: "100%",
                 height: "100%",
-                backgroundColor: "#C8E1B5"
+                backgroundColor: "#dab5ff"
             }}>
             <div className={"container mt-3"}>
                 <div className={'row'}>
