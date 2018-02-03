@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
+import Dialog from 'material-ui/Dialog';
 import Button from "material-ui/Button";
-import Input from "material-ui/Input";
-
 
 
 class LoginSpace extends Component {
@@ -19,8 +17,6 @@ class LoginSpace extends Component {
             log: false,
         };
     }
-
-
 
     toggleReg = () => this.state.reg ? this.setState({ reg: false }) : this.setState({ reg: true });
     toggleLog = () => this.state.log ? this.setState({ log: false }) : this.setState({ log: true });
@@ -56,8 +52,6 @@ class LoginSpace extends Component {
                 console.log(res);
                 this.toggleReg();
             });
-
-
     };
 
     render() {
@@ -65,31 +59,29 @@ class LoginSpace extends Component {
         return(
             <div className={"d-flex flex-row"}>
                 <Button onClick={this.toggleReg}>REGISTER</Button>
-                <Dialog open={this.state.reg} >
-                    <form >
-                        <div className="register-group" >
+                <Dialog open={this.state.reg}>
+                    <form>
+                        <div className="register-group">
                             <label>Name
                                 <input type="text" name={'name'}
-                                       value={this.state.name} onChange={this.handleChange} style={{marginRight:'10px'}}/>
+                                       value={this.state.name} onChange={this.handleChange}/>
                             </label>
                             <label>Username
-                                <input type="test" name={'username'}
-                                       value={this.state.username} onChange={this.handleChange} style={{marginRight:'10px'}}/>
+                                <input type="username" name={'username'}
+                                       value={this.state.username} onChange={this.handleChange}/>
                             </label>
                             <label>Email
                                 <input type="email" name={'email'}
-                                       value={this.state.email}  onChange={this.handleChange} style={{marginRight:'10px'}}/>
+                                       value={this.state.email}  onChange={this.handleChange}/>
                             </label>
                             <label>Password
                                 <input type="password" name={'password'}
-                                       value={this.state.password} onChange={this.handleChange} style={{marginRight:'10px'}}/>
+                                       value={this.state.password} onChange={this.handleChange}/>
                             </label>
                             <label>Confirm Password
-                                <input type="password" name={'ConfirmPassword'} style={{marginRight:'10px'}}/>
+                                <input type="password" name={'ConfirmPassword'}/>
                             </label>
-                            <Button raised type="submit" value={'Submit'} onClick={(event) => {this.submit(event)}}>
-                                Submit
-                            </Button>
+                            <input type="submit" value={'Submit'} onClick={(event) => {this.submit(event)}}/>
                         </div>
                     </form>
                 </Dialog>
@@ -99,16 +91,12 @@ class LoginSpace extends Component {
                     <form>
                         <div className="login-group">
                             <label>Username
-                                <input type="text" name={'username'}
-                                       />
+                                <input type="text" name={'Username'}/>
                             </label>
                             <label>Password
-                                <input type="password" name={'password'}
-                                        style={{marginRight:'10px'}}/>
+                                <input type="password" name={'Password'}/>
                             </label>
-                            <Button raised type="submit" value={'Submit'}>
-                            Submit
-                        </Button>
+                            <input type="submit" value={'Submit'}/>
                         </div>
                     </form>
                 </Dialog>
@@ -119,15 +107,15 @@ class LoginSpace extends Component {
 };
 
 
-// else
-//
-// {
-//     return(
-//         <div>
-//         <a href={"#"} className={"mx-1"}><p>logout</p></a>
-//     </div>
-//     );
-// }
+    // else
+    //
+    // {
+    //     return(
+    //         <div>
+    //         <a href={"#"} className={"mx-1"}><p>logout</p></a>
+    //     </div>
+    //     );
+    // }
 
 
 
