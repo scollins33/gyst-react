@@ -1,0 +1,17 @@
+import React,{Component} from 'react';
+
+class ValidatorText extends Component{
+    constructor(props){
+        super(props);
+    }
+   render() {
+       return (
+           <p className={{display: this.props.display, color: "#fa1414"}}>
+               Please input all values before you submit
+           </p>
+       )
+   }
+}
+
+
+export default ValidatorText;

@@ -1,0 +1,12 @@
+import React,{Component} from 'react';
+
+const ValidatorText = props =>{
+       return (
+           <p className={{display: props.display, color: "#fa1414"}}>
+               Please input all values before you submit
+           </p>
+       )
+}
+
+
+export default ValidatorText;

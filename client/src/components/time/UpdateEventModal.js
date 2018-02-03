@@ -2,6 +2,7 @@ import React from 'react'
 import Modal from 'material-ui/Modal'
 import Picker from './Picker'
 import RadioButton from "./RadioButton";
+import ValidatorText from "./ValidatiorText";
 
 const UpdateEventModal = props =>{
     return(
@@ -62,6 +63,7 @@ const UpdateEventModal = props =>{
                 <button onClick={(e)=>props.onClick(e, props.id)}>
                     Submit
                 </button>
+                <ValidatorText display={props.validatorDisplay}/>
             </div>
         </Modal>
     )

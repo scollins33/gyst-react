@@ -24,6 +24,7 @@ class Time extends Component {
             newClass: "",
             newNotes: "",
             newRepeat: "",
+            newValidator: "none",
             updateName: "",
             updateStart: Date.now(),
             updateEnd: Date.now(),
@@ -31,6 +32,7 @@ class Time extends Component {
             updateNotes: "",
             updateRepeat: "",
             updateModalId: "",
+            updateValidator: "none",
             classOptions: ["work", "focus", "play"],
             repeatOptions: ["never", "daily", "weekly", "monthly", "yearly"]
         }
@@ -62,7 +64,17 @@ class Time extends Component {
     handleAddEvent=(e)=>{
         if (!this.state.newEventModal){
             return
+        } else if(
+            this.state.newName === "" ||
+            this.state.newStart===""||
+            this.state.newEnd===""||
+            this.state.newNotes===""||
+            this.state.newRepeat===""
+        ){
+            this.setState({newValidator: "inline-block"})
+            return
         }
+
         e.preventDefault();
         const newEvent = {
             name: this.state.newName,
@@ -88,13 +100,22 @@ class Time extends Component {
             .then(res=> res.json())
             .catch(err=> console.log(err));
         console.log("event submitted");
-        this.setState({newEventModal: !this.state.newEventModal});
+        this.setState({newEventModal: !this.state.newEventModal, newValidator: "none"});
         this.loadEvents();
     };
 
 
     handleUpdateEvent=(e)=>{
         if (!this.state.updateEventModal){
+            return
+        } else if (
+            this.state.updateName === "" ||
+            this.state.updateStart===""||
+            this.state.updateEnd===""||
+            this.state.updateNotes===""||
+            this.state.updateRepeat===""
+        ){
+            this.setState({updateValidator: "inline-block"});
             return
         }
         e.preventDefault();
@@ -126,7 +147,7 @@ class Time extends Component {
             .then(res=> res.json())
             .catch(err=> console.log(err));
         console.log("event submitted");
-        this.setState({updateEventModal: !this.state.updateEventModal});
+        this.setState({updateEventModal: !this.state.updateEventModal, updateValidator: "none"});
         this.loadEvents();
     };
 
@@ -236,6 +257,7 @@ class Time extends Component {
                             classChecked={this.state.newClass}
                             repeatRadio={this.state.repeatOptions}
                             repeatChecked={this.state.newRepeat}
+                            validatorDisplay={this.state.newValidator}
                         />
                         <UpdateEventModal
                             open={this.state.updateEventModal}
@@ -252,6 +274,7 @@ class Time extends Component {
                             classChecked={this.state.updateClass}
                             repeatRadio={this.state.repeatOptions}
                             repeatChecked={this.state.updateRepeat}
+                            validatorDisplay={this.state.updateValidator}
                         />
                     </div>
                 </div>

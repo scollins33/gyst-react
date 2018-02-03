@@ -3,6 +3,7 @@ import Modal from 'material-ui/Modal'
 import Button from 'material-ui/Button'
 import Picker from './Picker'
 import RadioButton from './RadioButton'
+import ValidatorText from "./ValidatiorText";
 
 const rowStyle = "d-flex d-row mb-2";
 
@@ -72,6 +73,7 @@ const EventModal = props =>{
                     <Button raised color="secondary"  onClick={(e)=>props.onClick(e)}>
                         submit
                     </Button>
+                    <ValidatorText display={props.validatorDisplay}/>
                 </div>
             </div>
         </Modal>
