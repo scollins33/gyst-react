@@ -87,6 +87,7 @@ class LoginSpace extends Component {
                     localStorage.setItem("user", data.userId);
                     this.setState({ logged: true });
                     this.toggleLog();
+                    window.location.reload();
                 } else {
                     // fail to login
                 }
@@ -96,6 +97,7 @@ class LoginSpace extends Component {
     logout = () => {
         localStorage.removeItem('user');
         this.setState({ logged: false });
+        window.location.reload();
     };
 
 
