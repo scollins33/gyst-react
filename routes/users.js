@@ -27,40 +27,44 @@ router.post('/register', function(req, res){
     const password = req.body.password;
     const password2 = req.body.password2;
 
-    // Validation
-    req.checkBody('name', 'Name is required').notEmpty();
-    req.checkBody('email', 'Email is required').notEmpty();
-    req.checkBody('email', 'Email is not valid').isEmail();
-    req.checkBody('username', 'Username is required').notEmpty();
-    req.checkBody('password', 'Password is required').notEmpty();
-    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+    // // Validation
+    // if (!name) {
+    //     //req.flash('success_msg', 'Name is required');
+    // }
+    // req.checkBody('name', 'Name is required').notEmpty();
+    // req.checkBody('email', 'Email is required').notEmpty();
+    // req.checkBody('email', 'Email is not valid').isEmail();
+    // req.checkBody('username', 'Username is required').notEmpty();
+    // req.checkBody('password', 'Password is required').notEmpty();
+    // req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
-    const errors = req.validationErrors();
+    const errors = '';
 
     if(errors){
         res.render('register',{
-            errors:errors
+            errors:'errors'
         });
     } else {
-        const newUser = new User({
+        const newUser = new db.User({
             name: name,
             email:email,
             username: username,
             password: password
         });
 
-        User.createUser(newUser, function(err, user){
+        db.User.create(newUser, function(err, user){
             if(err) throw err;
             console.log(user);
         });
 
-        req.flash('success_msg', 'You are registered and can now login');
+        // req.flash('success_msg', 'You are registered and can now login');
 
-        res.redirect('/users/login');
+        res.redirect('/');
+
     }
 });
 
-passport.use(new LocalStrategy(
+passport.use(new LocalStrategy (
     function(username, password, done) {
         db.User.getUserByUsername(username, function(err, user){
             if(err) throw err;
@@ -92,7 +96,8 @@ passport.deserializeUser(function(id, done) {
 router.post('/login',
     passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
     function(req, res) {
-        res.redirect('/');
+        res.redirect('/')
+
     });
 
 router.get('/logout', function(req, res){

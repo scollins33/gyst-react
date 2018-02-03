@@ -273,6 +273,9 @@ router.post('/updateFinances/:financesId', (req, res) => {
         .catch(err => res.status(422).json(err));
 });
 
+
+/*---------------*/
+
 // Helper to DRY up Contact Update
 function updateHelper (contactID, interactArray, pRes) {
     interactArray.map((each) => {
@@ -349,8 +352,6 @@ router.post('/updateContact', (req, res) => {
                     methods: req.body.methods,
                 })
             .then(() => {
-                console.log(req.body.birthday);
-                console.log(typeof req.body.birthday);
                 // use update helper to handle Interaction update/creation
                 updateHelper(req.body.id, req.body.interactions, res);
             })

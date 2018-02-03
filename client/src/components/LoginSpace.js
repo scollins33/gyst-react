@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
+import Dialog from 'material-ui/Dialog';
 import Button from "material-ui/Button";
 
 
@@ -17,8 +17,6 @@ class LoginSpace extends Component {
             log: false,
         };
     }
-
-
 
     toggleReg = () => this.state.reg ? this.setState({ reg: false }) : this.setState({ reg: true });
     toggleLog = () => this.state.log ? this.setState({ log: false }) : this.setState({ log: true });
@@ -56,6 +54,28 @@ class LoginSpace extends Component {
             });
     };
 
+    lgSubmit = (event) => {
+        event.preventDefault();
+        const data = {
+            username: this.state.username,
+            password: this.state.password,
+        };
+
+        console.log(data);
+
+        fetch("/users/submit",
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
+                this.toggleLog();
+            });
+    };
+
+
     render() {
 
         return(
@@ -64,14 +84,15 @@ class LoginSpace extends Component {
                 <Dialog open={this.state.reg}>
                     <form>
                         <div className="register-group">
+
                             <label>Name
                                 <input type="text" name={'name'}
                                        value={this.state.name} onChange={this.handleChange}/>
                             </label>
                             <label>Username
-                                <input type="test" name={'username'}
+                                <input type="username" name={'username'}
                                        value={this.state.username} onChange={this.handleChange}/>
-                            </label>
+                            </label><Button raised onClick={this.toggleReg}>X</Button>
                             <label>Email
                                 <input type="email" name={'email'}
                                        value={this.state.email}  onChange={this.handleChange}/>
@@ -83,22 +104,29 @@ class LoginSpace extends Component {
                             <label>Confirm Password
                                 <input type="password" name={'ConfirmPassword'}/>
                             </label>
-                            <input type="submit" value={'Submit'} onClick={(event) => {this.submit(event)}}/>
+                            <Button raised type="submit" value={'Submit'} onClick={(event) => {this.submit(event)}}>
+                            Submit
+                            </Button>
                         </div>
                     </form>
                 </Dialog>
 
                 <Button onClick={this.toggleLog}>LOGIN</Button>
-                <Dialog open={this.state.log}>
+                <Dialog open={this.state.log} >
                     <form>
                         <div className="login-group">
                             <label>Username
-                                <input type="text" name={'Username'}/>
+                                <input type="username" name={'username'}
+                                       value={this.state.username} onChange={this.handleChange}/>
                             </label>
                             <label>Password
-                                <input type="password" name={'Password'}/>
+                                <input type="password" name={'password'}
+                                       value={this.state.password} onChange={this.handleChange}/>
                             </label>
-                            <input type="submit" value={'Submit'}/>
+                            <Button raised type="submit" value={'Submit'} onClick={(event) => {this.lgSubmit(event)}}>
+                                Submit
+                            </Button>
+                            <Button raised onClick={this.toggleLog}>X</Button>
                         </div>
                     </form>
                 </Dialog>

@@ -34,7 +34,7 @@ class Social extends Component {
                 work: "",
                 email: "",
             },
-            birthday: "",
+            birthday: 1517461200,
             interactions: [],
         };
 
@@ -78,7 +78,6 @@ class Social extends Component {
             .then(res => res.json())
             .then(data => {
                 this.setState({contacts: data.contacts});
-                console.log(data);
             });
     };
 
@@ -92,6 +91,12 @@ class Social extends Component {
 
     render() {
         return (
+            <div style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#C8E1B5"
+            }}>
             <div className={"container mt-3"}>
                 <div className={'row'}>
                         <Button fab color="primary" aria-label="New Contact"
@@ -117,9 +122,8 @@ class Social extends Component {
                             />;
                         })}
                     </div>
-
             </div>
-
+            </div>
         );
     }
 }

@@ -2,25 +2,9 @@ import React from 'react';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
 import GoalsDeadline from "../components/money/GoalsDeadline";
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+// import PropTypes from 'prop-types';
+// import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-import { FormLabel, FormControlLabel } from 'material-ui/Form';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import Paper from 'material-ui/Paper';
-
-const styles = theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        height: 140,
-        width: 100,
-    },
-    control: {
-        padding: theme.spacing.unit * 2,
-    },
-});
 
 
 
@@ -68,9 +52,9 @@ class Money extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
-        const { spacing } = this.state;
-        const status = "Let's Manage Your Finances!";
+        // const { classes } = this.props;
+        // const { spacing } = this.state;
+        // const status = "Let's Manage Your Finances!";
 
         return (
                 <Grid container style={{backgroundColor: "#C8E1B5", justifyContent: "flex-start", }}>
