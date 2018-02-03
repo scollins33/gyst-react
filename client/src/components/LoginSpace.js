@@ -56,6 +56,8 @@ class LoginSpace extends Component {
                 console.log(res);
                 this.toggleReg();
             });
+
+
     };
 
     render() {
@@ -97,12 +99,14 @@ class LoginSpace extends Component {
                     <form>
                         <div className="login-group">
                             <label>Username
-                                <input type="text" name={'Username'}/>
+                                <input type="text" name={'username'}
+                                       />
                             </label>
                             <label>Password
-                                <input type="password" name={'Password'} style={{marginRight:'10px'}}/>
+                                <input type="password" name={'password'}
+                                        style={{marginRight:'10px'}}/>
                             </label>
-                            <Button raised type="submit" value={'Submit'} >
+                            <Button raised type="submit" value={'Submit'}>
                             Submit
                         </Button>
                         </div>
