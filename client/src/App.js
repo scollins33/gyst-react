@@ -1,7 +1,7 @@
 // import React, Router, and MUI
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 // import pages
 import Time from './pages/Time';
@@ -13,11 +13,17 @@ import LoginSpace from "./components/LoginSpace";
 import './App.css';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.theme = createMuiTheme();
+    }
+
     render () {
         return (
             <Router>
-                <MuiThemeProvider>
-                    <Header mainpage={true} login={<LoginSpace loggedin={false}/>}/>
+                <MuiThemeProvider theme={this.theme}>
+                    <Header mainpage={true} />
                     <Switch>
                         <Route exact path="/time" component={Time}/>
                         <Route exact path="/money" component={Money}/>

@@ -1,0 +1,42 @@
+USER
+    {
+      "username": "tester2",
+      "password": "pass",
+      "name": "Tester Testing",
+    }
+
+CONTACTS
+    {
+      "name": "Kim",
+      "favorite": true,
+      "relation": "Friend",
+      "methods": {
+        "mobile": "770-333-4412",
+        "work": "770-333-4412",
+        "email": "kim@gmx.com"
+      },
+      "birthday": 641520000
+    },
+    {
+      "name": "Mike",
+      "favorite": false,
+      "relation": "Family",
+      "methods": {
+        "mobile": "770-333-4412",
+        "work": "770-333-4412",
+        "email": "mike@gmail.com"
+      },
+      "birthday": 641520000
+    }
+
+INTERACTIONS
+    {
+      "date": 641520000,
+      "method": "mobile",
+      "note": "this is a note"
+    },
+    {
+        "date": 641520000,
+        "method": "mobile",
+        "note": "this is also note"
+    }
