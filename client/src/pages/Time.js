@@ -240,10 +240,10 @@ class Time extends Component {
                         />
                     </div>
                     <div className={"row"}>
-                        <div className={"col-12 col-sm-6 my-3"}>
+                        {/*<div className={"col-12 col-sm-6 my-3"}>*/}
                             {this.state.workload.map((task, i)=><Event key={i} id={task._id} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} class={task.class} notes={task.notes} update={this.onUpdateClick} delete={this.handleDelete}/>)}
-                        </div>
-                        <TimeSummary/>
+                        {/*</div>*/}
+                        {/*<TimeSummary/>*/}
                         <NewEventModal
                             open={this.state.newEventModal}
                             onClose={(e)=>this.onAddClick(e)}
