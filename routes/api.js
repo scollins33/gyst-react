@@ -349,8 +349,6 @@ router.post('/updateContact', (req, res) => {
                     methods: req.body.methods,
                 })
             .then(() => {
-                console.log(req.body.birthday);
-                console.log(typeof req.body.birthday);
                 // use update helper to handle Interaction update/creation
                 updateHelper(req.body.id, req.body.interactions, res);
             })

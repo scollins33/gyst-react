@@ -11,6 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import FavoriteBorder from 'material-ui-icons/FavoriteBorder';
 import ModeEdit from 'material-ui-icons/ModeEdit';
+import Divider from 'material-ui/Divider';
 import Interaction from "./Interaction";
 
 const moment = require('moment');
@@ -35,9 +36,6 @@ class Contact extends Component {
         this.user = props.user;
         this.id = props.id;
 
-        console.log(props.birthday);
-        console.log(parseInt(props.birthday, 10));
-        console.log(moment(parseInt(props.birthday, 10)).format('YYYY-MM-DD'));
         // State matches the JSON from the MongoDB Schema
         // Methods is nested object with home/work/mobile/email
         // Interactions is an array, populated from Interactions schema
@@ -48,8 +46,9 @@ class Contact extends Component {
             mobile: props.methods.mobile,
             work: props.methods.work,
             email: props.methods.email,
-            birthday: moment(parseInt(props.birthday, 10)).format('YYYY-MM-DD'),
+            birthday: moment.unix(props.birthday).format('YYYY-MM-DD'),
             interactions: props.interactions,
+            lastInteract: null,
             open: false,
         };
     }
@@ -98,9 +97,9 @@ class Contact extends Component {
         const newInteract = {
             _id: null,
             contact: null,
-            date: Date.now(),
+            date: moment().unix(),
             method: "",
-            note: "Enter notes...",
+            note: "",
         };
 
         // add the new Interaction to the head of the array
@@ -172,7 +171,7 @@ class Contact extends Component {
             id: this.id,
             name: this.state.name,
             relation: this.state.relation,
-            birthday: moment(this.state.birthday, 'YYYY-MM-DD').unix().toString(),
+            birthday: moment(this.state.birthday, 'YYYY-MM-DD').unix(),
             methods: {
                 mobile: this.state.mobile,
                 work: this.state.work,
@@ -180,8 +179,6 @@ class Contact extends Component {
             },
             interactions: this.state.interactions,
         };
-
-        console.log(data);
 
         fetch("/api/updateContact",
             {
@@ -201,6 +198,17 @@ class Contact extends Component {
                 React Lifecycle
     ------------------------------------ */
 
+    componentDidMount() {
+        if (this.state.interactions.length === 0) {
+            this.setState({ lastInteraction: "None" });
+        } else {
+            this.setState(
+                {
+                    lastInteraction: moment.unix(this.state.interactions[0].date).format('YYYY-MM-DD')
+                });
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         this.user = nextProps.user;
         this.id = nextProps.id;
@@ -212,17 +220,15 @@ class Contact extends Component {
             mobile: nextProps.methods.mobile,
             work: nextProps.methods.work,
             email: nextProps.methods.email,
-            birthday: moment(parseInt(nextProps.birthday, 10)).format('YYYY-MM-DD'),
+            birthday: moment.unix(nextProps.birthday).format('YYYY-MM-DD'),
             interactions: nextProps.interactions,
+            lastInteraction: moment.unix(nextProps.interactions[0].date).format('YYYY-MM-DD'),
             open: false,
         });
     }
 
     render() {
         const { classes } = this.props;
-
-        console.log(this.state.birthday);
-        console.log(typeof this.state.birthday);
 
         return (
                 <div className={"col-lg-4 col-md-12 mb-3"}>
@@ -239,7 +245,8 @@ class Contact extends Component {
                         <CardContent>
                             <Typography type="headline">{this.state.name}</Typography>
                             <Typography type="body2">Relation: {this.state.relation}</Typography>
-                            <Typography type="body2">Last Interaction: {this.state.birthday}</Typography>
+                            <Typography type="body2">
+                                Last Interaction: {this.state.lastInteraction}</Typography>
                         </CardContent>
                     </Card>
 
@@ -279,21 +286,23 @@ class Contact extends Component {
                                                   checked={this.state.relation === 'Acquaintance'}/>
                             </div>
 
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Mobile</InputLabel>
-                                <Input id="mobile" value={this.state.mobile}
-                                       onChange={this.handleChange} />
-                            </FormControl>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Work</InputLabel>
-                                <Input id="work" value={this.state.work}
-                                       onChange={this.handleChange} />
-                            </FormControl>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Email</InputLabel>
-                                <Input id="email" value={this.state.email}
-                                       onChange={this.handleChange} />
-                            </FormControl>
+                            <div className={"mb-4"}>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Mobile</InputLabel>
+                                    <Input id="mobile" value={this.state.mobile}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Work</InputLabel>
+                                    <Input id="work" value={this.state.work}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Email</InputLabel>
+                                    <Input id="email" value={this.state.email}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                            </div>
 
                             {this.state.interactions.map((each, i) => {
                                 return <Interaction key={i} {...each}

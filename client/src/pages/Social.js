@@ -34,7 +34,7 @@ class Social extends Component {
                 work: "",
                 email: "",
             },
-            birthday: "",
+            birthday: 1517461200,
             interactions: [],
         };
 
@@ -78,7 +78,6 @@ class Social extends Component {
             .then(res => res.json())
             .then(data => {
                 this.setState({contacts: data.contacts});
-                console.log(data);
             });
     };
 
