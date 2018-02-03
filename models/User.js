@@ -29,13 +29,13 @@ const UserSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Contact",
         }
-        ],
+    ],
     events: [
         {
             type: Schema.Types.ObjectId,
             ref: "Event",
         }
-        ]
+    ]
 });
 
 const User = mongoose.model("User", UserSchema);

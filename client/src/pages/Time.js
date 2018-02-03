@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Event from '../components/time/Event'
-import TimeSummary from "../components/time/TimeSummary";
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import NewEventModal from "../components/time/NewEventModal";
@@ -12,7 +11,11 @@ const moment = require('moment');
 class Time extends Component {
     constructor(props){
         super(props);
+        const logged=!!localStorage.getItem('user');
+
         this.state={
+            user: localStorage.getItem('user'),
+            logged: logged,
             displayDate: moment().format('YYYY-MM-DD'),
             workload: [],
             view: "daily",
@@ -40,7 +43,7 @@ class Time extends Component {
 
     loadEvents =()=>{
 
-        fetch("/api/getEvents",{method: "GET"})
+        fetch(`/api/getEvents/${this.state.user}`,{method: "GET"})
             .then(res=> res.json())
             .then(data=> {
                 const displayedDates = data.filter(event=>{
@@ -52,6 +55,7 @@ class Time extends Component {
                         (event.repeat === "yearly" && moment(event.startTime).format("MMM Do") === moment(this.state.displayDate).format("MMM Do"))
                     )
                 });
+                console.log(displayedDates);
                 this.setState({workload: displayedDates})
             })
             .catch(err=>console.log(err));
@@ -87,7 +91,7 @@ class Time extends Component {
 
         console.log(newEvent);
 
-        const postEvent = new Request("/api/addEvent", {
+        const postEvent = new Request(`/api/addEvent/${this.state.user}`, {
             method: "POST",
             headers: {
                 Accept: 'application/json',
@@ -240,10 +244,7 @@ class Time extends Component {
                         />
                     </div>
                     <div className={"row"}>
-                        {/*<div className={"col-12 col-sm-6 my-3"}>*/}
                             {this.state.workload.map((task, i)=><Event key={i} id={task._id} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} class={task.class} notes={task.notes} update={this.onUpdateClick} delete={this.handleDelete}/>)}
-                        {/*</div>*/}
-                        {/*<TimeSummary/>*/}
                         <NewEventModal
                             open={this.state.newEventModal}
                             onClose={(e)=>this.onAddClick(e)}
