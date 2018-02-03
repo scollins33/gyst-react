@@ -273,6 +273,9 @@ router.post('/updateFinances/:financesId', (req, res) => {
         .catch(err => res.status(422).json(err));
 });
 
+
+/*---------------*/
+
 // Helper to DRY up Contact Update
 function updateHelper (contactID, interactArray, pRes) {
     interactArray.map((each) => {

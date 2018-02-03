@@ -64,7 +64,7 @@ router.post('/register', function(req, res){
     }
 });
 
-passport.use(new LocalStrategy(
+passport.use(new LocalStrategy (
     function(username, password, done) {
         db.User.getUserByUsername(username, function(err, user){
             if(err) throw err;
