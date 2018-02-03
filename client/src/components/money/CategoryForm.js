@@ -1,6 +1,6 @@
 import React from 'react';
 import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl, FormControlLabel } from 'material-ui/Form';
+import { FormControl} from 'material-ui/Form';
 
 
 class CategoryForm extends React.Component {

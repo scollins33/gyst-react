@@ -54,6 +54,28 @@ class LoginSpace extends Component {
             });
     };
 
+    lgSubmit = (event) => {
+        event.preventDefault();
+        const data = {
+            username: this.state.username,
+            password: this.state.password,
+        };
+
+        console.log(data);
+
+        fetch("/users/submit",
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
+                this.toggleLog();
+            });
+    };
+
+
     render() {
 
         return(
@@ -90,16 +112,18 @@ class LoginSpace extends Component {
                 </Dialog>
 
                 <Button onClick={this.toggleLog}>LOGIN</Button>
-                <Dialog open={this.state.log}>
+                <Dialog open={this.state.log} >
                     <form>
                         <div className="login-group">
                             <label>Username
-                                <input type="text" name={'Username'}/>
+                                <input type="username" name={'username'}
+                                       value={this.state.username} onChange={this.handleChange}/>
                             </label>
                             <label>Password
-                                <input type="password" name={'Password'}/>
+                                <input type="password" name={'password'}
+                                       value={this.state.password} onChange={this.handleChange}/>
                             </label>
-                            <Button raised type="submit" value={'Submit'}>
+                            <Button raised type="submit" value={'Submit'} onClick={(event) => {this.lgSubmit(event)}}>
                                 Submit
                             </Button>
                             <Button raised onClick={this.toggleLog}>X</Button>

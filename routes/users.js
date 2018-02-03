@@ -27,10 +27,10 @@ router.post('/register', function(req, res){
     const password = req.body.password;
     const password2 = req.body.password2;
 
-    // Validation
-    if (!name) {
-        //req.flash('success_msg', 'Name is required');
-    }
+    // // Validation
+    // if (!name) {
+    //     //req.flash('success_msg', 'Name is required');
+    // }
     // req.checkBody('name', 'Name is required').notEmpty();
     // req.checkBody('email', 'Email is required').notEmpty();
     // req.checkBody('email', 'Email is not valid').isEmail();
