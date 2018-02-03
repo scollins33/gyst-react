@@ -91,6 +91,12 @@ class Social extends Component {
 
     render() {
         return (
+            <div style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#C8E1B5"
+            }}>
             <div className={"container mt-3"}>
                 <div className={'row'}>
                         <Button fab color="primary" aria-label="New Contact"
@@ -116,9 +122,8 @@ class Social extends Component {
                             />;
                         })}
                     </div>
-
             </div>
-
+            </div>
         );
     }
 }

@@ -203,7 +203,7 @@ class Time extends Component {
 
     render() {
         return (
-            <div style={{height: "auto", backgroundColor: "#F0C39E"}}>
+            <div style={{ position: "absolute", width: "100%", height: "100%", backgroundColor: "#F0C39E"}}>
                 <div className={"p-2 d-flex justify-space-around"}>
                     <Button fab color="primary" aria-label="add" onClick={(e)=>this.onAddClick(e)}>
                         <AddIcon />
