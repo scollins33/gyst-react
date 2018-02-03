@@ -11,6 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import FavoriteBorder from 'material-ui-icons/FavoriteBorder';
 import ModeEdit from 'material-ui-icons/ModeEdit';
+import Divider from 'material-ui/Divider';
 import Interaction from "./Interaction";
 
 const moment = require('moment');
@@ -98,7 +99,7 @@ class Contact extends Component {
             contact: null,
             date: moment().unix(),
             method: "",
-            note: "Enter notes...",
+            note: "",
         };
 
         // add the new Interaction to the head of the array
@@ -285,21 +286,23 @@ class Contact extends Component {
                                                   checked={this.state.relation === 'Acquaintance'}/>
                             </div>
 
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Mobile</InputLabel>
-                                <Input id="mobile" value={this.state.mobile}
-                                       onChange={this.handleChange} />
-                            </FormControl>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Work</InputLabel>
-                                <Input id="work" value={this.state.work}
-                                       onChange={this.handleChange} />
-                            </FormControl>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Email</InputLabel>
-                                <Input id="email" value={this.state.email}
-                                       onChange={this.handleChange} />
-                            </FormControl>
+                            <div className={"mb-4"}>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Mobile</InputLabel>
+                                    <Input id="mobile" value={this.state.mobile}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Work</InputLabel>
+                                    <Input id="work" value={this.state.work}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Email</InputLabel>
+                                    <Input id="email" value={this.state.email}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                            </div>
 
                             {this.state.interactions.map((each, i) => {
                                 return <Interaction key={i} {...each}

@@ -13,7 +13,7 @@ const Interaction = props => {
 
             <InputLabel>Interaction</InputLabel>
             <Input id={props._id} value={props.note} onChange={props.cb}
-                   multiline={true} rows={1} rowsMax={10}/>
+                   multiline={true} rows={1} rowsMax={10} placeholder={"Enter Text..."}/>
 
             <div className={"d-row d-flex align-items-center"}>
                 <IconButton raised color="secondary" onClick={props.cb2}>
@@ -23,6 +23,8 @@ const Interaction = props => {
                     Date: {moment.unix(props.date).format('YYYY-MM-DD')}
                     </Typography>
             </div>
+
+            <br/>
 
         </FormControl>
     );
