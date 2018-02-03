@@ -3,15 +3,18 @@ import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import Contact from '../components/social/Contact';
 
-
 class Social extends Component {
     constructor (props) {
         super(props);
 
+        // double negative to produce boolean value instead of actual value
+        const logged = !!localStorage.getItem('user');
+
         this.pullSocialDB = this.pullSocialDB.bind(this);
 
         this.state = {
-            user: "5a6a7a67f7719e16e6f749cb",
+            logged: logged,
+            user: localStorage.getItem('user'),
             contacts: [],
         }
     }
@@ -86,7 +89,7 @@ class Social extends Component {
     ------------------------------------ */
 
     componentDidMount() {
-        this.pullSocialDB();
+        this.state.logged ? this.pullSocialDB() : console.log('Not logged in');
     }
 
     render() {
@@ -95,7 +98,7 @@ class Social extends Component {
                 position: "absolute",
                 width: "100%",
                 height: "100%",
-                backgroundColor: "#C8E1B5"
+                backgroundColor: "#dab5ff"
             }}>
             <div className={"container mt-3"}>
                 <div className={'row'}>

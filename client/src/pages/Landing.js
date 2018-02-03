@@ -11,7 +11,7 @@ class Landing extends Component {
                     <div className={"row"}>
                         <ComponentColumn link={"/time"} circleColor={"#F0C39E"} circleText={"time"} text={'manage time'}/>
                         <ComponentColumn link={"/money"} circleColor={"#C8E1B5"} circleText={"$"} text={"manage money"}/>
-                        <ComponentColumn link={"/social"} circleColor={"#AFDBC8"} circleText={"social"} text={"manage relationships"}/>
+                        <ComponentColumn link={"/social"} circleColor={"#dab5ff"} circleText={"social"} text={"manage relationships"}/>
                     </div>
                 </div>
             </div>

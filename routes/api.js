@@ -1,10 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const router = express.Router();
 
 // require models for the DB
 const db = require("../models");
 
-const router = express.Router();
 
 /* ------------------------------------
        API Routes for All Pages
@@ -20,19 +19,25 @@ router.post('/addUser', (req, res) => {
 
     db.User
         .create(req.body)
-        .then(() => {
-            console.log(`Created entry for ${req.body}`);
-            res.status(200).send('Created');
+        .then((user) => {
+            console.log(`Created entry for ${user._id}`);
+            res.status(200).send({userId: user._id});
         })
         .catch(err => res.json(err));
 });
 
-// GET all users
-// used for testing
-router.get('/getUsers', (req, res) => {
+// POST to log in
+router.post('/login', (req, res) => {
     db.User
-        .find({})
-        .then((user) => res.status(200).send(user))
+        .findOne({username: req.body.username})
+        .then((user) => {
+            console.log(user);
+            if (req.body.password === user.password) {
+                res.status(200).send({userId: user._id});
+            } else {
+                res.status(400).send({message: "Failed to login"});
+            }
+        })
         .catch(err => res.json(err));
 });
 
@@ -127,7 +132,55 @@ router.post('/deleteEvent/:eventId?', (req, res) => {
         .then(data => res.status(200).send(data))
         .catch(err => res.status(422).json(err));
 });
-//Delete an event
+
+
+/* ------------------------------------
+            FINANCE APIs
+------------------------------------ */
+
+
+// POST new finances
+router.post('/addFinances', (req, res) => {
+    console.log(`Got a request to add new finances:`);
+    let newFinances = req.body;
+    console.log(newFinances);
+    db.Finances
+        .create(newFinances)
+        .then(() => {
+            console.log(`Created finances for ${newFinances.name}`);
+            res.status(200).send('Created');
+        })
+        .catch(err => res.json(err));
+});
+
+// GET finances by user
+router.get('/getFinances/:userId', (req, res) => {
+
+    db.Finances
+        .find({_id: req.params.userId})
+        .populate('finances')
+        .then((data) => res.status(200).send(data))
+        .catch(err => res.status(422).json(err));
+});
+
+
+// UPDATE finances
+router.post('/updateFinances/:financesId', (req, res) => {
+    console.log(req.params.financesId);
+    db.Finances
+        .findOneAndUpdate(
+            {_id: req.params.financesId},
+            {
+                $set: {
+                    name: req.body.rent,
+                    utilities: req.body.utilities,
+                    transportation: req.body.transportation,
+
+                }
+            })
+        .then((data) => res.status(200).send(data))
+        .catch(err => res.status(422).json(err));
+});
 
 
 /* ------------------------------------
@@ -137,6 +190,7 @@ router.post('/deleteEvent/:eventId?', (req, res) => {
 // GET User's Social info
 // populated with Contacts and Interactions
 router.get('/getUserSocial/:userId', (req, res) => {
+    console.log(`Fetching Social for ${req.params.userId}`);
 
     db.User
         .findOne({_id: req.params.userId})
@@ -222,59 +276,6 @@ router.delete('/deleteContact', (req, res) => {
         })
         .catch(err => res.status(500).json(err));
 });
-
-
-
-/* ------------------------------------
-            FINANCE APIs
------------------------------------- */
-
-
-// POST new finances
-router.post('/addFinances', (req, res) => {
-    console.log(`Got a request to add new finances:`);
-    let newFinances = req.body;
-    console.log(newFinances);
-    db.Finances
-        .create(newFinances)
-        .then(() => {
-            console.log(`Created finances for ${newFinances.name}`);
-            res.status(200).send('Created');
-        })
-        .catch(err => res.json(err));
-});
-
-// GET finances by user
-router.get('/getFinances/:userId', (req, res) => {
-
-    db.Finances
-        .find({_id: req.params.userId})
-        .populate('finances')
-        .then((data) => res.status(200).send(data))
-        .catch(err => res.status(422).json(err));
-});
-
-
-// UPDATE finances
-router.post('/updateFinances/:financesId', (req, res) => {
-    console.log(req.params.financesId);
-    db.Finances
-        .findOneAndUpdate(
-            {_id: req.params.financesId},
-            {
-                $set: {
-                    name: req.body.rent,
-                    utilities: req.body.utilities,
-                    transportation: req.body.transportation,
-
-                }
-            })
-        .then((data) => res.status(200).send(data))
-        .catch(err => res.status(422).json(err));
-});
-
-
-/*---------------*/
 
 // Helper to DRY up Contact Update
 function updateHelper (contactID, interactArray, pRes) {

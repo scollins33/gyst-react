@@ -18,9 +18,7 @@ const Header = props => {
                 <div className={"row"}>
                     <div className={"col-4 d-flex justify-content-start my-auto"}><RouteLinks/></div>
                     <div className={"col-4 d-flex justify-content-center my-auto"}>{headerLogo}</div>
-                    <div className={"col-4 d-flex justify-content-end my-auto"}>
-                        <LoginSpace loggedin={false}/>
-                    </div>
+                    <div className={"col-4 d-flex justify-content-end my-auto"}><LoginSpace /></div>
                 </div>
             </div>
         )
