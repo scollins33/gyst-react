@@ -11,7 +11,6 @@ import IconButton from 'material-ui/IconButton';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import FavoriteBorder from 'material-ui-icons/FavoriteBorder';
 import ModeEdit from 'material-ui-icons/ModeEdit';
-import Divider from 'material-ui/Divider';
 import Interaction from "./Interaction";
 
 const moment = require('moment');

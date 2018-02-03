@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
+import Dialog from 'material-ui/Dialog';
 import Button from "material-ui/Button";
 
 
@@ -17,8 +17,6 @@ class LoginSpace extends Component {
             log: false,
         };
     }
-
-
 
     toggleReg = () => this.state.reg ? this.setState({ reg: false }) : this.setState({ reg: true });
     toggleLog = () => this.state.log ? this.setState({ log: false }) : this.setState({ log: true });
@@ -69,7 +67,7 @@ class LoginSpace extends Component {
                                        value={this.state.name} onChange={this.handleChange}/>
                             </label>
                             <label>Username
-                                <input type="test" name={'username'}
+                                <input type="username" name={'username'}
                                        value={this.state.username} onChange={this.handleChange}/>
                             </label>
                             <label>Email
