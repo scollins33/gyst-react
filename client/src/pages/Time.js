@@ -24,7 +24,7 @@ class Time extends Component {
             newClass: "",
             newNotes: "",
             newRepeat: "",
-            newValidator: "none",
+            newValidator: false,
             updateName: "",
             updateStart: Date.now(),
             updateEnd: Date.now(),
@@ -32,7 +32,7 @@ class Time extends Component {
             updateNotes: "",
             updateRepeat: "",
             updateModalId: "",
-            updateValidator: "none",
+            updateValidator: false,
             classOptions: ["work", "focus", "play"],
             repeatOptions: ["never", "daily", "weekly", "monthly", "yearly"]
         }
@@ -71,7 +71,7 @@ class Time extends Component {
             this.state.newNotes===""||
             this.state.newRepeat===""
         ){
-            this.setState({newValidator: "inline-block"})
+            this.setState({newValidator: true});
             return
         }
 
@@ -100,7 +100,7 @@ class Time extends Component {
             .then(res=> res.json())
             .catch(err=> console.log(err));
         console.log("event submitted");
-        this.setState({newEventModal: !this.state.newEventModal, newValidator: "none"});
+        this.setState({newEventModal: !this.state.newEventModal, newValidator: false});
         this.loadEvents();
     };
 
@@ -115,7 +115,7 @@ class Time extends Component {
             this.state.updateNotes===""||
             this.state.updateRepeat===""
         ){
-            this.setState({updateValidator: "inline-block"});
+            this.setState({updateValidator: true});
             return
         }
         e.preventDefault();
@@ -147,7 +147,7 @@ class Time extends Component {
             .then(res=> res.json())
             .catch(err=> console.log(err));
         console.log("event submitted");
-        this.setState({updateEventModal: !this.state.updateEventModal, updateValidator: "none"});
+        this.setState({updateEventModal: !this.state.updateEventModal, updateValidator: false});
         this.loadEvents();
     };
 
@@ -257,7 +257,7 @@ class Time extends Component {
                             classChecked={this.state.newClass}
                             repeatRadio={this.state.repeatOptions}
                             repeatChecked={this.state.newRepeat}
-                            validatorDisplay={this.state.newValidator}
+                            // validatorDisplay={this.state.newValidator}
                         />
                         <UpdateEventModal
                             open={this.state.updateEventModal}
@@ -274,7 +274,7 @@ class Time extends Component {
                             classChecked={this.state.updateClass}
                             repeatRadio={this.state.repeatOptions}
                             repeatChecked={this.state.updateRepeat}
-                            validatorDisplay={this.state.updateValidator}
+                            // validatorDisplay={this.state.updateValidator}
                         />
                     </div>
                 </div>

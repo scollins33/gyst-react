@@ -73,7 +73,7 @@ const EventModal = props =>{
                     <Button raised color="secondary"  onClick={(e)=>props.onClick(e)}>
                         submit
                     </Button>
-                    <ValidatorText display={props.validatorDisplay}/>
+                    {/*<ValidatorText display={props.validatorDisplay}/>*/}
                 </div>
             </div>
         </Modal>

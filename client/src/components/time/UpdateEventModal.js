@@ -63,7 +63,7 @@ const UpdateEventModal = props =>{
                 <button onClick={(e)=>props.onClick(e, props.id)}>
                     Submit
                 </button>
-                <ValidatorText display={props.validatorDisplay}/>
+                {/*<ValidatorText display={props.validatorDisplay}/>*/}
             </div>
         </Modal>
     )
