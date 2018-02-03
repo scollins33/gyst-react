@@ -201,8 +201,7 @@ class Contact extends Component {
         if (this.state.interactions.length === 0) {
             this.setState({ lastInteraction: "None" });
         } else {
-            this.setState(
-                {
+            this.setState({
                     lastInteraction: moment.unix(this.state.interactions[0].date).format('YYYY-MM-DD')
                 });
         }
@@ -211,6 +210,8 @@ class Contact extends Component {
     componentWillReceiveProps(nextProps) {
         this.user = nextProps.user;
         this.id = nextProps.id;
+
+        const lastInt = this.state.interactions.length === 0 ? "None" : moment.unix(this.state.interactions[0].date).format('YYYY-MM-DD')
 
         this.setState({
             name: nextProps.name,
@@ -221,7 +222,7 @@ class Contact extends Component {
             email: nextProps.methods.email,
             birthday: moment.unix(nextProps.birthday).format('YYYY-MM-DD'),
             interactions: nextProps.interactions,
-            lastInteraction: moment.unix(nextProps.interactions[0].date).format('YYYY-MM-DD'),
+            lastInteraction: lastInt,
             open: false,
         });
     }
