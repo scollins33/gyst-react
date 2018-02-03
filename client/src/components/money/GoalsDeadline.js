@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
-import Input, { InputLabel } from 'material-ui/Input';
+import Input from 'material-ui/Input';
 
 
 class GoalsDeadline extends React.Component {
