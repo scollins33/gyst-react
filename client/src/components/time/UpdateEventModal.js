@@ -2,7 +2,8 @@ import React from 'react'
 import Modal from 'material-ui/Modal'
 import Picker from './Picker'
 import RadioButton from "./RadioButton";
-import ValidatorText from "./ValidatiorText";
+import ValidatorText from "./ValidatorText.js";
+import Button from "material-ui/Button";
 
 const UpdateEventModal = props =>{
     return(
@@ -21,7 +22,8 @@ const UpdateEventModal = props =>{
                     boxShadow: '0 5px 15px rgba(0, 0, 0, .5)',
                     padding: `40px`,}}
             >
-                Update an Event
+                <div>
+                    Update an Event
                 <label>name: </label>
                 <input
                     name="updateName"
@@ -60,10 +62,13 @@ const UpdateEventModal = props =>{
                     onChange={props.handleInputChange}
                 />
                 <br/>
-                <button onClick={(e)=>props.onClick(e, props.id)}>
-                    Submit
-                </button>
-                {/*<ValidatorText display={props.validatorDisplay}/>*/}
+                </div>
+                <div className={'d-flex justify-content-center align-items-center'}>
+                    <Button raised color="secondary"  onClick={(e)=>props.onClick(e)}>
+                        Submit
+                    </Button>
+                    <ValidatorText display={props.validatorDisplay}/>
+                </div>
             </div>
         </Modal>
     )

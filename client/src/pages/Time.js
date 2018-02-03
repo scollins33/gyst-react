@@ -257,7 +257,7 @@ class Time extends Component {
                             classChecked={this.state.newClass}
                             repeatRadio={this.state.repeatOptions}
                             repeatChecked={this.state.newRepeat}
-                            // validatorDisplay={this.state.newValidator}
+                            validatorDisplay={this.state.newValidator}
                         />
                         <UpdateEventModal
                             open={this.state.updateEventModal}
@@ -274,7 +274,7 @@ class Time extends Component {
                             classChecked={this.state.updateClass}
                             repeatRadio={this.state.repeatOptions}
                             repeatChecked={this.state.updateRepeat}
-                            // validatorDisplay={this.state.updateValidator}
+                            validatorDisplay={this.state.updateValidator}
                         />
                     </div>
                 </div>

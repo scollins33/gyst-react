@@ -3,7 +3,7 @@ import Modal from 'material-ui/Modal'
 import Button from 'material-ui/Button'
 import Picker from './Picker'
 import RadioButton from './RadioButton'
-import ValidatorText from "./ValidatiorText";
+import ValidatorText from "./ValidatorText.js";
 
 const rowStyle = "d-flex d-row mb-2";
 
@@ -69,11 +69,11 @@ const EventModal = props =>{
                         onChange={props.handleInputChange}
                     />
                 </div>
-                <div className={'d-flex justify-content-center'}>
+                <div className={'d-flex justify-content-center align-items-center'}>
                     <Button raised color="secondary"  onClick={(e)=>props.onClick(e)}>
                         submit
                     </Button>
-                    {/*<ValidatorText display={props.validatorDisplay}/>*/}
+                    <ValidatorText display={props.validatorDisplay}/>
                 </div>
             </div>
         </Modal>
