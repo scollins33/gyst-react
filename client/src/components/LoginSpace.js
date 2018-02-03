@@ -54,6 +54,28 @@ class LoginSpace extends Component {
             });
     };
 
+    lgSubmit = (event) => {
+        event.preventDefault();
+        const data = {
+            username: this.state.username,
+            password: this.state.password,
+        };
+
+        console.log(data);
+
+        fetch("/users/submit",
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(res => {
+                console.log(res);
+                this.toggleLog();
+            });
+    };
+
+
     render() {
 
         return(
@@ -101,7 +123,7 @@ class LoginSpace extends Component {
                                 <input type="password" name={'password'}
                                        value={this.state.password} onChange={this.handleChange}/>
                             </label>
-                            <Button raised type="submit" value={'Submit'}>
+                            <Button raised type="submit" value={'Submit'} onClick={(event) => {this.lgSubmit(event)}}>
                                 Submit
                             </Button>
                             <Button raised onClick={this.toggleLog}>X</Button>
