@@ -47,6 +47,7 @@ class Contact extends Component {
             email: props.methods.email,
             birthday: moment.unix(props.birthday).format('YYYY-MM-DD'),
             interactions: props.interactions,
+            lastInteract: null,
             open: false,
         };
     }
@@ -72,10 +73,6 @@ class Contact extends Component {
         const property = event.target.id;
         const val = event.target.value;
 
-        console.log('THIS IS THE SHIT FROM THE EVENT HANDLER');
-        console.log(property);
-        console.log(val);
-
         this.setState({
             [property]: val,
         });
@@ -99,7 +96,7 @@ class Contact extends Component {
         const newInteract = {
             _id: null,
             contact: null,
-            date: 1517461200,
+            date: moment().unix(),
             method: "",
             note: "Enter notes...",
         };
@@ -182,9 +179,6 @@ class Contact extends Component {
             interactions: this.state.interactions,
         };
 
-        console.log('SENDING THE BELOW FOR BDAY');
-        console.log(data.birthday);
-
         fetch("/api/updateContact",
             {
                 method: "POST",
@@ -203,12 +197,20 @@ class Contact extends Component {
                 React Lifecycle
     ------------------------------------ */
 
+    componentDidMount() {
+        if (this.state.interactions.length === 0) {
+            this.setState({ lastInteraction: "None" });
+        } else {
+            this.setState(
+                {
+                    lastInteraction: moment.unix(this.state.interactions[0].date).format('YYYY-MM-DD')
+                });
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         this.user = nextProps.user;
         this.id = nextProps.id;
-
-        console.log('THIS IS THE NEXT PROP BEING RECEIVED');
-        console.log(nextProps.birthday);
 
         this.setState({
             name: nextProps.name,
@@ -219,19 +221,13 @@ class Contact extends Component {
             email: nextProps.methods.email,
             birthday: moment.unix(nextProps.birthday).format('YYYY-MM-DD'),
             interactions: nextProps.interactions,
+            lastInteraction: moment.unix(nextProps.interactions[0].date).format('YYYY-MM-DD'),
             open: false,
         });
-
-        console.log('THIS IS WHAT WAS SAVED TO THE STATE FROM NEXTPROP CONVERSION');
-        console.log(moment.unix(nextProps.birthday).format('YYYY-MM-DD'));
     }
 
     render() {
         const { classes } = this.props;
-
-        console.log('THIS IS WHAT IS ABOUT TO BE RENDERED AND ITS TYPE');
-        console.log(this.state.birthday);
-        console.log(typeof this.state.birthday);
 
         return (
                 <div className={"col-lg-4 col-md-12 mb-3"}>
@@ -248,7 +244,8 @@ class Contact extends Component {
                         <CardContent>
                             <Typography type="headline">{this.state.name}</Typography>
                             <Typography type="body2">Relation: {this.state.relation}</Typography>
-                            <Typography type="body2">Last Interaction: {this.state.birthday}</Typography>
+                            <Typography type="body2">
+                                Last Interaction: {this.state.lastInteraction}</Typography>
                         </CardContent>
                     </Card>
 
