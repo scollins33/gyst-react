@@ -1,9 +1,9 @@
 import React from 'react';
 import TextField from 'material-ui/TextField'
-
+import Button from 'material-ui/Button'
 
 const Event = props =>(
-    <div style={{
+    <div className={"col-12 col-sm-6"}><div style={{
         backgroundColor: "#fff",
         boxShadow: "0px 5px 5px rgba(100, 100, 100, 0.49)"}}
          className={"p-2 mx-1 mb-3"}>
@@ -29,9 +29,11 @@ const Event = props =>(
         <br/>
         <TextField value={props.notes}/>
         <br/>
-         <button onClick={(e)=>props.delete(e, props.id)}>delete schedule</button>
-         <button onClick={(e)=>props.update(e, props.id)}>update schedule</button>
-    </div>
+        <div className={"d-flex justify-space-between"}>
+            <Button className={"mx-1 my-1"} raised color="secondary" onClick={(e)=>props.delete(e, props.id)}>delete schedule</Button>
+            <Button className={"mx-1 my-1"} raised color="primary" onClick={(e)=>props.update(e, props.id)}>update schedule</Button>
+        </div>
+    </div></div>
 );
 
 export default Event;

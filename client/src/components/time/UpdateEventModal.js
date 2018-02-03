@@ -64,7 +64,7 @@ const UpdateEventModal = props =>{
                 <br/>
                 </div>
                 <div className={'d-flex justify-content-center align-items-center'}>
-                    <Button raised color="secondary"  onClick={(e)=>props.onClick(e)}>
+                    <Button raised color="primary"  onClick={(e)=>props.onClick(e)}>
                         Submit
                     </Button>
                     <ValidatorText display={props.validatorDisplay}/>

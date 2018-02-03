@@ -50,8 +50,7 @@ router.post('/login', (req, res) => {
 router.post('/addEvent', (req, res) => {
     console.log(`Got a request to add an event:`);
     let newEvent = req.body;
-    // newEvent.startTime = moment(req.body.startTime).format("LT");
-    // newEvent.endTime = moment(req.body.endTime).format("LT");
+
     console.log(newEvent);
     db.Event
         .create(newEvent)
@@ -61,6 +60,24 @@ router.post('/addEvent', (req, res) => {
         })
         .catch(err => res.json(err));
 });
+
+
+// POST a new event by user
+router.post('/addEvent/:userID', (req, res) => {
+    console.log(`Got a request to add an event:`);
+    let newEvent = req.body;
+
+    console.log(newEvent);
+    db.Event
+        .create(newEvent)
+        .then((event) => {
+            console.log(`Created event for ${event}`);
+            db.User.findOneAndUpdate({_id: req.params.userID},{$push: {events: event._id}})
+                .catch(err => res.status(500).send(err))
+        }).then(()=>{
+        res.status(200).send('Created')
+    })
+        .catch(err => res.status(500).send(err));});
 
 // GET all events
 // used for testing
@@ -75,11 +92,18 @@ router.get('/getEvents', (req, res) => {
 
 // GET events by user
 router.get('/getEvents/:userId', (req, res) => {
-
+console.log("fetching events by user");
+console.log(req.params.userId);
     db.User
         .find({_id: req.params.userId})
         .populate('events')
-        .then((data) => res.status(200).send(data))
+        .then((data) => {
+            console.log("///////////////////////");
+            console.log(data.events);
+            console.log("///////////////////////");
+
+            res.status(200).send(data[0].events)
+        })
         .catch(err => res.status(422).json(err));
 });
 
@@ -88,8 +112,8 @@ router.get('/getEvents/byClass/:userId', (req, res) => {
     const classType= "work";
     db.User
         .find({_id: req.params.userId, class: classType})
-        .populate('events')
-        .then((data) => res.status(200).send(data))
+        .populate({path:'events'})
+        .then(data => res.status(200).send(data))
         .catch(err => res.status(422).json(err));
 });
 
