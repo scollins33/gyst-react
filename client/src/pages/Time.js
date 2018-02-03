@@ -107,6 +107,7 @@ class Time extends Component {
 
     handleUpdateEvent=(e)=>{
         if (!this.state.updateEventModal){
+
             return
         } else if (
             this.state.updateName === "" ||
@@ -213,13 +214,13 @@ class Time extends Component {
 
     onAddClick=(e)=>{
         e.preventDefault();
-        this.setState({newEventModal: !this.state.newEventModal})
+        this.setState({newEventModal: !this.state.newEventModal, newValidator: false})
     };
 
     onUpdateClick=(e, eventId)=>{
         e.preventDefault();
         this.setState({updateModalId: eventId});
-        this.setState({updateEventModal: !this.state.updateEventModal})
+        this.setState({updateEventModal: !this.state.updateEventModal, updateValidator: false})
     };
 
     render() {
