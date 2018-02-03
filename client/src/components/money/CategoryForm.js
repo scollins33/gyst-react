@@ -1,7 +1,6 @@
 import React from 'react';
-import Button from 'material-ui/Grid';
-
-
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl} from 'material-ui/Form';
 
 
 class CategoryForm extends React.Component {
@@ -15,14 +14,17 @@ class CategoryForm extends React.Component {
     render() {
         console.log('props', this.props);
         return (
-            <form onSubmit={this.handleAnswer}>
-                <label>
-                    <input type="text" name={'input'+this.props.i}  onChange={this.props.handleChange} />
-                </label>
-                <input type="submit" value={this.props.className} onClick={this.props.submit}/>
-            </form>
+            <FormControl onSubmit={this.handleAnswer}>
+
+                <Input type="text" name={'input'+this.props.i}  onChange={this.props.handleChange} />
+
+                <label>{this.props.className}</label>
+
+            </FormControl>
         );
     }
 }
 
 export default CategoryForm;
+
+// *<Input type="submit" value={this.props.className} onClick={this.props.submit}/>*

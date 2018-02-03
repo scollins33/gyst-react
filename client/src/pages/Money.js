@@ -2,25 +2,9 @@ import React from 'react';
 import Bills from '../components/money/Bills';
 import Graph from '../components/money/graphs';
 import GoalsDeadline from "../components/money/GoalsDeadline";
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+// import PropTypes from 'prop-types';
+// import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-import { FormLabel, FormControlLabel } from 'material-ui/Form';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import Paper from 'material-ui/Paper';
-
-const styles = theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        height: 140,
-        width: 100,
-    },
-    control: {
-        padding: theme.spacing.unit * 2,
-    },
-});
 
 
 
@@ -68,26 +52,27 @@ class Money extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
-        const { spacing } = this.state;
+        // const { classes } = this.props;
+        // const { spacing } = this.state;
+        // const status = "Let's Manage Your Finances!";
 
         return (
-            /*<Grid container className="budget" justify="flex-end">*/
-                <Grid item lg={8}>
-                <Grid container className="graph" align-items="flex-start" spacing={Number(spacing)}>
-                    <Graph bills={this.state} {...this.state} rent={this.state.rent}/>
+                <Grid container style={{backgroundColor: "#C8E1B5", justifyContent: "flex-start", }}>
+                <Grid className="graph" style={{backgroundColor: "#C8E1B5", width:'auto', height:'200px'}} >
+                    <Graph bills={this.state} {...this.state} rent={this.state.rent} />
                 </Grid>
-                    <Grid container className="bills" align-items="flex-start" spacing={Number(spacing)}>
+                    <Grid container className="bills" style={{backgroundColor: "#C8E1B5", width:'auto', height:'auto', marginTop:'80px'}}>
                 <Bills updateCategory={this.updateCategoryAmount}
                        handleChange={this.handleChange}
                        {...this.state}
                        submit={this.submit}/>
                     </Grid>
-                <Grid container className="GoalsDeadline" justify="flex-end" spacing={Number(spacing)}>
-                    <GoalsDeadline submit={this.submit} />
+                    <Grid container className="GoalsDeadline" style={{backgroundColor: "#C8E1B5", justifyContent: "left", height:'1000px', width:'300px',
+                        marginTop:'350px'}} >
+                    <GoalsDeadline submit={this.submit}/>
                 </Grid>
-            </Grid>
-            /*</Grid>*/
+
+                </Grid>
         );
     }
 }

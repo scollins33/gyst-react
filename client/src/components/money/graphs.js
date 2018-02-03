@@ -2,7 +2,7 @@
 import React from 'react';
 import BarChart from 'react-bar-chart';
 
-const margin = { top: 40, right: 40, bottom: 30, left: 40 };
+const margin = { top: 40, right: 40, bottom: 30, left: 80 };
 
 // createReactClass
 // React.createComponent?
@@ -22,11 +22,12 @@ class Graph extends React.Component{
     };
 
     render() {
+
         const data = [
 
-            {text: 'rent', value: this.props.input0},
-            {text: 'utilities', value: this.props.input1},
-            {text: 'gas', value: this.props.input2},
+            {text: 'Rent', value: this.props.input0},
+            {text: 'Utilities', value: this.props.input1},
+            {text: 'Transportation', value: this.props.input2},
 
         ];
 
@@ -39,6 +40,7 @@ class Graph extends React.Component{
                 { style: { width: '50%' } },
                 React.createElement(BarChart, { ylabel: '',
                     width: this.state.width,
+
                     height:400,
                     margin: margin,
                     data: data,

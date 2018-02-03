@@ -3,8 +3,8 @@ import CategoryForm from './CategoryForm';
 
 export default class Bills extends React.Component {
     render() {
-        const status = "Let's Manage Your Budget!";
-        const categories = ['rent', 'utilities', 'gas',]
+        const status = "Enter Your Bills";
+        const categories = ['Rent', 'Utilities', 'Transportation',]
 
         return (
             <div>

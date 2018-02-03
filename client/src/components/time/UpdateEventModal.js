@@ -1,5 +1,9 @@
 import React from 'react'
 import Modal from 'material-ui/Modal'
+import Picker from './Picker'
+import RadioButton from "./RadioButton";
+import ValidatorText from "./ValidatorText.js";
+import Button from "material-ui/Button";
 
 const UpdateEventModal = props =>{
     return(
@@ -8,64 +12,65 @@ const UpdateEventModal = props =>{
             aria-describedby="simple-modal-description"
             open={props.open}
             onClose={(e)=> props.onClose(e)}>
-        <div
-        style={{position: 'absolute',
-            width: `70%`,
-            top: `15%`,
-            left: `15%`,
-            border: '1px solid #e5e5e5',
-            backgroundColor: '#fff',
-            boxShadow: '0 5px 15px rgba(0, 0, 0, .5)',
-            padding: `40px`,}}
-        >
-            Update an Event
-            <label>name: </label>
-            <input
-                name="updateName"
-                type="text"
-                onChange={props.handleInputChange}
-            />
-            <br/>
-            <label>start time:</label>
-            <input
-                name="updateStart"
-                type="text"
-                onChange={props.handleInputChange}
-            />
-            <br/>
-            <label>end time:</label>
-            <input
-                type="text"
-                name="updateEnd"
-                onChange={props.handleInputChange}
-            />
-            <br/>
-            <label>repeat:</label>
-            <input
-                type="text"
-                name="updateRepeat"
-                onChange={props.handleInputChange}
-            />
-            <br/>
-            <label>class:</label>
-            <input
-                type="text"
-                name="updateClass"
-                onChange={props.handleInputChange}
-            />
-            <br/>
-            <label>notes: </label>
-            <textarea
-                type="text"
-                name="updateNotes"
-                onChange={props.handleInputChange}
-            />
-            <br/>
-            <button onClick={(e)=>props.onClick(e, props.id)}>
-                Submit
-            </button>
-        </div>
-    </Modal>
+            <div
+                style={{position: 'absolute',
+                    width: `70%`,
+                    top: `15%`,
+                    left: `15%`,
+                    border: '1px solid #e5e5e5',
+                    backgroundColor: '#fff',
+                    boxShadow: '0 5px 15px rgba(0, 0, 0, .5)',
+                    padding: `40px`,}}
+            >
+                <div>
+                    Update an Event
+                <label>name: </label>
+                <input
+                    name="updateName"
+                    type="text"
+                    onChange={props.handleInputChange}
+                />
+                <br/>
+                <Picker
+                    title="Start Time"
+                    name="updateStart"
+                    value={props.startTime}
+                    handleChange={props.handleTimeChange}
+                    type="datetime-local"
+                />
+                <Picker
+                    title="End Time"
+                    name="updateEnd"
+                    value={props.endTime}
+                    handleChange={props.handleTimeChange}
+                    type="datetime-local"
+                />
+                <br/>
+                <label>repeat:</label>
+                <br/>
+                {props.repeatRadio.map((btnName, i)=> <RadioButton key={i} selectedValue={props.repeatChecked} name={btnName} value={btnName} handleChange={props.handleRepeatChange} aria={btnName}/>)}
+                <br/>
+                <label>class:</label>
+                <br/>
+                {props.classRadio.map((btnName, i)=> <RadioButton selectedValue={props.classChecked} key={i} name={btnName} value={btnName} handleChange={props.handleClassChange} aria={btnName}/>)}
+                <br/>
+
+                <label>notes: </label>
+                <input
+                    type="text"
+                    name="updateNotes"
+                    onChange={props.handleInputChange}
+                />
+                <br/>
+                </div>
+                <div className={'d-flex justify-content-center align-items-center'}>
+                    <Button raised color="secondary"  onClick={(e)=>props.onClick(e)}>
+                        Submit
+                    </Button>
+                    <ValidatorText display={props.validatorDisplay}/>
+                </div>
+            </div>
+        </Modal>
     )
 };
 

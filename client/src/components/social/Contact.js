@@ -13,8 +13,7 @@ import FavoriteBorder from 'material-ui-icons/FavoriteBorder';
 import ModeEdit from 'material-ui-icons/ModeEdit';
 import Interaction from "./Interaction";
 
-// require moment.js
-// const moment = require('moment');
+const moment = require('moment');
 
 const styles = theme => ({
     container: {
@@ -33,6 +32,7 @@ class Contact extends Component {
     constructor(props) {
         super(props);
 
+        this.user = props.user;
         this.id = props.id;
 
         // State matches the JSON from the MongoDB Schema
@@ -45,8 +45,9 @@ class Contact extends Component {
             mobile: props.methods.mobile,
             work: props.methods.work,
             email: props.methods.email,
-            birthday: props.birthday,
+            birthday: moment.unix(props.birthday).format('YYYY-MM-DD'),
             interactions: props.interactions,
+            lastInteract: null,
             open: false,
         };
     }
@@ -81,9 +82,10 @@ class Contact extends Component {
         this.setState({ relation: event.target.value });
     };
 
-    handleInteract = (event) => {
+    handleInteract = (pArrLoc, event) => {
         let interactions = this.state.interactions;
-        interactions[parseInt(event.target.name, 10)].note = event.target.value;
+
+        interactions[pArrLoc].note = event.target.value;
 
         this.setState({ interactions });
     };
@@ -93,43 +95,33 @@ class Contact extends Component {
 
         const newInteract = {
             _id: null,
-            contact: "",
-            date: 641520000,
+            contact: null,
+            date: moment().unix(),
             method: "",
-            note: "Enter notes...",
+            note: "",
         };
 
         // add the new Interaction to the head of the array
         interactions.unshift(newInteract);
 
-        // update the arrLoc attributes
-        interactions.map((each, i) => {
-            return each.arrLoc = i;
-        });
-
         this.setState({ interactions });
     };
 
-
+    // remove and delete Interaction from Contact
     // pArrLoc is inherently added from the .bind(this, each.arrLoc) in render()
     deleteInteract = (pArrLoc) => {
         let interactions = this.state.interactions;
 
+        // if it has an id then it is in the DB
         if (interactions[pArrLoc]._id != null) {
-            this.removeInteract(interactions[pArrLoc]._id, interactions[pArrLoc].contact);
+            this.removeInteract(interactions[pArrLoc]._id);
         }
         // remove the selected Interaction from the array
         interactions.splice(pArrLoc, 1);
 
-        // update the arrLoc attributes
-        interactions.map((each, i) => {
-            return each.arrLoc = i;
-        });
-
-        console.log(interactions);
-
         this.setState({ interactions });
     };
+
 
     /* ------------------------------------
             API calls to CRUD DB
@@ -148,15 +140,16 @@ class Contact extends Component {
                 body: JSON.stringify(data),
                 headers: new Headers({'Content-Type': 'application/json'}),
             })
-            .then(res => {
-                console.log(res);
+            .then(() => {
+                console.log('Toggled Favorite');
             });
     };
 
-    removeInteract (pID, pContact) {
-        const data ={
+    // remove and delete Interaction from Contact
+    removeInteract (pID) {
+        const data = {
             interaction: pID,
-            contact: pContact
+            contact: this.id,
         };
 
         fetch("/api/deleteInteraction",
@@ -165,8 +158,37 @@ class Contact extends Component {
                 body: JSON.stringify(data),
                 headers: new Headers({'Content-Type': 'application/json'}),
             })
-            .then(res => {
-                console.log(res);
+            .then(() => {
+                console.log("Deleted Interaction");
+            });
+
+    };
+
+    saveContact = () => {
+        const data = {
+            user: this.user,
+            id: this.id,
+            name: this.state.name,
+            relation: this.state.relation,
+            birthday: moment(this.state.birthday, 'YYYY-MM-DD').unix(),
+            methods: {
+                mobile: this.state.mobile,
+                work: this.state.work,
+                email: this.state.email
+            },
+            interactions: this.state.interactions,
+        };
+
+        fetch("/api/updateContact",
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: new Headers({'Content-Type': 'application/json'}),
+            })
+            .then(() => {
+                console.log("Saved Contact");
+                this.handleToggle();
+                this.props.action();
             });
     };
 
@@ -175,11 +197,33 @@ class Contact extends Component {
                 React Lifecycle
     ------------------------------------ */
 
-    componentWillMount() {
-        // add Array Location to each Interaction
-        // need to this so it can be edited in the State
-        this.state.interactions.map((each, i) => {
-            return each.arrLoc = i;
+    componentDidMount() {
+        if (this.state.interactions.length === 0) {
+            this.setState({ lastInteraction: "None" });
+        } else {
+            this.setState({
+                    lastInteraction: moment.unix(this.state.interactions[0].date).format('YYYY-MM-DD')
+                });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.user = nextProps.user;
+        this.id = nextProps.id;
+
+        const lastInt = this.state.interactions.length === 0 ? "None" : moment.unix(this.state.interactions[0].date).format('YYYY-MM-DD')
+
+        this.setState({
+            name: nextProps.name,
+            favorite: nextProps.favorite,
+            relation: nextProps.relation,
+            mobile: nextProps.methods.mobile,
+            work: nextProps.methods.work,
+            email: nextProps.methods.email,
+            birthday: moment.unix(nextProps.birthday).format('YYYY-MM-DD'),
+            interactions: nextProps.interactions,
+            lastInteraction: lastInt,
+            open: false,
         });
     }
 
@@ -201,7 +245,8 @@ class Contact extends Component {
                         <CardContent>
                             <Typography type="headline">{this.state.name}</Typography>
                             <Typography type="body2">Relation: {this.state.relation}</Typography>
-                            <Typography type="body2">Last Interaction: {this.state.birthday}</Typography>
+                            <Typography type="body2">
+                                Last Interaction: {this.state.lastInteraction}</Typography>
                         </CardContent>
                     </Card>
 
@@ -241,26 +286,28 @@ class Contact extends Component {
                                                   checked={this.state.relation === 'Acquaintance'}/>
                             </div>
 
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Mobile</InputLabel>
-                                <Input id="mobile" value={this.state.mobile}
-                                       onChange={this.handleChange} />
-                            </FormControl>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Work</InputLabel>
-                                <Input id="work" value={this.state.work}
-                                       onChange={this.handleChange} />
-                            </FormControl>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel>Email</InputLabel>
-                                <Input id="email" value={this.state.email}
-                                       onChange={this.handleChange} />
-                            </FormControl>
+                            <div className={"mb-4"}>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Mobile</InputLabel>
+                                    <Input id="mobile" value={this.state.mobile}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Work</InputLabel>
+                                    <Input id="work" value={this.state.work}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel>Email</InputLabel>
+                                    <Input id="email" value={this.state.email}
+                                           onChange={this.handleChange} />
+                                </FormControl>
+                            </div>
 
                             {this.state.interactions.map((each, i) => {
                                 return <Interaction key={i} {...each}
-                                                    cb={this.handleInteract.bind(this)}
-                                                    cb2={this.deleteInteract.bind(this, each.arrLoc)}/>;
+                                                    cb={this.handleInteract.bind(this, i)}
+                                                    cb2={this.deleteInteract.bind(this, i)}/>;
                             })}
 
                         </DialogContent>
@@ -270,9 +317,9 @@ class Contact extends Component {
                                     color="default">New Interaction</Button>
                             <Button raised onClick={this.handleToggle}
                                     color="default">Close</Button>
-                            <Button raised onClick={this.handleToggle}
+                            <Button raised onClick={this.saveContact}
                                     color="primary">Save</Button>
-                            <Button raised onClick={this.handleToggle}
+                            <Button raised onClick={this.props.cb}
                                     color="secondary">Delete</Button>
                         </DialogActions>
                     </Dialog>

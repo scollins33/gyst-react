@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
 const UserSchema = new Schema({
     username: {
         type: String,
@@ -21,22 +20,23 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    // Contacts for the Social Page
-    // 1:Many Relation, array
+    email: {
+        type: String,
+        required: true
+    },
     contacts: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Contact"
+            ref: "Contact",
         }
-    ],
+        ],
     events: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Event"
+            ref: "Event",
         }
-    ]
+        ]
 });
-
 
 const User = mongoose.model("User", UserSchema);
 
