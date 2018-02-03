@@ -226,19 +226,19 @@ class Time extends Component {
     render() {
         return (
             <div style={{ position: "absolute", width: "100%", height: "100%", backgroundColor: "#F0C39E"}}>
-                <div className={"p-2 d-flex justify-space-around"}>
-                    <Button fab color="primary" aria-label="add" onClick={(e)=>this.onAddClick(e)}>
-                        <AddIcon />
-                    </Button>
-                    <Picker
-                        title="Diplay Date"
-                        name="displayDate"
-                        value={this.state.displayDate}
-                        type="date"
-                        handleChange={this.handleDateChange}
-                    />
-                </div>
                 <div className={"container"}>
+                    <div className={"p-2 d-flex justify-space-around"}>
+                        <Button fab color="primary" aria-label="add" onClick={(e)=>this.onAddClick(e)}>
+                            <AddIcon />
+                        </Button>
+                        <Picker
+                            title="Diplay Date"
+                            name="displayDate"
+                            value={this.state.displayDate}
+                            type="date"
+                            handleChange={this.handleDateChange}
+                        />
+                    </div>
                     <div className={"row"}>
                         <div className={"col-12 col-sm-6 my-3"}>
                             {this.state.workload.map((task, i)=><Event key={i} id={task._id} name={task.name} startTime={moment(task.startTime).format('LT')} endTime={moment(task.endTime).format('LT')} class={task.class} notes={task.notes} update={this.onUpdateClick} delete={this.handleDelete}/>)}
