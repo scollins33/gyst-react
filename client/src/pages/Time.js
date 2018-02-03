@@ -11,6 +11,7 @@ const moment = require('moment');
 class Time extends Component {
     constructor(props){
         super(props);
+
         const logged=!!localStorage.getItem('user');
 
         this.state={
@@ -42,7 +43,9 @@ class Time extends Component {
     }
 
     loadEvents =()=>{
-
+        if (this.state.logged === false){
+            return
+        }
         fetch(`/api/getEvents/${this.state.user}`,{method: "GET"})
             .then(res=> res.json())
             .then(data=> {
